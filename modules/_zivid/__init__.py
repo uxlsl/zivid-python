@@ -1,4 +1,8 @@
 """This file imports used classes, modules and packages."""
+def _traverse_settings():
+    print("hello")
+
+_traverse_settings()
 try:
     from _zivid._zivid import (  # pylint: disable=import-error,no-name-in-module
         __version__,
