@@ -16,86 +16,10 @@ class NodeData:
     indentation_level: int
 
 
-def _module_comment():
-    return '"""Contains Settings class."""'
-
 
 def _imports():
-    return "import _zivid"
+    return "    import _zivid\n"
 
-
-def _base_node(
-    class_name, class_description, nested_classes, leaf_nodes, indentation_level
-):
-    eq_special_member_function = """
-    def __eq__(self, other):
-        if self.enabled == other.enabled:
-            return True
-        return False"""
-
-    str_special_member_function = '''
-    def __str__(self):
-        return """SOme description""".format(
-    self.enabled
-    )
-    '''
-    init_special_member_function = '''def __init__(
-        self, enabled=_zivid.Settings().filters.reflection.enabled.value
-    ):
-        """Initialize reflection filter.
-        Args:
-            enabled: a bool
-        """
-        #set self.whatever here
-    '''
-    unindented_class = """class {class_name}:
-    {class_description}
-
-{nested_classes}
-
-    {init_special_member_function}
-
-    {eq_special_member_function}
-
-    {str_special_member_function}    
-    
-    
-    """.format(
-        class_name=class_name,
-        class_description=class_description,
-        nested_classes=nested_classes,
-        init_special_member_function=init_special_member_function,
-        eq_special_member_function=eq_special_member_function,
-        str_special_member_function=str_special_member_function,
-    )
-    indented_lines = []
-    for line in unindented_class.splitlines():
-        indented_lines.append("    " * (indentation_level) + line)
-    return "\n".join(indented_lines)
-
-
-def _create_file():
-    from _zivid._zivid import Settings
-
-    settings_tree = _recursion(Settings)
-    print(settings_tree)
-
-    # print(
-    #     _base_node(
-    #         class_name="Settings",
-    #         class_description="some_description here",
-    #         nested_classes=_base_node(
-    #             class_name="nested",
-    #             class_description="som other desc",
-    #             nested_classes="",
-    #             leaf_nodes="blablaba",
-    #             indentation_level=1,
-    #         ),
-    #         leaf_nodes="enabled",
-    #         indentation_level=0,
-    #     )
-    # )
-    # return "{}\n{}\n\n{}".format(_module_comment(), _imports(), settings_tree)
 
 
 def _traverse_settings():
@@ -156,7 +80,8 @@ def _start_traverse():
     data_model = _recursion(Settings, indentation_level=0)
     with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:
         temp_file = Path(temp_file.name)
-        raw_text = _create_settings_py(data_model)
+        raw_text = _imports()
+        raw_text += _create_settings_py(data_model)
         new_lines = []
         for line in raw_text.splitlines():
             new_lines.append(line[4:])
@@ -168,7 +93,10 @@ def _start_traverse():
         print(temp_file.read_text())
         subprocess.check_output((f"black {temp_file}"), shell=True)
         print(temp_file.read_text())
-        
+        path_to_settings=(Path(__file__).resolve() / ".." / ".." / "zivid" / "settings.py").resolve()
+        path_to_settings.write_text(temp_file.read_text())
+
+
     # print()
 
 
@@ -196,27 +124,89 @@ def _get_member_variables(node_data):
     return member_variables
 
 
+def _get_child_class_member_variables(node_data):
+    import inflection
+
+    child_class_members_variables = []
+    if node_data.children:
+        for child in node_data.children:
+            child_class_members_variables.append(
+                MemberVariable(
+                    name=child.name,
+                    variable_name=inflection.underscore(child.name),
+                    default_value=f"{child.name}()",
+                )
+            )
+
+    return child_class_members_variables
+
+
+def _variable_names(node_data):
+    member_variables = _get_member_variables(node_data)
+    child_class_member_variables = _get_child_class_member_variables(node_data)
+    variable_names = list()
+    for member in member_variables:
+        variable_names.append(member.variable_name)
+    for child_class in child_class_member_variables:
+        variable_names.append(child_class.variable_name)
+    return variable_names
+
+
 def _create_init_special_member_function(node_data):
     member_variables = _get_member_variables(node_data)
+    child_class_member_variables = _get_child_class_member_variables(node_data)
     signature_vars = ""
+    member_variable_set = ""
     for member in member_variables:
         signature_vars += f"{member.variable_name}={member.default_value},"
-    return '''
+    for child_class in child_class_member_variables:
+        signature_vars += f"{child_class.variable_name}={child_class.default_value},"
+    for variable_name in _variable_names(node_data):
+        member_variable_set += f"self.{variable_name} = {variable_name}\n        "
+    # for member in member_variables:
+    #     member_variable_set += (
+    #         f"self.{member.variable_name} = {member.variable_name}\n        "
+    #     )
+    # for child_class in child_class_member_variables:
+    #     member_variable_set += f"self.{child_class.variable_name}={child_class.variable_name}\n        "
+    return """
     def __init__(
         self,
         {signature_vars}
     ):
-        """Initialize contrast filter.
-    
-        Args:
-            enabled: a bool
-            threshold: a real number
-    
-        """
-    
-        self.enabled = enabled
-        self.threshold = threshold'''.format(
-        signature_vars=signature_vars
+        {member_variable_set}""".format(
+        signature_vars=signature_vars, member_variable_set=member_variable_set
+    )
+
+
+def _create_eq_special_member_function(node_data):
+    member_variables_equality = list()
+    for variable_name in _variable_names(node_data):
+        member_variables_equality.append(
+            f"self.{variable_name} == other.{variable_name}"
+        )
+    equality_logic = " and ".join(member_variables_equality)
+    return """def __eq__(self, other):
+        if (
+            {equality_logic}
+        ):
+            return True
+        return False""".format(
+        equality_logic=equality_logic
+    )
+
+
+def _create_str_special_member_function(node_data):
+    member_variables_str = "    "
+    for variable_name in [
+        f"{element}: {{self.{element}}}\n    " for element in _variable_names(node_data)
+    ]:
+        member_variables_str += variable_name
+    member_variables_str.strip()
+    return '''def __str__(self):
+            return """{name}:
+{member_variables_str}"""'''.format(
+        name=node_data.name, member_variables_str=member_variables_str
     )
 
 
@@ -227,13 +217,17 @@ def _create_class(node_data):
 class {class_name}:
     {nested_classes}
     {init_special_member_function}
+    {eq_special_member_function}
+    {str_special_member_function}
 """.format(
         class_name=node_data.name,
         nested_classes=nested_classes_string,
         init_special_member_function=_create_init_special_member_function(node_data),
+        eq_special_member_function=_create_eq_special_member_function(node_data),
+        str_special_member_function=_create_str_special_member_function(node_data),
     )
     indented_lines = list()
-    first_line=True
+    first_line = True
     for line in base_class.splitlines():
         # if first_line:
         #     indented_lines.append("    " * node_data.indentation_level + line)
@@ -248,15 +242,15 @@ def _create_settings_py(data_model):
     return _create_class(data_model)
 
 
-def _construct_tree_from_classes(class_tree):
-    print(class_tree)
-    tree = []
-    for container_or_leaf in class_tree:
-        tree.append(container_or_leaf.path)
-    tree.sort()
-    for ele in tree:
-        print(ele)
-    return "\n".join(tree)
+# def _construct_tree_from_classes(class_tree):
+#     print(class_tree)
+#     tree = []
+#     for container_or_leaf in class_tree:
+#         tree.append(container_or_leaf.path)
+#     tree.sort()
+#     for ele in tree:
+#         print(ele)
+#     return "\n".join(tree)
 
 
 def inner_classes_list(cls):
