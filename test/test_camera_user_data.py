@@ -2,14 +2,6 @@
 import pytest
 
 
-def test_max_user_data_size(file_camera):
-    import numbers
-
-    max_size = file_camera.user_data_max_size_bytes
-    assert max_size is not None
-    assert isinstance(max_size, numbers.Real)
-
-
 @pytest.mark.physical_camera
 def test_write_user_data(camera):
     camera.write_user_data(b"This is my data")

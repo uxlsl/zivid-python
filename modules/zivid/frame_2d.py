@@ -35,14 +35,14 @@ class Frame2D:
     def __str__(self):
         return str(self.__impl)
 
-    def image(self):
+    def image_rgba(self):
         """Return the underlying 2D image.
 
         Returns:
             an image instance
 
         """
-        return Image(self.__impl.image())
+        return Image(self.__impl.image_rgba())
 
     @property
     def settings(self):
@@ -76,7 +76,7 @@ class Frame2D:
             a camera info instance
 
         """
-        return _frame_info_converter.to_info(  # pylint: disable=protected-access
+        return _frame_info_converter.to_frame_info(  # pylint: disable=protected-access
             self.__impl.info
         )
 
