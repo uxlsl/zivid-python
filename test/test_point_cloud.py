@@ -36,7 +36,7 @@ def test_width(point_cloud):
 def test_height_context_manager(frame):
     import pytest
 
-    with frame.get_point_cloud() as point_cloud:
+    with frame.point_cloud() as point_cloud:
         point_cloud.height  # pylint: disable=pointless-statement
     with pytest.raises(RuntimeError):
         point_cloud.height  # pylint: disable=pointless-statement
@@ -45,7 +45,7 @@ def test_height_context_manager(frame):
 def test_width_context_manager(frame):
     import pytest
 
-    with frame.get_point_cloud() as point_cloud:
+    with frame.point_cloud() as point_cloud:
         point_cloud.width  # pylint: disable=pointless-statement
     with pytest.raises(RuntimeError):
         point_cloud.width  # pylint: disable=pointless-statement
@@ -54,7 +54,7 @@ def test_width_context_manager(frame):
 def test_to_array_context_manager(frame):
     import pytest
 
-    with frame.get_point_cloud() as point_cloud:
+    with frame.point_cloud() as point_cloud:
         point_cloud.to_array()
     with pytest.raises(RuntimeError):
         point_cloud.to_array()

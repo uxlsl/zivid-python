@@ -30,7 +30,7 @@ class Application:
     def __str__(self):
         return str(self.__impl)
 
-    def create_file_camera(self, frame_file, settings=None):
+    def create_file_camera(self, frame_file):
         """Create a virtual camera to simulate Zivid measurements by reading data from a file.
 
         Args:
@@ -41,39 +41,20 @@ class Application:
             Zivid virtual camera instance
 
         """
-        if settings is None:
-            return Camera(self.__impl.create_file_camera(str(frame_file)))
-        return Camera(
-            self.__impl.create_file_camera(
-                str(frame_file),
-                settings=_settings_converter.to_internal_settings(settings),
-            )
-        )
+        return Camera(self.__impl.create_file_camera(str(frame_file)))
 
-    def connect_camera(self, serial_number=None, settings=None):
+    def connect_camera(self, serial_number=None):
         """Connect to the next available Zivid Camera.
 
         Args:
             serial_number: Connect to the camera with this serial number
-            settings: Settings for the camera
 
         Returns:
             Zivid camera instance
 
         """
-        internal_settings = (
-            _settings_converter.to_internal_settings(settings) if settings else None
-        )
-        if serial_number is not None and internal_settings is not None:
-            return Camera(
-                self.__impl.connect_camera(
-                    serial_number=serial_number, settings=internal_settings
-                )
-            )
         if serial_number is not None:
             return Camera(self.__impl.connect_camera(serial_number))
-        if internal_settings is not None:
-            return Camera(self.__impl.connect_camera(settings=internal_settings))
         return Camera(self.__impl.connect_camera())
 
     def cameras(self):
