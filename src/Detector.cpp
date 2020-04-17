@@ -8,8 +8,8 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    void wrapClass(pybind11::class_<Zivid::HandEye::DetectionResult> pyClass)
+    void wrapClass(pybind11::class_<Zivid::Calibration::DetectionResult> pyClass)
     {
-        pyClass.def("valid", &Zivid::HandEye::DetectionResult::valid);
+        pyClass.def("valid", &Zivid::Calibration::DetectionResult::valid);
     }
 } // namespace ZividPython

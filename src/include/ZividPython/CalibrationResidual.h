@@ -6,5 +6,5 @@
 
 namespace ZividPython
 {
-    void wrapClass(pybind11::class_<Zivid::HandEye::CalibrationResidual> pyClass);
+    void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeResidual> pyClass);
 } // namespace ZividPython

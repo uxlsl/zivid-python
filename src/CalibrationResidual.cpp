@@ -8,9 +8,9 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    void wrapClass(pybind11::class_<Zivid::HandEye::CalibrationResidual> pyClass)
+    void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeResidual> pyClass)
     {
-        pyClass.def("rotation", &Zivid::HandEye::CalibrationResidual::rotation)
-            .def("translation", &Zivid::HandEye::CalibrationResidual::translation);
+        pyClass.def("rotation", &Zivid::Calibration::HandEyeResidual::rotation)
+            .def("translation", &Zivid::Calibration::HandEyeResidual::translation);
     }
 } // namespace ZividPython
