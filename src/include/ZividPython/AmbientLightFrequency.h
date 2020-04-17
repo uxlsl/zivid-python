@@ -6,5 +6,5 @@
 
 namespace ZividPython
 {
-    void wrapEnum(pybind11::enum_<Zivid::CaptureAssistant::AmbientLightFrequency> pyEnum);
+    void wrapEnum(pybind11::enum_<Zivid::CaptureAssistant::SuggestSettingsParameters::AmbientLightFrequency> pyEnum);
 } // namespace ZividPython
