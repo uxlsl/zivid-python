@@ -1,6 +1,6 @@
-#include <Zivid/HandEye/Calibrate.h>
-#include <Zivid/HandEye/Detector.h>
-#include <Zivid/HandEye/Pose.h>
+#include <Zivid/Calibration/HandEye.h>
+#include <Zivid/Calibration/Detector.h>
+#include <Zivid/Calibration/Pose.h>
 #include <Zivid/PointCloud.h>
 
 #include <ZividPython/Calibrate.h>

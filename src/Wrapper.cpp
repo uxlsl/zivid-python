@@ -28,11 +28,11 @@ ZIVID_PYTHON_MODULE // NOLINT
 
     using namespace Zivid;
 
-    ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings);
-    ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
-    ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraState);
-    ZIVID_PYTHON_WRAP_DATA_MODEL(module, FrameInfo);
-    ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraIntrinsics);
+    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings);
+    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
+    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraState);
+    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, FrameInfo);
+    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraIntrinsics);
 
     ZIVID_PYTHON_WRAP_CLASS_AS_SINGLETON(module, Application);
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Camera);

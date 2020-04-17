@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Zivid/HandEye/Detector.h>
+#include <Zivid/Calibration/Detector.h>
 
 #include <pybind11/pybind11.h>
 

@@ -1,4 +1,4 @@
-#include <Zivid/HandEye/Detector.h>
+#include <Zivid/Calibration/Detector.h>
 
 #include <ZividPython/Detector.h>
 

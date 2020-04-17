@@ -1,4 +1,4 @@
-#include <Zivid/HandEye/Calibrate.h>
+#include <Zivid/Calibration/HandEye.h>
 
 #include <ZividPython/Calibrate.h>
 #include <ZividPython/CalibrationResidual.h>
