@@ -7,11 +7,11 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    void wrapEnum(pybind11::enum_<Zivid::CaptureAssistant::AmbientLightFrequency> pyEnum)
+    void wrapEnum(pybind11::enum_<Zivid::CaptureAssistant::SuggestSettingsParameters::AmbientLightFrequency::ValueType> pyEnum)
     {
-        pyEnum.value("hz50", Zivid::CaptureAssistant::AmbientLightFrequency::hz50)
-            .value("hz60", Zivid::CaptureAssistant::AmbientLightFrequency::hz60)
-            .value("none", Zivid::CaptureAssistant::AmbientLightFrequency::none)
+        pyEnum.value("hz50", Zivid::CaptureAssistant::SuggestSettingsParameters::AmbientLightFrequency::hz50)
+            .value("hz60", Zivid::CaptureAssistant::SuggestSettingsParameters::AmbientLightFrequency::hz60)
+            .value("none", Zivid::CaptureAssistant::SuggestSettingsParameters::AmbientLightFrequency::none)
             .export_values();
     }
 } // namespace ZividPython

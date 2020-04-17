@@ -18,13 +18,13 @@ namespace ZividPython::HandEye
 {
     void wrapAsSubmodule(pybind11::module &dest)
     {
-        using namespace Zivid::HandEye;
+        using namespace Zivid::Calibration;
 
         ZIVID_PYTHON_WRAP_CLASS(dest, Pose);
-        ZIVID_PYTHON_WRAP_CLASS(dest, CalibrationOutput);
-        ZIVID_PYTHON_WRAP_CLASS(dest, CalibrationInput);
+        ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeOutput);
+        ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeInput);
         ZIVID_PYTHON_WRAP_CLASS(dest, DetectionResult);
-        ZIVID_PYTHON_WRAP_CLASS(dest, CalibrationResidual);
+        ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeResidual);
 
         dest.def("detect_feature_points",
                  [](const ReleasablePointCloud &releasablePointCloud) {
