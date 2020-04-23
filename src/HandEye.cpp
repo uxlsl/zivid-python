@@ -28,9 +28,9 @@ namespace ZividPython::HandEye
 
         dest.def("detect_feature_points",
                  [](const ReleasablePointCloud &releasablePointCloud) {
-                     return Zivid::HandEye::detectFeaturePoints(releasablePointCloud.impl());
+                     return Zivid::Calibration::detectFeaturePoints(releasablePointCloud.impl());
                  })
-            .def("calibrate_eye_in_hand", &Zivid::HandEye::calibrateEyeInHand)
-            .def("calibrate_eye_to_hand", &Zivid::HandEye::calibrateEyeToHand);
+            .def("calibrate_eye_in_hand", &Zivid::Calibration::calibrateEyeInHand)
+            .def("calibrate_eye_to_hand", &Zivid::Calibration::calibrateEyeToHand);
     }
 } // namespace ZividPython::HandEye

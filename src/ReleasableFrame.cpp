@@ -14,7 +14,7 @@ namespace ZividPython
             .def("load", &ReleasableFrame::load, py::arg("file_name"))
             .def_property_readonly("settings", &ReleasableFrame::settings)
             .def_property_readonly("state", &ReleasableFrame::state)
-            .def_property_readonly("info", &ReleasableFrame::info)
-            .def("get_point_cloud", &ReleasableFrame::getPointCloud);
+            .def_property_readonly("info", &ReleasableFrame::info);
+            //.def("get_point_cloud", &ReleasableFrame::getPointCloud);
     }
 } // namespace ZividPython

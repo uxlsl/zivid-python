@@ -11,18 +11,18 @@ namespace py = pybind11;
 
 namespace ZividPython
 {
-    void wrapClass(pybind11::class_<Zivid::HandEye::CalibrationOutput> pyClass)
+    void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeOutput> pyClass)
     {
-        pyClass.def("valid", &Zivid::HandEye::CalibrationOutput::valid)
+        pyClass.def("valid", &Zivid::Calibration::HandEyeOutput::valid)
             .def("handEyeTransform",
-                 [](const Zivid::HandEye::CalibrationOutput &calibrationOutput) {
-                     return Conversion::toPy(calibrationOutput.handEyeTransform());
+                 [](const Zivid::Calibration::HandEyeOutput &calibrationOutput) {
+                     return Conversion::toPy(calibrationOutput.transform());
                  })
-            .def("perPoseCalibrationResiduals", &Zivid::HandEye::CalibrationOutput::perPoseCalibrationResiduals);
+            .def("perPoseCalibrationResiduals", &Zivid::Calibration::HandEyeOutput::residuals);
     }
 
-    void wrapClass(pybind11::class_<Zivid::HandEye::CalibrationInput> pyClass)
+    void wrapClass(pybind11::class_<Zivid::Calibration::HandEyeInput> pyClass)
     {
-        pyClass.def(py::init<Zivid::HandEye::Pose, Zivid::HandEye::DetectionResult>());
+        pyClass.def(py::init<Zivid::Calibration::Pose, Zivid::Calibration::DetectionResult>());
     }
 } // namespace ZividPython

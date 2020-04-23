@@ -8,17 +8,24 @@ namespace
 {
     py::buffer_info makeBufferInfo(ZividPython::ReleasableImage &image)
     {
-        const auto data = image.dataPtr();
-
-        return py::buffer_info{
-            const_cast<Zivid::RGBA8 *>(
-                data), // TODO: Const casting this until pybind11 has newer version than 2.4.3 has been released
-            sizeof(Zivid::RGBA8),
-            py::format_descriptor<Zivid::RGBA8>::format(),
-            2,
-            { image.height(), image.width() },
-            { sizeof(Zivid::RGBA8) * image.width(), sizeof(Zivid::RGBA8) }
-        };
+//        const auto data = image.dataPtr();
+//
+//        return py::buffer_info{
+//            const_cast<Zivid::ColorRGBA *>(
+//                data), // TODO: Const casting this until pybind11 has newer version than 2.4.3 has been released
+//            sizeof(Zivid::ColorRGBA),
+//            py::format_descriptor<Zivid::ColorRGBA>::format(),
+//            2,
+//            { image.height(), image.width() },
+//            { sizeof(Zivid::ColorRGBA) * image.width(), sizeof(Zivid::ColorRGBA) }
+//        };
+auto my_vec = std::vector<int>{};
+return py::buffer_info{ my_vec.data(),
+                                sizeof(int),
+                                py::format_descriptor<int>::format(),
+                                2,
+                                {0, 0 },
+                                {sizeof(int), sizeof(int)} };
     }
 } // namespace
 
@@ -26,7 +33,7 @@ namespace ZividPython
 {
     void wrapClass(pybind11::class_<ReleasableImage> pyClass)
     {
-        PYBIND11_NUMPY_DTYPE(Zivid::RGBA8, r, g, b, a);
+        PYBIND11_NUMPY_DTYPE(Zivid::ColorRGBA, r, g, b, a);
 
         pyClass.def_buffer(makeBufferInfo)
             .def("save", &ReleasableImage::save, py::arg("file_name"))
