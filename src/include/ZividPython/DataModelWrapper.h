@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+namespace py = pybind11;
+
 namespace ZividPython
 {
     namespace Detail
@@ -20,23 +22,28 @@ namespace ZividPython
         template<bool isRoot, typename Dest, typename Target>
         void wrapDataModel(Dest &dest, const Target &target)
         {
-            pybind11::class_<Target> pyClass{ dest, Target::name, pybind11::dynamic_attr() };
+            py::class_<Target> pyClass{ dest, Target::name, py::dynamic_attr() };
 
-            pyClass.def(pybind11::init())
+            pyClass.def(py::init())
                 .def("__repr__", &Target::toString)
                 .def("to_string", &Target::toString)
-                //.def("set_from_string", &Target::setFromString, pybind11::arg("string_value"));
-                .def(pybind11::self == pybind11::self) // NOLINT
-                .def(pybind11::self != pybind11::self) // NOLINT
-                //.def_readonly_static("is_container", &Target::isContainer);
+                .def("set_from_string", 
+                py::overload_cast<const std::string &>(&Target::setFromString), 
+                py::arg("string_value"))
+                .def(py::self == py::self) // NOLINT
+                .def(py::self != py::self) // NOLINT
+                .def_readonly_static("node_type", &Target::nodeType)
                 .def_readonly_static("name", &Target::name)
                 .def_readonly_static("path", &Target::path);
 
             if constexpr(isRoot)
             {
-                //pyClass.def(pybind11::init<const std::string &>(), pybind11::arg("file_name"))
-                //    .def("save", &Target::save, pybind11::arg("file_name"))
-                //    .def("load", &Target::load, pybind11::arg("file_name")); //TODO: fix når save/load bare tar et argument
+                //pyClass.def(py::init<const std::string &>(), py::arg("file_name"))
+                //    .def("save", &Target::save, py::arg("file_name"))
+                //    .def("load", &Target::load, py::arg("file_name")); //TODO: fix når save/load bare tar et argument
+                pyClass.def("set_from_string", 
+                py::overload_cast<const std::string &, const std::string &>(&Target::setFromString), 
+                py::arg("path"),py::arg("string_value"));
             }
 
             // This is inside out because of bug in MSVC,
@@ -74,13 +81,13 @@ namespace ZividPython
             }
             else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafValue)
             {
-                pyClass.def(pybind11::init<const typename Target::ValueType &>(), pybind11::arg("value"))
+                pyClass.def(py::init<const typename Target::ValueType &>(), py::arg("value"))
                     .def_property_readonly("value", &Target::value);
 
                 if constexpr(!std::is_same_v<typename Target::ValueType, bool>)
                 {
-                    pyClass.def(pybind11::self > pybind11::self); // NOLINT
-                    pyClass.def(pybind11::self < pybind11::self); // NOLINT
+                    pyClass.def(py::self > py::self); // NOLINT
+                    pyClass.def(py::self < py::self); // NOLINT
                 }
 
                 if constexpr(Zivid::DataModel::HasValidRangeConstraint<Target>::value)
@@ -90,13 +97,12 @@ namespace ZividPython
                         return std::make_pair(range.min(), range.max());
                     });
                 }
-                else if constexpr(Zivid::DataModel::HasValidValuesConstraint<Target>::value)
+
+                if constexpr(Zivid::DataModel::HasValidValuesConstraint<Target>::value)
                 {
-                    //TODO
-                }
-                else
-                {
-                    //static_assert(DependentFalse<Target>::value, "Target NodeType is unsupported");
+                    pyClass.def_property_readonly("valid_values", [](const Target &target) {
+                        return typename Target::Constraints{}.validValues();
+                    });
                 }
                 
                 if constexpr(Zivid::DataModel::HasValidSizeConstraint<Target>::value)

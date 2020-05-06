@@ -32,7 +32,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, DataModel);
 
     //ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings); //error: static assertion failed: Target NodeType is unsupported
-    ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
+    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraState);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, FrameInfo);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraIntrinsics);

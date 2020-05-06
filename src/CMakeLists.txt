@@ -13,6 +13,7 @@ set(SOURCES
     SuggestSettingsParameters.cpp
     AmbientLightFrequency.cpp
     HDR.cpp
+    NodeType.cpp
     ReleasablePointCloud.cpp
     Pose.cpp
     ReleasableCamera.cpp
