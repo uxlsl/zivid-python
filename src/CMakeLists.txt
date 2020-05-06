@@ -4,6 +4,7 @@ set(SOURCES
     Calibrate.cpp
     CalibrationResidual.cpp
     CameraRevision.cpp
+    DataModel.cpp
     Detector.cpp
     Environment.cpp
     Firmware.cpp

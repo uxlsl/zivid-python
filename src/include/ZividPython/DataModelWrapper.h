@@ -2,6 +2,7 @@
 
 #include <pybind11/operators.h>
 #include <pybind11/pybind11.h>
+#include "DepdendentFalse.h"
 
 #include <algorithm>
 
@@ -24,54 +25,38 @@ namespace ZividPython
             pyClass.def(pybind11::init())
                 .def("__repr__", &Target::toString)
                 .def("to_string", &Target::toString)
-                .def("set_from_string", &Target::setFromString, pybind11::arg("string_value"))
+                //.def("set_from_string", &Target::setFromString, pybind11::arg("string_value"));
                 .def(pybind11::self == pybind11::self) // NOLINT
                 .def(pybind11::self != pybind11::self) // NOLINT
-                .def_readonly_static("is_container", &Target::isContainer)
+                //.def_readonly_static("is_container", &Target::isContainer);
                 .def_readonly_static("name", &Target::name)
                 .def_readonly_static("path", &Target::path);
 
             if constexpr(isRoot)
             {
-                pyClass.def(pybind11::init<const std::string &>(), pybind11::arg("file_name"))
-                    .def("save", &Target::save, pybind11::arg("file_name"))
-                    .def("load", &Target::load, pybind11::arg("file_name"));
+                //pyClass.def(pybind11::init<const std::string &>(), pybind11::arg("file_name"))
+                //    .def("save", &Target::save, pybind11::arg("file_name"))
+                //    .def("load", &Target::load, pybind11::arg("file_name")); //TODO: fix når save/load bare tar et argument
             }
 
             // This is inside out because of bug in MSVC,
             // 'if constexpr' should really be inside the lambda
-            if constexpr(Target::isContainer)
+            if constexpr(Target::nodeType == Zivid::DataModel::NodeType::internal)
             {
-                pyClass.def("__bool__", [](const Target & /* value*/) { return true; });
+                pyClass.def("__bool__", [](const Target & /* value*/) { return true; }); // reconsider bool(iris)
             }
-            else
+            else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafValue)
             {
                 pyClass.def("__bool__", [](const Target &value) {
                     return Target{ typename Target::ValueType{} } != value; // NOLINT
                 });
             }
-
-            if constexpr(!Target::isContainer)
-            {
-                pyClass.def(pybind11::init<const typename Target::ValueType &>(), pybind11::arg("value"))
-                    .def_property_readonly("value", &Target::value);
-
-                if constexpr(!std::is_same_v<typename Target::ValueType, bool>)
-                {
-                    pyClass.def(pybind11::self > pybind11::self); // NOLINT
-                    pyClass.def(pybind11::self < pybind11::self); // NOLINT
-                }
-
-                if constexpr(!(std::is_same_v<typename Target::ValueType,
-                                              bool> || std::is_same_v<typename Target::ValueType, std::string>))
-                {
-                    pyClass.def_property_readonly("range", [](const Target &t) {
-                        const auto range = t.range();
-                        return std::make_pair(range.min(), range.max());
-                    });
-                }
-            }
             else
+            {
+                static_assert(DependentFalse<Target>::value, "Target NodeType is unsupported");
+            }
+            
+            if constexpr(Target::nodeType == Zivid::DataModel::NodeType::internal)
             {
                 target.forEach([&](const auto &member) {
                     wrapDataModel<false>(pyClass, member);
@@ -84,8 +69,48 @@ namespace ZividPython
                     pyClass.def_property(
                         name.c_str(),
                         [](const Target &source) { return Detail::getHelper<MemberType>(source); },
-                        pybind11::overload_cast<const MemberType &>(&Target::set));
+                        [](Target &dest, const MemberType &value) { return dest.set(value);});
                 });
+            }
+            else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafValue)
+            {
+                pyClass.def(pybind11::init<const typename Target::ValueType &>(), pybind11::arg("value"))
+                    .def_property_readonly("value", &Target::value);
+
+                if constexpr(!std::is_same_v<typename Target::ValueType, bool>)
+                {
+                    pyClass.def(pybind11::self > pybind11::self); // NOLINT
+                    pyClass.def(pybind11::self < pybind11::self); // NOLINT
+                }
+
+                if constexpr(Zivid::DataModel::HasValidRangeConstraint<Target>::value)
+                {
+                    pyClass.def_property_readonly("valid_range", [](const Target &target) {
+                        const auto range = typename Target::Constraints{}.validRange();
+                        return std::make_pair(range.min(), range.max());
+                    });
+                }
+                else if constexpr(Zivid::DataModel::HasValidValuesConstraint<Target>::value)
+                {
+                    //TODO
+                }
+                else
+                {
+                    //static_assert(DependentFalse<Target>::value, "Target NodeType is unsupported");
+                }
+                
+                if constexpr(Zivid::DataModel::HasValidSizeConstraint<Target>::value)
+                {
+                    pyClass.def_property_readonly("valid_size", [](const Target &target) {
+                        const auto size = typename Target::Constraints{}.validSize();
+                        return std::make_pair(size.min(), size.max());
+                    });
+                }
+            }
+
+            else
+            {
+                static_assert(DependentFalse<Target>::value, "Target NodeType is unsupported");
             }
         }
     } // namespace Detail

@@ -6,6 +6,7 @@
 #include <ZividPython/AmbientLightFrequency.h>
 #include <ZividPython/CameraRevision.h>
 #include <ZividPython/CaptureAssistant.h>
+#include <ZividPython/DataModel.h>
 #include <ZividPython/Environment.h>
 #include <ZividPython/Firmware.h>
 #include <ZividPython/HDR.h>
@@ -28,11 +29,13 @@ ZIVID_PYTHON_MODULE // NOLINT
 
     using namespace Zivid;
 
-    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings);
-    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
-    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraState);
-    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, FrameInfo);
-    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraIntrinsics);
+    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, DataModel);
+
+    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings); //error: static assertion failed: Target NodeType is unsupported
+    ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
+    ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraState);
+    ZIVID_PYTHON_WRAP_DATA_MODEL(module, FrameInfo);
+    ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraIntrinsics);
 
     ZIVID_PYTHON_WRAP_CLASS_AS_SINGLETON(module, Application);
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Camera);
