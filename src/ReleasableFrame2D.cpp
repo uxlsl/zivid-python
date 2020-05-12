@@ -10,7 +10,7 @@ namespace ZividPython
     {
         pyClass.def_property_readonly("settings", &ReleasableFrame2D::settings)
             .def_property_readonly("state", &ReleasableFrame2D::state)
-            .def_property_readonly("info", &ReleasableFrame2D::info);
-            //.def("image", &ReleasableFrame2D::image);
+            .def_property_readonly("info", &ReleasableFrame2D::info)
+            .def("image_rgba", &ReleasableFrame2D::imageRGBA);
     }
 } // namespace ZividPython
