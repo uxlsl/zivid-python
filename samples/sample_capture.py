@@ -1,18 +1,25 @@
 """Capture sample."""
 import datetime
-import zivid
+from zivid import Application, Settings
 
 
 def _main():
-    app = zivid.Application()
+    app = Application()
     camera = app.connect_camera()
 
-    with camera.update_settings() as updater:
-        updater.settings.iris = 40
-        updater.settings.exposure_time = datetime.timedelta(microseconds=40000)
-        updater.settings.filters.reflection.enabled = True
+    settings = Settings(
+        frames=[
+            Settings.Frame(
+                iris=22,
+                exposure_time=datetime.timedelta(microseconds=8333),
+                filters=Settings.Frame.Filters(
+                    outlier=Outlier(enabled=True, threshold=5)
+                ),
+            )
+        ]
+    )
 
-    with camera.capture() as frame:
+    with camera.capture(settings) as frame:
         frame.save("result.zdf")
 
 
