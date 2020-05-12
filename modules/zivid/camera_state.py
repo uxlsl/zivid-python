@@ -45,7 +45,7 @@ class CameraState:  # pylint: disable=too-many-instance-attributes, too-few-publ
         self,
         available=_zivid.CameraState.Available().value,
         connected=_zivid.CameraState.Connected().value,
-        live=_zivid.CameraState.Live().value,
+        # live=_zivid.CameraState.Live().value,
         temperature=Temperature(),
     ):
         """Initialize camera state.

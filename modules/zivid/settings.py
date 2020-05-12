@@ -13,8 +13,8 @@ class Settings:  # pylint: disable=too-many-instance-attributes, too-few-public-
 
             def __init__(
                 self,
-                enabled=_zivid.Settings().filters.contrast.enabled.value,
-                threshold=_zivid.Settings().filters.contrast.threshold.value,
+                # enabled=_zivid.Settings().filters.contrast.enabled.value,
+                # threshold=_zivid.Settings().filters.contrast.threshold.value,
             ):
                 """Initialize contrast filter.
 
@@ -24,8 +24,8 @@ class Settings:  # pylint: disable=too-many-instance-attributes, too-few-public-
 
                 """
 
-                self.enabled = enabled
-                self.threshold = threshold
+                # self.enabled = enabled
+                # self.threshold = threshold
 
             def __eq__(self, other):
                 if self.enabled == other.enabled and self.threshold == other.threshold:
@@ -44,8 +44,8 @@ threshold: {}""".format(
 
             def __init__(
                 self,
-                enabled=_zivid.Settings().filters.outlier.enabled.value,
-                threshold=_zivid.Settings().filters.outlier.threshold.value,
+                # enabled=_zivid.Settings().filters.outlier.enabled.value,
+                # threshold=_zivid.Settings().filters.outlier.threshold.value,
             ):
                 """Initialize outlier filter.
 
@@ -54,8 +54,8 @@ threshold: {}""".format(
                     threshold: a real number
 
                 """
-                self.enabled = enabled
-                self.threshold = threshold
+                # self.enabled = enabled
+                # self.threshold = threshold
 
             def __eq__(self, other):
                 if self.enabled == other.enabled and self.threshold == other.threshold:
@@ -69,36 +69,36 @@ threshold: {}""".format(
                     self.enabled, self.threshold
                 )
 
-        class Saturated:  # pylint: disable=too-few-public-methods
-            """Discard pixels that are saturated in the image."""
-
-            def __init__(
-                self, enabled=_zivid.Settings().filters.saturated.enabled.value
-            ):
-                """Initialize saturated filter.
-
-                Args:
-                    enabled: a bool
-
-                """
-                self.enabled = enabled
-
-            def __eq__(self, other):
-                if self.enabled == other.enabled:
-                    return True
-                return False
-
-            def __str__(self):
-                return """Saturated:
-enabled: {}""".format(
-                    self.enabled
-                )
+        #         class Saturated:  # pylint: disable=too-few-public-methods
+        #             """Discard pixels that are saturated in the image."""
+        #
+        #             def __init__(
+        #                 self, enabled=_zivid.Settings().filters.saturated.enabled.value
+        #             ):
+        #                 """Initialize saturated filter.
+        #
+        #                 Args:
+        #                     enabled: a bool
+        #
+        #                 """
+        #                 self.enabled = enabled
+        #
+        #             def __eq__(self, other):
+        #                 if self.enabled == other.enabled:
+        #                     return True
+        #                 return False
+        #
+        #             def __str__(self):
+        #                 return """Saturated:
+        # enabled: {}""".format(
+        #                     self.enabled
+        #                 )
 
         class Reflection:  # pylint: disable=too-few-public-methods
             """Represents camera reflection filter."""
 
             def __init__(
-                self, enabled=_zivid.Settings().filters.reflection.enabled.value
+                self,  # enabled=_zivid.Settings().filters.reflection.enabled.value
             ):
                 """Initialize reflection filter.
 
@@ -106,7 +106,7 @@ enabled: {}""".format(
                     enabled: a bool
 
                 """
-                self.enabled = enabled
+                # self.enabled = enabled
 
             def __eq__(self, other):
                 if self.enabled == other.enabled:
@@ -119,43 +119,43 @@ enabled: {}""".format(
                     self.enabled
                 )
 
-        class Gaussian:  # pylint: disable=too-few-public-methods
-            """Gaussian smoothing of the point cloud."""
-
-            def __init__(
-                self,
-                enabled=_zivid.Settings().filters.gaussian.enabled.value,
-                sigma=_zivid.Settings().filters.gaussian.sigma.value,
-            ):
-                """Initialize gaussian filter.
-
-                Args:
-                    enabled: a bool
-                    sigma: a real number
-
-                """
-                self.enabled = enabled
-                self.sigma = sigma
-
-            def __eq__(self, other):
-                if self.enabled == other.enabled and self.sigma == other.sigma:
-                    return True
-                return False
-
-            def __str__(self):
-                return """Gaussian:
-enabled: {}
-sigma: {}""".format(
-                    self.enabled, self.sigma
-                )
+        #         class Gaussian:  # pylint: disable=too-few-public-methods
+        #             """Gaussian smoothing of the point cloud."""
+        #
+        #             def __init__(
+        #                 self,
+        #                 enabled=_zivid.Settings().filters.gaussian.enabled.value,
+        #                 sigma=_zivid.Settings().filters.gaussian.sigma.value,
+        #             ):
+        #                 """Initialize gaussian filter.
+        #
+        #                 Args:
+        #                     enabled: a bool
+        #                     sigma: a real number
+        #
+        #                 """
+        #                 self.enabled = enabled
+        #                 self.sigma = sigma
+        #
+        #             def __eq__(self, other):
+        #                 if self.enabled == other.enabled and self.sigma == other.sigma:
+        #                     return True
+        #                 return False
+        #
+        #             def __str__(self):
+        #                 return """Gaussian:
+        # enabled: {}
+        # sigma: {}""".format(
+        #                     self.enabled, self.sigma
+        #                 )
 
         def __init__(  # pylint: disable=too-many-arguments
             self,
             contrast=Contrast(),
             outlier=Outlier(),
-            saturated=Saturated(),
+            # saturated=Saturated(),
             reflection=Reflection(),
-            gaussian=Gaussian(),
+            # gaussian=Gaussian(),
         ):
             """Initialize filters.
 
@@ -169,17 +169,17 @@ sigma: {}""".format(
             """
             self.contrast = contrast
             self.outlier = outlier
-            self.saturated = saturated
+            # self.saturated = saturated
             self.reflection = reflection
-            self.gaussian = gaussian
+            # self.gaussian = gaussian
 
         def __eq__(self, other):
             if (
                 self.contrast == other.contrast
                 and self.outlier == other.outlier
-                and self.saturated == other.saturated
+                # and self.saturated == other.saturated
                 and self.reflection == other.reflection
-                and self.gaussian == other.gaussian
+                # and self.gaussian == other.gaussian
             ):
                 return True
             return False
@@ -188,26 +188,20 @@ sigma: {}""".format(
             return """Filters:
 contrast: {}
 outlier: {}
-saturated: {}
-reflection: {}
-gaussian: {}""".format(
-                self.contrast,
-                self.outlier,
-                self.saturated,
-                self.reflection,
-                self.gaussian,
+reflection: {}""".format(
+                self.contrast, self.outlier, self.reflection,
             )
 
     def __init__(  # pylint: disable=too-many-arguments
         self,
-        bidirectional=_zivid.Settings().bidirectional.value,
-        blue_balance=_zivid.Settings().bluebalance.value,
-        brightness=_zivid.Settings().brightness.value,
-        exposure_time=_zivid.Settings().exposuretime.value,
+        # bidirectional=_zivid.Settings().bidirectional.value,
+        # blue_balance=_zivid.Settings().bluebalance.value,
+        # brightness=_zivid.Settings().brightness.value,
+        # exposure_time=_zivid.Settings().exposuretime.value,
         filters=Filters(),
-        gain=_zivid.Settings().gain.value,
-        iris=_zivid.Settings().iris.value,
-        red_balance=_zivid.Settings().redbalance.value,
+        # gain=_zivid.Settings().gain.value,
+        # iris=_zivid.Settings().iris.value,
+        # red_balance=_zivid.Settings().redbalance.value,
     ):
         """Initialize saturated filter.
 
@@ -222,14 +216,15 @@ gaussian: {}""".format(
             red_balance: a real number
 
         """
-        self.bidirectional = bidirectional
-        self.blue_balance = blue_balance
-        self.brightness = brightness
-        self.exposure_time = exposure_time
+        # self.bidirectional = bidirectional
+        # self.blue_balance = blue_balance
+        # self.brightness = brightness
+        # self.exposure_time = exposure_time
         self.filters = filters
-        self.gain = gain
-        self.iris = iris
-        self.red_balance = red_balance
+        self.frame = None
+        # self.gain = gain
+        # self.iris = iris
+        # self.red_balance = red_balance
 
     def __eq__(self, other):
         if (
