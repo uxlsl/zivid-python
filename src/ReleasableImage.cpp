@@ -8,7 +8,7 @@ namespace
 {
     py::buffer_info makeBufferInfo(ZividPython::ReleasableImage &image)
     {
-//        const auto data = image.dataPtr();
+//        const auto data = image.dataPtr(); TODO
 //
 //        return py::buffer_info{
 //            const_cast<Zivid::ColorRGBA *>(

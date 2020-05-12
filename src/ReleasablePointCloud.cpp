@@ -20,7 +20,7 @@ namespace
 
     py::buffer_info makeBufferInfo(ZividPython::ReleasablePointCloud &pointCloud)
     {
-//        const auto data = pointCloud.dataPtr();
+//        const auto data = pointCloud.dataPtr(); TODO
 //
 //        using NativeDataType = std::remove_pointer_t<decltype(data)>;
 //
