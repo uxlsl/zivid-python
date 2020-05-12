@@ -12,9 +12,7 @@ class Settings:  # pylint: disable=too-many-instance-attributes, too-few-public-
             """Discard points with low contrast values."""
 
             def __init__(
-                self,
-                # enabled=_zivid.Settings().filters.contrast.enabled.value,
-                # threshold=_zivid.Settings().filters.contrast.threshold.value,
+                self, enabled=None, threshold=None,
             ):
                 """Initialize contrast filter.
 
@@ -24,8 +22,8 @@ class Settings:  # pylint: disable=too-many-instance-attributes, too-few-public-
 
                 """
 
-                # self.enabled = enabled
-                # self.threshold = threshold
+                self.enabled = enabled
+                self.threshold = threshold
 
             def __eq__(self, other):
                 if self.enabled == other.enabled and self.threshold == other.threshold:
@@ -43,9 +41,7 @@ threshold: {}""".format(
             """Outlier filter based on connected components."""
 
             def __init__(
-                self,
-                # enabled=_zivid.Settings().filters.outlier.enabled.value,
-                # threshold=_zivid.Settings().filters.outlier.threshold.value,
+                self, enabled=None, threshold=None,
             ):
                 """Initialize outlier filter.
 
@@ -54,8 +50,8 @@ threshold: {}""".format(
                     threshold: a real number
 
                 """
-                # self.enabled = enabled
-                # self.threshold = threshold
+                self.enabled = enabled
+                self.threshold = threshold
 
             def __eq__(self, other):
                 if self.enabled == other.enabled and self.threshold == other.threshold:
@@ -98,7 +94,7 @@ threshold: {}""".format(
             """Represents camera reflection filter."""
 
             def __init__(
-                self,  # enabled=_zivid.Settings().filters.reflection.enabled.value
+                self, enabled=None,
             ):
                 """Initialize reflection filter.
 
@@ -106,7 +102,7 @@ threshold: {}""".format(
                     enabled: a bool
 
                 """
-                # self.enabled = enabled
+                self.enabled = enabled
 
             def __eq__(self, other):
                 if self.enabled == other.enabled:
