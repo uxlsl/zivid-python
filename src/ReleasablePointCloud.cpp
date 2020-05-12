@@ -14,17 +14,18 @@ namespace
     {
         float x, y, z;
         float contrast;
-        uint8_t b, g, r, a;
+        uint32_t b, g, r, a;
     };
 #pragma pack(pop)
 
     py::buffer_info makeBufferInfo(ZividPython::ReleasablePointCloud &pointCloud)
     {
-//        const auto data = pointCloud.dataPtr(); TODO
-//
-//        using NativeDataType = std::remove_pointer_t<decltype(data)>;
-//
-//        static_assert(sizeof(NativeDataType) == sizeof(DataType), "Unexpected point cloud format");
+        const auto data = pointCloud.copyData();
+
+
+        using NativeDataType = decltype(data);
+
+        static_assert(sizeof(NativeDataType) == sizeof(DataType), "Unexpected point cloud format");
 //        static_assert(IS_SAME_MEMBER(NativeDataType, DataType, x), "Unexpected point cloud format");
 //        static_assert(IS_SAME_MEMBER(NativeDataType, DataType, y), "Unexpected point cloud format");
 //        static_assert(IS_SAME_MEMBER(NativeDataType, DataType, z), "Unexpected point cloud format");
