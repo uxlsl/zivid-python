@@ -12,7 +12,6 @@ set(SOURCES
     CaptureAssistant.cpp
     SuggestSettingsParameters.cpp
     AmbientLightFrequency.cpp
-    HDR.cpp
     NodeType.cpp
     ReleasablePointCloud.cpp
     Pose.cpp

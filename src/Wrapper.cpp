@@ -9,7 +9,6 @@
 #include <ZividPython/DataModel.h>
 #include <ZividPython/Environment.h>
 #include <ZividPython/Firmware.h>
-#include <ZividPython/HDR.h>
 #include <ZividPython/HandEye.h>
 #include <ZividPython/Pose.h>
 #include <ZividPython/ReleasableCamera.h>
@@ -31,8 +30,8 @@ ZIVID_PYTHON_MODULE // NOLINT
 
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, DataModel);
 
-    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings); //error: static assertion failed: Target NodeType is unsupported
-    //ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
+    ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings); //error: static assertion failed: Target NodeType is unsupported
+    ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraState);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, FrameInfo);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraIntrinsics);
@@ -49,8 +48,7 @@ ZIVID_PYTHON_MODULE // NOLINT
 
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Environment);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Firmware);
-    //ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, HDR);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Version);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, HandEye);
-    //ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, CaptureAssistant);
+    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, CaptureAssistant); 
 }

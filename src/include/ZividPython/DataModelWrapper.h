@@ -58,6 +58,12 @@ namespace ZividPython
                     return Target{ typename Target::ValueType{} } != value; // NOLINT
                 });
             }
+            else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafDataModelList)
+            {
+                pyClass.def("__bool__", [](const Target &value) {
+                    return !value.value().empty(); // NOLINT
+                });
+            }
             else
             {
                 static_assert(DependentFalse<Target>::value, "Target NodeType is unsupported");
@@ -86,8 +92,8 @@ namespace ZividPython
 
                 if constexpr(!std::is_same_v<typename Target::ValueType, bool>)
                 {
-                    pyClass.def(py::self > py::self); // NOLINT
-                    pyClass.def(py::self < py::self); // NOLINT
+                    //pyClass.def(py::self > py::self); // NOLINT //TODO brightness feilet
+                    //pyClass.def(py::self < py::self); // NOLINT
                 }
 
                 if constexpr(Zivid::DataModel::HasValidRangeConstraint<Target>::value)
@@ -112,6 +118,22 @@ namespace ZividPython
                         return std::make_pair(size.min(), size.max());
                     });
                 }
+            }
+            else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafDataModelList)
+            {
+                using ValueType = typename Target::ValueType::value_type;
+
+                wrapDataModel<false>(pyClass, ValueType{});
+                
+                pyClass.def_property_readonly("value", &Target::value)
+                .def("append", [](Target &dest, ValueType value){
+                    dest.emplaceBack(std::move(value));
+                })
+                .def("size", &Target::size)
+                .def("is_empty", &Target::isEmpty);
+                
+                // Missing Settings::frames
+                // access only wrap .at() (Frames.at(1234))
             }
 
             else

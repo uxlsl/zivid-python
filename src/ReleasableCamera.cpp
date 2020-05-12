@@ -1,5 +1,3 @@
-//#include <Zivid/HDR.h>
-
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
 
