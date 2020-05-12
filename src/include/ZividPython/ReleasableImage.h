@@ -14,7 +14,7 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_1_ARGS(save, const std::string &, fileName)
         ZIVID_PYTHON_FORWARD_0_ARGS(width)
         ZIVID_PYTHON_FORWARD_0_ARGS(height)
-        //ZIVID_PYTHON_FORWARD_0_ARGS(colorsRGBA)
+        //ZIVID_PYTHON_FORWARD_0_ARGS(copyImageRGBA) TODO: operator()?
     };
 
     void wrapClass(pybind11::class_<ReleasableImage> pyClass);

@@ -131,7 +131,8 @@ namespace ZividPython
                 })
                 .def("size", &Target::size)
                 .def("is_empty", &Target::isEmpty);
-                
+                // detail::list_accessor operator[](size_t index) const {return {*this, index};}
+                // ???
                 // Missing Settings::frames
                 // access only wrap .at() (Frames.at(1234))
             }
