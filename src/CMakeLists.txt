@@ -10,8 +10,6 @@ set(SOURCES
     Firmware.cpp
     HandEye.cpp
     CaptureAssistant.cpp
-    SuggestSettingsParameters.cpp
-    AmbientLightFrequency.cpp
     NodeType.cpp
     ReleasablePointCloud.cpp
     Pose.cpp

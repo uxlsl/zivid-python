@@ -1,9 +1,7 @@
 #include <Zivid/CaptureAssistant.h>
 
-#include <ZividPython/AmbientLightFrequency.h>
 #include <ZividPython/CaptureAssistant.h>
 #include <ZividPython/ReleasableCamera.h>
-#include <ZividPython/SuggestSettingsParameters.h>
 #include <ZividPython/DataModelWrapper.h>
 #include <ZividPython/Wrappers.h>
 

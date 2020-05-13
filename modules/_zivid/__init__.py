@@ -1,5 +1,4 @@
 """This file imports used classes, modules and packages."""
-# import _zivid._zivid as _zivid2
 try:
     from _zivid._zivid import (  # pylint: disable=import-error,no-name-in-module
         __version__,
@@ -9,10 +8,9 @@ try:
         environment,
         firmware,
         hand_eye,
-        # capture_assistant,
+        capture_assistant,
         Frame,
         FrameInfo,
-        # hdr,
         PointCloud,
         Settings,
         version,

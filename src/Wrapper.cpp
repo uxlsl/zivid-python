@@ -3,7 +3,6 @@
 #include <ZividPython/DataModelWrapper.h>
 #include <ZividPython/Wrappers.h>
 
-#include <ZividPython/AmbientLightFrequency.h>
 #include <ZividPython/CameraRevision.h>
 #include <ZividPython/CaptureAssistant.h>
 #include <ZividPython/DataModel.h>
@@ -16,7 +15,6 @@
 #include <ZividPython/ReleasableFrame2D.h>
 #include <ZividPython/ReleasablePointCloud.h>
 #include <ZividPython/SingletonApplication.h>
-#include <ZividPython/SuggestSettingsParameters.h>
 #include <ZividPython/Version.h>
 #include <ZividPython/Wrapper.h>
 
