@@ -13,7 +13,9 @@ def _main():
                 iris=22,
                 exposure_time=datetime.timedelta(microseconds=8333),
                 filters=Settings.Frame.Filters(
-                    outlier=Outlier(enabled=True, threshold=5)
+                    outlier=Settings.Frame.Filters.Outlier(
+                        enabled=True, threshold=5
+                    )  # long names?
                 ),
             )
         ]

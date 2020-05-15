@@ -19,7 +19,7 @@ def _acquire_checkerboard_frame(camera):
                 ),
             )
         ],
-        filters = Settings.Filters(Settings.Filters.Gaussian(enabled=True))
+        filters=Settings.Filters(Settings.Filters.Gaussian(enabled=True)),
     )
     print("OK")
     return camera.capture(settings)

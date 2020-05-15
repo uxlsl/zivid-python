@@ -9,12 +9,12 @@ def _main():
 
     settings_2d = Settings2D(
         frames=Settings2D.Frame(
-            iris=35, exposure_time=datetime.timedelta(microseconds=10000), gain=1
+            iris=35, exposure_time=datetime.timedelta(microseconds=10000), gain=1,
         )
     )
 
-    with camera.capture_2d(settings_2d) as frame_2d:
-        image = frame_2d.image()
+    with camera.capture(settings_2d) as frame_2d:
+        image = frame_2d.image()  # to be decided
         image.save("result.png")
 
 
