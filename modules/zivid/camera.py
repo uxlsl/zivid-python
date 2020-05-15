@@ -1,6 +1,8 @@
 """Contains Camera class."""
 from zivid.frame import Frame
 from zivid.frame_2d import Frame2D
+from zivid.settings import Settings
+from zivid.settings_2d import Settings2D
 import zivid._settings_converter as _settings_converter
 import zivid._settings_2d_converter as _settings_2d_converter
 import zivid._camera_state_converter as _camera_state_converter
@@ -94,45 +96,28 @@ class Camera:
         """
         return self.__impl.firmware_version
 
-    def capture(self, settings_collection=None):
-        """Capture a single frame.
+    def capture(self, settings):
+        """Capture a single frame or a single 2d frame.
 
         Args:
-            settings_collection: A collection of settings to be captured and merged into a HDR frame.
-                If None, then current settings will be used instead
+            settings: settings to be used to capture. Can be either Settings or Settings2D instances
 
         Returns:
-            A frame containing a 3D image and metadata
+            A frame containing a 3D image and metadata or a frame containing a 2D image and metadata.
 
         """
-        if settings_collection is not None:
+        if isinstance(settings, Settings):
             return Frame(
-                self.__impl.capture(
-                    [
-                        _settings_converter.to_internal_settings(settings)
-                        for settings in settings_collection
-                    ]
+                self.__impl.capture(_settings_converter.to_internal_settings(settings))
+            )
+        elif isinstance(settings, Settings2D):
+            return Frame2D(
+                self.__impl.capture_2d(
+                    _settings_2d_converter.to_internal_settings_2d(settings_2d)
                 )
             )
-        return Frame(self.__impl.capture())
-
-    def capture_2d(self, settings_2d):
-        """Capture a single 2D frame.
-
-        Note that the provided settings will only apply to this current 2D capture, and not future 3D captures.
-
-        Args:
-            settings_2d: Settings to use for the capture
-
-        Returns:
-            A frame containing a 2D image and metadata.
-
-        """
-        return Frame2D(
-            self.__impl.capture_2d(
-                _settings_2d_converter.to_internal_settings_2d(settings_2d)
-            )
-        )
+        else:
+            raise TypeError("Unsupported settings type: {}".format(type(settings)))
 
     @property
     def state(self):
@@ -144,43 +129,9 @@ class Camera:
         """
         return _camera_state_converter.to_camera_state(self.__impl.state)
 
-    @property
-    def settings(self):
-        """Get the current camera settings.
-
-        Returns:
-            Current settings
-
-        """
-        return _settings_converter.to_settings(self.__impl.settings)
-
-    @settings.setter
-    def settings(self, settings):
-        """Update the camera settings.
-
-        Args:
-            settings: New settings for the camera
-
-        """
-        self.__impl.settings = _settings_converter.to_internal_settings(  # pylint: disable=protected-access
-            settings
-        )
-
-    def connect(self, settings=None):
-        """Connect to the camera.
-
-        Args:
-            settings: New settings for the camera
-
-        """
-        if settings is None:
-            self.__impl.connect()
-        else:
-            self.__impl.connect(
-                _settings_converter.to_internal_settings(  # pylint: disable=protected-access
-                    settings
-                )
-            )
+    def connect(self):
+        """Connect to the camera."""
+        self.__impl.connect()
 
     def disconnect(self):
         """Disconnect from the camera and free all resources associated with it."""
@@ -223,29 +174,6 @@ class Camera:
 
         """
         return bytes(self.__impl.user_data)
-
-    def update_settings(self):
-        """Return settings updater.
-
-        Use the returned object as a context manager to set settings.
-
-        Returns:
-            a settings updater object
-
-        """
-
-        class SettingsUpdater:
-            def __init__(self, camera, settings):
-                self.__camera = camera
-                self.settings = settings
-
-            def __enter__(self):
-                return self
-
-            def __exit__(self, exception_type, exception_value, traceback):
-                self.__camera.settings = self.settings
-
-        return SettingsUpdater(self, self.settings)
 
     def release(self):
         """Release the underlying resources."""

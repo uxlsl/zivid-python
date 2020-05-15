@@ -4,38 +4,11 @@ import zivid._settings_converter as _settings_converter
 from zivid._make_enum_wrapper import _make_enum_wrapper
 
 
-print(dir(_zivid.capture_assistant.SuggestSettingsParameters))
-
-print("-------")
-print(dir(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency))
-
-# AmbientLightFrequency = _make_enum_wrapper(
-#     _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency,
-#     "Ensure compatibility with the frequency of the ambient light in the scene.",
-# )
-class AmbientLightFrequency:
-    print(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency)
-    print(dir(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency))
-
-    print(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values)
-    print(dir(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values))
-    print("----")
-    #print(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values.value)
-    # print(dir(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values.value))
-    print(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency().valid_values)
-    print("-----")
-    # print(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values.getter("hello"))
-
-    # print(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values())
-    # print(dir(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values()))
-    
-    #print(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values)
-    #print(dir(_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values))
-    for val in _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.valid_values:
-        print(val)
-
-
 class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
+    AmbientLightFrequency = _make_enum_wrapper(
+        _zivid.capture_assistant.SuggestSettingsParameters().AmbientLightFrequency(),
+        "Ensure compatibility with the frequency of the ambient light in the scene.",
+    )
     """Input to the Capture Assistant algorithm.
 
     Used to specify a constraint on the total capture time for the settings suggested by the Capture Assistant,
