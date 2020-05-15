@@ -4,6 +4,8 @@
 #include <pybind11/pybind11.h>
 #include "DepdendentFalse.h"
 
+#include "ZividPython/Wrappers.h"
+
 #include <algorithm>
 
 namespace py = pybind11;
@@ -87,10 +89,34 @@ namespace ZividPython
             }
             else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafValue)
             {
-                pyClass.def(py::init<const typename Target::ValueType &>(), py::arg("value"))
+                using ValueType = typename Target::ValueType;
+                
+                
+                if constexpr(std::is_enum_v<ValueType>)
+                {
+                    enum class foo{};
+                    //ZividPython::wrapEnum<foo>(pyClass, "hello", [](auto &pyEnum){});
+                    ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(pyClass, "enum", ValueType, [](auto &pyEnum){
+                    for(const auto &value: typename Target::Constraints{}.validValues())
+                    {
+                        pyEnum.value(Target{value}.toString().c_str(), value);
+                    }
+                    pyEnum.export_values();
+                    }
+                    );
+                    
+                    //auto pyEnum = pybind11::enum_<ValueType>{ pyClass, "whatever", pybind11::dynamic_attr() };
+                    //for(const auto &value: typename Target::Constraints{}.validValues())
+                    //{
+                    //    pyEnum.value(Target{value}.toString().c_str(), value);
+                    //}
+                    //pyEnum.export_values();
+                    
+                }
+                pyClass.def(py::init<const ValueType &>(), py::arg("value"))
                     .def_property_readonly("value", &Target::value);
 
-                if constexpr(!std::is_same_v<typename Target::ValueType, bool>)
+                if constexpr(!std::is_same_v<ValueType, bool>)
                 {
                     //pyClass.def(py::self > py::self); // NOLINT //TODO brightness feilet
                     //pyClass.def(py::self < py::self); // NOLINT
@@ -108,6 +134,10 @@ namespace ZividPython
                 {
                     pyClass.def_property_readonly("valid_values", [](const Target &target) {
                         return typename Target::Constraints{}.validValues();
+                        //return ValueType{};
+                        //return std::vectorvalues;
+                        //return std::vector<typename Target::Constraints>(values.at(0));
+                        //return std::vector<typename Target::Constraints>();
                     });
                 }
                 

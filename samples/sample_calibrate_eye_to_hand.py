@@ -8,13 +8,21 @@ import zivid.hand_eye
 
 def _acquire_checkerboard_frame(camera):
     print("Capturing checkerboard image... ")
-    with camera.update_settings() as updater:
-        updater.settings.iris = 17
-        updater.settings.gain = 1.0
-        updater.settings.exposure_time = datetime.timedelta(microseconds=20000)
-        updater.settings.filters.gaussian.enabled = True
+    settings = Settings(
+        frames=[
+            Settings.Frame(
+                iris=17,
+                exposure_time=datetime.timedelta(microseconds=20000),
+                gain=1.0,
+                filters=Settings.Frame.Filters(
+                    outlier=Outlier(enabled=True, threshold=5)
+                ),
+            )
+        ],
+        filters = Settings.Filters(Settings.Filters.Gaussian(enabled=True))
+    )
     print("OK")
-    return camera.capture()
+    return camera.capture(settings)
 
 
 def _enter_robot_pose(index):
