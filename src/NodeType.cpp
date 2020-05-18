@@ -8,7 +8,7 @@ namespace ZividPython
 {
     void wrapEnum(pybind11::enum_<Zivid::DataModel::NodeType> pyEnum)
     {
-        pyEnum.value("internal", Zivid::DataModel::NodeType::internal)
+        pyEnum.value("group", Zivid::DataModel::NodeType::group)
             .value("leaf_data_model_list", Zivid::DataModel::NodeType::leafDataModelList)
             .value("leaf_value", Zivid::DataModel::NodeType::leafValue)
             .export_values();

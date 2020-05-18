@@ -3,7 +3,6 @@ project(_zivid LANGUAGES CXX C)
 set(SOURCES
     Calibrate.cpp
     CalibrationResidual.cpp
-    CameraRevision.cpp
     DataModel.cpp
     Detector.cpp
     Environment.cpp

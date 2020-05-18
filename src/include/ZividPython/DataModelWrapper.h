@@ -50,7 +50,7 @@ namespace ZividPython
 
             // This is inside out because of bug in MSVC,
             // 'if constexpr' should really be inside the lambda
-            if constexpr(Target::nodeType == Zivid::DataModel::NodeType::internal)
+            if constexpr(Target::nodeType == Zivid::DataModel::NodeType::group)
             {
                 pyClass.def("__bool__", [](const Target & /* value*/) { return true; }); // reconsider bool(iris)
             }
@@ -71,7 +71,7 @@ namespace ZividPython
                 static_assert(DependentFalse<Target>::value, "Target NodeType is unsupported");
             }
             
-            if constexpr(Target::nodeType == Zivid::DataModel::NodeType::internal)
+            if constexpr(Target::nodeType == Zivid::DataModel::NodeType::group)
             {
                 target.forEach([&](const auto &member) {
                     wrapDataModel<false>(pyClass, member);

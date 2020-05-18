@@ -19,13 +19,8 @@ namespace ZividPython
             .def("capture", &ReleasableCamera::capture, py::arg("settings"))
             .def("capture_2d", &ReleasableCamera::capture2D, py::arg("settings_2d") = Zivid::Settings2D{})
             .def_property_readonly("state", &ReleasableCamera::state)
-            .def_property_readonly("model_name", &ReleasableCamera::modelName)
-            .def_property_readonly("revision", &ReleasableCamera::revision)
-            .def_property_readonly("serial_number",
-                                   [](ReleasableCamera &camera) { return camera.serialNumber().toString(); })
-            .def_property_readonly("user_data_max_size_bytes", &ReleasableCamera::userDataMaxSizeBytes)
+            .def_property_readonly("info", &ReleasableCamera::info)
             .def("write_user_data", &ReleasableCamera::writeUserData)
-            .def_property_readonly("user_data", &ReleasableCamera::userData)
-            .def_property_readonly("firmware_version", &ReleasableCamera::firmwareVersion);
+            .def_property_readonly("user_data", &ReleasableCamera::userData);
     }
 } // namespace ZividPython

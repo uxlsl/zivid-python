@@ -3,7 +3,6 @@
 #include <ZividPython/DataModelWrapper.h>
 #include <ZividPython/Wrappers.h>
 
-#include <ZividPython/CameraRevision.h>
 #include <ZividPython/CaptureAssistant.h>
 #include <ZividPython/DataModel.h>
 #include <ZividPython/Environment.h>
@@ -31,6 +30,7 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, Settings2D);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraState);
+    ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraInfo);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, FrameInfo);
     ZIVID_PYTHON_WRAP_DATA_MODEL(module, CameraIntrinsics);
 
@@ -38,8 +38,6 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Camera);
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Frame);
     ZIVID_PYTHON_WRAP_CLASS_AS_RELEASABLE(module, Frame2D);
-
-    ZIVID_PYTHON_WRAP_CLASS(module, CameraRevision);
 
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, Image);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, PointCloud);

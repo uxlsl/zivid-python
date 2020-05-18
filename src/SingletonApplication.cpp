@@ -1,4 +1,4 @@
-#include <Zivid/SerialNumber.h>
+#include <Zivid/CameraInfo.h>
 
 #include <ZividPython/SingletonApplication.h>
 
@@ -20,7 +20,7 @@ namespace ZividPython
                 "connect_camera",
                 [](SingletonApplication &application,
                    const std::string &serialNumber) {
-                    return application.connectCamera(Zivid::SerialNumber{ serialNumber });
+                    return application.connectCamera(Zivid::CameraInfo::SerialNumber{ serialNumber });
                 },
                 py::arg("serial_number"))
             .def("create_file_camera",

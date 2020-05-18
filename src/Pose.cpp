@@ -9,7 +9,7 @@ namespace ZividPython
 {
     void wrapClass(pybind11::class_<Zivid::Calibration::Pose> pyClass)
     {
-        pyClass.def(py::init([](const Eigen::Matrix<double, 4, 4, Eigen::RowMajor> &matrix) {
+        pyClass.def(py::init([](const Eigen::Matrix<float, 4, 4, Eigen::RowMajor> &matrix) {
             return std::make_unique<Zivid::Calibration::Pose>(Conversion::toCpp(matrix));
         }));
     }

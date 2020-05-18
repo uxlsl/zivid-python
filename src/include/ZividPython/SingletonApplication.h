@@ -16,7 +16,7 @@ namespace ZividPython
 
         ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableCamera,
                                                 connectCamera,
-                                                const Zivid::SerialNumber &,
+                                                const Zivid::CameraInfo::SerialNumber &,
                                                 serialNumber)
 
         ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableCamera,
