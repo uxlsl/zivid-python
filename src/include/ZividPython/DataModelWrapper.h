@@ -2,6 +2,7 @@
 
 #include <pybind11/operators.h>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include "DepdendentFalse.h"
 
 #include "ZividPython/Wrappers.h"
@@ -9,6 +10,7 @@
 #include <algorithm>
 
 namespace py = pybind11;
+
 
 namespace ZividPython
 {
@@ -19,6 +21,16 @@ namespace ZividPython
         auto getHelper(const Source &s)
         {
             return s.template get<Target>();
+        }
+
+        template<typename T>
+        bool hasValue(const T &leaf)
+        {
+            if constexpr(Zivid::DataModel::IsOptional<T>::value)
+            {
+                return leaf.hasValue();
+            }
+            return true;
         }
 
         template<bool isRoot, typename Dest, typename Target>
@@ -114,7 +126,27 @@ namespace ZividPython
                     
                 }
                 pyClass.def(py::init<const ValueType &>(), py::arg("value"))
-                    .def_property_readonly("value", &Target::value);
+                    //.def_property_readonly("value", &Target::value);
+                    //.def_property_readonly("value", [](const Target &target) {
+                    //    if (hasValue(target))
+                    //    {
+                    //        return target.value();
+                    //    }
+                    //    else
+                    //    {
+                    //        return py::none();
+                    //    }
+                    //});
+                    .def_property_readonly("value", [](const Target &target) -> std::optional<typename Target::ValueType> {
+ if (hasValue(target))
+ {
+ return target.value();
+ }
+ else
+ {
+ return {};
+ }
+ });
 
                 if constexpr(!std::is_same_v<ValueType, bool>)
                 {
