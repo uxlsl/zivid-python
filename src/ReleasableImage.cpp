@@ -11,8 +11,7 @@ namespace
         const auto data = image.dataPtr();
 
         return py::buffer_info{
-            const_cast<Zivid::RGBA8 *>(
-                data), // TODO: Const casting this until pybind11 has newer version than 2.4.3 has been released
+            data,
             sizeof(Zivid::RGBA8),
             py::format_descriptor<Zivid::RGBA8>::format(),
             2,

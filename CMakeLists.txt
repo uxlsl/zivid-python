@@ -11,7 +11,7 @@ include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_run(REQUIRES 
                     eigen/3.3.7@conan/stable
-                    pybind11/2.3.0@conan/stable
+                    pybind11/2.4.3@conan/stable
                 BASIC_SETUP)
 
 set(CMAKE_CXX_STANDARD 17)
