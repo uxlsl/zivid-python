@@ -17,10 +17,8 @@ class NodeData:
     indentation_level: int
 
 
-
 def _imports():
     return "    import _zivid\n"
-
 
 
 def _traverse_settings():
@@ -83,6 +81,17 @@ def _start_traverse():
         temp_file = Path(temp_file.name)
         raw_text = _imports()
         raw_text += _create_settings_py(data_model)
+
+        converter_text = _create_settings_converter(data_model)
+        new_lines = []
+        for line in converter_text.splitlines():
+            new_lines.append(line[4:])
+        temp_file.write_text("\n".join(new_lines))
+        subprocess.check_output((f"black {temp_file}"), shell=True)
+        print(temp_file.read_text())
+
+        stop
+
         new_lines = []
         for line in raw_text.splitlines():
             new_lines.append(line[4:])
@@ -94,9 +103,10 @@ def _start_traverse():
         print(temp_file.read_text())
         subprocess.check_output((f"black {temp_file}"), shell=True)
         print(temp_file.read_text())
-        path_to_settings=(Path(__file__).resolve() / ".." / ".." / "zivid" / "settings__3d.py").resolve()
+        path_to_settings = (
+            Path(__file__).resolve() / ".." / ".." / "zivid" / "settings__3d.py"
+        ).resolve()
         path_to_settings.write_text(temp_file.read_text())
-
 
     # print()
 
@@ -201,19 +211,25 @@ def _create_str_special_member_function(node_data):
     member_variables_str = "    "
     formatting_string = ""
     for variable_name_str_to_be_formatted, variable_name in [
-        (f"{element}: {{{element}}}\n    ", element) for element in _variable_names(node_data)
+        (f"{element}: {{{element}}}\n    ", element)
+        for element in _variable_names(node_data)
     ]:
         member_variables_str += variable_name_str_to_be_formatted
-        formatting_string += "{variable_name}=self.{variable_name},".format(variable_name=variable_name)
+        formatting_string += "{variable_name}=self.{variable_name},".format(
+            variable_name=variable_name
+        )
 
     member_variables_str.strip()
     str_content = """'''{name}:
 {member_variables_str}'''.format({formatting_string})""".format(
-        name=node_data.name, member_variables_str=member_variables_str, formatting_string=formatting_string
+        name=node_data.name,
+        member_variables_str=member_variables_str,
+        formatting_string=formatting_string,
     )
     return """def __str__(self):
-            return {str_content}""".format(str_content=str_content)
-
+            return {str_content}""".format(
+        str_content=str_content
+    )
 
 
 def _create_class(node_data):
@@ -239,6 +255,39 @@ class {class_name}:
         #     indented_lines.append("    " * node_data.indentation_level + line)
         #     first_line = False
         #     continue
+        indented_lines.append("    " + line)
+    return "\n".join(indented_lines)
+
+
+def _create_settings_converter(data_model):
+    indentation_level = 0
+    return _create_converter(data_model)
+
+
+def _create_converter(node_data):
+    nested_converters = [_create_converter(element) for element in node_data.children]
+    nested_converters_string = "\n".join(nested_converters)
+    if node_data.member_variables:
+        convert_logic = "return _zivid.{path}({settings_name})".format(path=node_data.path, settings_name=node_data.name.lower())
+    else:
+        convert_logic = "hello = 1"
+    base_converter = """
+def to_internal_{settings_name}({settings_name}):
+    {nested_converters}
+
+    {settings_name} = _zivid.{path}()
+    pass
+    {convert_logic}
+    return {settings_name}
+""".format(
+        settings_name=node_data.name.lower(),
+        nested_converters=nested_converters_string,
+        convert_logic=convert_logic,
+        path=node_data.path
+    )
+    indented_lines = list()
+    first_line = True
+    for line in base_converter.splitlines():
         indented_lines.append("    " + line)
     return "\n".join(indented_lines)
 
