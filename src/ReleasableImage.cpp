@@ -8,12 +8,8 @@ namespace
 {
     py::buffer_info makeBufferInfo(ZividPython::ReleasableImage &image)
     {
-        const auto data = image.impl().data(); // todo: fix imple
-        //auto dataArray = image.impl().copyData<Zivid::ColorRGBA>(); // double copy, both here and when returning buffer_info
-        //// try to use latest pybind11 to get around const data pointers https://github.com/pybind/pybind11/issues/1993
-        //auto * data = const_cast<Zivid::PointXYZColorRGBA*>(dataArray.data()); 
-//
-        ////using NativeDataType = decltype(data);
+        const auto data = image.impl().data(); // TODO: fix impl
+
         using NativeDataType = std::remove_pointer_t<decltype(data)>;
 
         return py::buffer_info{
@@ -25,13 +21,6 @@ namespace
             { image.height(), image.width() },
             { sizeof(Zivid::ColorRGBA) * image.width(), sizeof(Zivid::ColorRGBA) }
         };
-//auto my_vec = std::vector<int>{};
-//return py::buffer_info{ my_vec.data(),
-//                                sizeof(int),
-//                                py::format_descriptor<int>::format(),
-//                                2,
-//                                {0, 0 },
-//                                {sizeof(int), sizeof(int)} };
     }
 } // namespace
 
