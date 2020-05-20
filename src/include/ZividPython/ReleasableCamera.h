@@ -18,7 +18,7 @@ namespace ZividPython
         ZIVID_PYTHON_FORWARD_0_ARGS_WRAP_RETURN(ReleasableCamera, connect)
         ZIVID_PYTHON_FORWARD_0_ARGS(disconnect)
         ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableFrame, capture, const Zivid::Settings &, settings)
-        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableFrame2D, capture2D, const Zivid::Settings2D &, settings2D)
+        ZIVID_PYTHON_FORWARD_1_ARGS_WRAP_RETURN(ReleasableFrame2D, capture, const Zivid::Settings2D &, settings2D)
         ZIVID_PYTHON_FORWARD_0_ARGS(state)
         ZIVID_PYTHON_FORWARD_0_ARGS(info)
         ZIVID_PYTHON_FORWARD_1_ARGS(writeUserData, const std::vector<uint8_t> &, data)
