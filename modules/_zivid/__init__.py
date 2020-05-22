@@ -7,13 +7,7 @@ from typing import Tuple
 import subprocess
 import sys
 from pathlib import Path
-#print(sys.path.append(Path(__file__).parent.parent))
-#print(sys.path)
-import _zivid.generate_settings
-import _zivid.generators.generate_settings_2d
 
-_zivid.generate_settings.traverse_settings()
-_zivid.generators.generate_settings_2d._traverse_settings()
 
 try:
     from _zivid._zivid import (  # pylint: disable=import-error,no-name-in-module

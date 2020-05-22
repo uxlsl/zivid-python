@@ -10,18 +10,19 @@ from _zivid.common import (
     _imports,
     _recursion,
 )
+import tempfile
+from pathlib import Path
 
 
-def _start_traverse():
-    from _zivid._zivid import Settings
-    import tempfile
-    from pathlib import Path
+def start_traverse():
+    from _zivid._zivid import Settings as InternalSettings
+    from zivid import Settings
 
-    data_model = _recursion(Settings, indentation_level=0)
+    data_model = _recursion(InternalSettings, indentation_level=0)
     with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:
         temp_file = Path(temp_file.name)
         raw_text = _imports()
-        raw_text += _create_settings_py(data_model)
+        raw_text += _create_to_internal_converter(data_model)
 
         new_lines = []
         for line in raw_text.splitlines():
@@ -36,5 +37,5 @@ def _start_traverse():
         path_to_settings.write_text(temp_file.read_text())
 
 
-def _create_settings_py(data_model):
-    return _create_class(data_model, settings_type="Settings")
+def _create_to_internal_converter(data_model):
+    return "    def hello():\n        pass"

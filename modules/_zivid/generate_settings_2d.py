@@ -13,11 +13,12 @@ from _zivid.common import (
 
 
 def _start_traverse():
-    from _zivid._zivid import Settings
+    from _zivid._zivid import Settings2D
     import tempfile
     from pathlib import Path
 
-    data_model = _recursion(Settings, indentation_level=0)
+    data_model = _recursion(Settings2D, indentation_level=0)
+
     with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:
         temp_file = Path(temp_file.name)
         raw_text = _imports()
@@ -37,4 +38,4 @@ def _start_traverse():
 
 
 def _create_settings_py(data_model):
-    return _create_class(data_model, settings_type="Settings")
+    return _create_class(data_model, settings_type="Settings2D")
