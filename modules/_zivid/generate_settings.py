@@ -21,7 +21,7 @@ def _imports():
     return "    import _zivid\n"
 
 
-def _traverse_settings():
+def traverse_settings():
     print("hello")
     _start_traverse()
     # print(_create_file())
@@ -90,9 +90,9 @@ def _start_traverse():
             new_lines.append(line[4:])
         temp_file.write_text("\n".join(new_lines))
         subprocess.check_output((f"black {temp_file}"), shell=True)
-        #print(temp_file.read_text())
+        # print(temp_file.read_text())
 
-        #stop
+        # stop
 
         new_lines = []
         for line in raw_text.splitlines():
@@ -270,7 +270,9 @@ def _create_converter(node_data):
     nested_converters = [_create_converter(element) for element in node_data.children]
     nested_converters_string = "\n".join(nested_converters)
     if node_data.member_variables:
-        convert_logic = "return _zivid.{path}({settings_name})".format(path=node_data.path, settings_name=node_data.name.lower())
+        convert_logic = "return _zivid.{path}({settings_name})".format(
+            path=node_data.path, settings_name=node_data.name.lower()
+        )
     else:
         convert_logic = "hello = 1"
     if node_data.path == "":
@@ -290,7 +292,7 @@ def to_internal_{settings_name}({settings_name}):
         settings_name=node_data.name.lower(),
         nested_converters=nested_converters_string,
         convert_logic=convert_logic,
-        path=full_path
+        path=full_path,
     )
     indented_lines = list()
     first_line = True
@@ -324,4 +326,6 @@ def inner_classes_list(cls):
     # and issubclass(cls_attribute, SuperBar)]
 
 
-_traverse_settings()
+
+
+
