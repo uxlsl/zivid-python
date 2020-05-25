@@ -1,63 +1,127 @@
-"""Contains functions to convert between settings and internal settings."""
-import _zivid
-from zivid.settings import Settings
+import zivid
 
 
 def to_settings(internal_settings):
-    """Convert internal settings type to settings.
+    def _to_frames(internal_frames):
+        def _to_frame(internal_frame):
 
-    Args:
-        internal_settings: a internal settings object
+            return zivid.Settings.Frame(
+                aperture=internal_frame.aperture.value,
+                bidirectional=internal_frame.bidirectional.value,
+                brightness=internal_frame.brightness.value,
+                exposure_time=internal_frame.exposuretime.value,
+                gain=internal_frame.gain.value,
+            )
+        return zivid.Settings.Frames([_to_frame(frame) for frame in internal_frames.value])
+        #return zivid.Settings.Frames(frame=_to_frame(internal_frames.frame),)
 
-    Returns:
-        a settings object
+    def _to_processing(internal_processing):
+        def _to_color(internal_color):
+            def _to_balance(internal_balance):
 
-    """
+                return zivid.Settings.Processing.Color.Balance(
+                    blue=internal_balance.blue.value,
+                    green=internal_balance.green.value,
+                    red=internal_balance.red.value,
+                )
 
-    def to_filters(internal_filters):
-        def to_contrast(internal_contrast):
-            return Settings.Filters.Contrast(
-                enabled=internal_contrast.enabled.value,
-                threshold=internal_contrast.threshold.value,
+            return zivid.Settings.Processing.Color(
+                balance=_to_balance(internal_color.balance),
             )
 
-        def to_outlier(internal_outlier):
-            return Settings.Filters.Outlier(
-                enabled=internal_outlier.enabled.value,
-                threshold=internal_outlier.threshold.value,
+        def _to_filters(internal_filters):
+            def _to_contrast(internal_contrast):
+                def _to_removal(internal_removal):
+
+                    return zivid.Settings.Processing.Filters.Contrast.Removal(
+                        enabled=internal_removal.enabled.value,
+                        threshold=internal_removal.threshold.value,
+                    )
+
+                return zivid.Settings.Processing.Filters.Contrast(
+                    removal=_to_removal(internal_contrast.removal),
+                )
+
+            def _to_experimental(internal_experimental):
+                def _to_contrast_distortion(internal_contrast_distortion):
+                    def _to_correction(internal_correction):
+
+                        return zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction(
+                            enabled=internal_correction.enabled.value,
+                            strength=internal_correction.strength.value,
+                        )
+
+                    def _to_removal(internal_removal):
+
+                        return zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal(
+                            enabled=internal_removal.enabled.value,
+                            threshold=internal_removal.threshold.value,
+                        )
+
+                    return zivid.Settings.Processing.Filters.Experimental.ContrastDistortion(
+                        correction=_to_correction(
+                            internal_contrast_distortion.correction
+                        ),
+                        removal=_to_removal(internal_contrast_distortion.removal),
+                    )
+
+                return zivid.Settings.Processing.Filters.Experimental(
+                    contrast_distortion=_to_contrast_distortion(
+                        internal_experimental.contrastdistortion
+                    ),
+                )
+
+            def _to_outlier(internal_outlier):
+                def _to_removal(internal_removal):
+
+                    return zivid.Settings.Processing.Filters.Outlier.Removal(
+                        enabled=internal_removal.enabled.value,
+                        threshold=internal_removal.threshold.value,
+                    )
+
+                return zivid.Settings.Processing.Filters.Outlier(
+                    removal=_to_removal(internal_outlier.removal),
+                )
+
+            def _to_reflection(internal_reflection):
+                def _to_removal(internal_removal):
+
+                    return zivid.Settings.Processing.Filters.Reflection.Removal(
+                        enabled=internal_removal.enabled.value,
+                    )
+
+                return zivid.Settings.Processing.Filters.Reflection(
+                    removal=_to_removal(internal_reflection.removal),
+                )
+
+            def _to_smoothing(internal_smoothing):
+                def _to_gaussian(internal_gaussian):
+
+                    return zivid.Settings.Processing.Filters.Smoothing.Gaussian(
+                        enabled=internal_gaussian.enabled.value,
+                        sigma=internal_gaussian.sigma.value,
+                    )
+
+                return zivid.Settings.Processing.Filters.Smoothing(
+                    gaussian=_to_gaussian(internal_smoothing.gaussian),
+                )
+
+            return zivid.Settings.Processing.Filters(
+                contrast=_to_contrast(internal_filters.contrast),
+                experimental=_to_experimental(internal_filters.experimental),
+                outlier=_to_outlier(internal_filters.outlier),
+                reflection=_to_reflection(internal_filters.reflection),
+                smoothing=_to_smoothing(internal_filters.smoothing),
             )
 
-        def to_saturated(internal_saturated):
-            return Settings.Filters.Saturated(enabled=internal_saturated.enabled.value)
-
-        def to_reflection(internal_reflection):
-            return Settings.Filters.Reflection(
-                enabled=internal_reflection.enabled.value
-            )
-
-        def to_gaussian(internal_gaussian):
-            return Settings.Filters.Gaussian(
-                enabled=internal_gaussian.enabled.value,
-                sigma=internal_gaussian.sigma.value,
-            )
-
-        return Settings.Filters(
-            contrast=to_contrast(internal_filters.contrast),
-            outlier=to_outlier(internal_filters.outlier),
-            saturated=to_saturated(internal_filters.saturated),
-            reflection=to_reflection(internal_filters.reflection),
-            gaussian=to_gaussian(internal_filters.gaussian),
+        return zivid.Settings.Processing(
+            color=_to_color(internal_processing.color),
+            filters=_to_filters(internal_processing.filters),
         )
 
-    return Settings(
-        bidirectional=internal_settings.bidirectional.value,
-        blue_balance=internal_settings.bluebalance.value,
-        brightness=internal_settings.brightness.value,
-        exposure_time=internal_settings.exposuretime.value,
-        filters=to_filters(internal_settings.filters),
-        gain=internal_settings.gain.value,
-        iris=internal_settings.iris.value,
-        red_balance=internal_settings.redbalance.value,
+    return zivid.Settings(
+        frames=_to_frames(internal_settings.frames),
+        processing=_to_processing(internal_settings.processing),
     )
 
 

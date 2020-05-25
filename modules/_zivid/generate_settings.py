@@ -20,7 +20,7 @@ def _start_traverse():
     data_model = _recursion(Settings, indentation_level=0)
     with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:
         temp_file = Path(temp_file.name)
-        raw_text = _imports()
+        raw_text = _imports(internal=True, settings=False)
         raw_text += _create_settings_py(data_model)
 
         new_lines = []

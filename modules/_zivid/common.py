@@ -29,8 +29,13 @@ def _inner_classes_list(cls) -> List:
     ]
 
 
-def _imports() -> str:
-    return "    import _zivid\n"
+def _imports(internal: bool, settings: bool) -> str:
+    imports = ""
+    if internal:
+        imports += "    import _zivid\n"
+    if settings:
+        imports += "    import zivid\n"
+    return imports
 
 
 def _get_member_variables(node_data, settings_type: str):
