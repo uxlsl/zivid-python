@@ -89,7 +89,7 @@ namespace ZividPython
                 // This generator should work on types and not instances.
                 if constexpr(std::is_same_v<Target, Zivid::Settings> || std::is_same_v<Target, Zivid::Settings2D>)
                 {
-                    wrapDataModel<false>(pyClass, typename Target::Frame{});
+                    wrapDataModel<false>(pyClass, typename Target::Acquisition{});
                 }
 
                 target.forEach([&](const auto &member) {
@@ -116,7 +116,7 @@ namespace ZividPython
                     enum class foo{};
                     //ZividPython::wrapEnum<foo>(pyClass, "hello", [](auto &pyEnum){});
                     ZIVID_PYTHON_WRAP_ENUM_CLASS_BASE_IMPL(pyClass, "enum", ValueType, [](auto &pyEnum){
-                    for(const auto &value: typename Target::Constraints{}.validValues())
+                    for(const auto &value: Target::validValues())
                     {
                         pyEnum.value(Target{value}.toString().c_str(), value);
                     }
@@ -161,18 +161,18 @@ namespace ZividPython
                     //pyClass.def(py::self < py::self); // NOLINT
                 }
 
-                if constexpr(Zivid::DataModel::HasValidRangeConstraint<Target>::value)
+                if constexpr(Zivid::DataModel::HasValidRange<Target>::value)
                 {
                     pyClass.def_property_readonly("valid_range", [](const Target &target) {
-                        const auto range = typename Target::Constraints{}.validRange();
+                        const auto range =  Target::validRange();
                         return std::make_pair(range.min(), range.max());
                     });
                 }
 
-                if constexpr(Zivid::DataModel::HasValidValuesConstraint<Target>::value)
+                if constexpr(Zivid::DataModel::HasValidValues<Target>::value)
                 {
                     pyClass.def_property_readonly("valid_values", [](const Target &target) {
-                        return typename Target::Constraints{}.validValues();
+                        return Target::validValues();
                         //return ValueType{};
                         //return std::vectorvalues;
                         //return std::vector<typename Target::Constraints>(values.at(0));
@@ -180,10 +180,10 @@ namespace ZividPython
                     });
                 }
                 
-                if constexpr(Zivid::DataModel::HasValidSizeConstraint<Target>::value)
+                if constexpr(Zivid::DataModel::HasValidSize<Target>::value)
                 {
                     pyClass.def_property_readonly("valid_size", [](const Target &target) {
-                        const auto size = typename Target::Constraints{}.validSize();
+                        const auto size = Target::validSize();
                         return std::make_pair(size.min(), size.max());
                     });
                 }
