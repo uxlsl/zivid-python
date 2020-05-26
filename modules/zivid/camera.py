@@ -13,7 +13,7 @@ import _zivid
 class Camera:
     """Interface to one Zivid camera."""
 
-    class Revision: # delte
+    class Revision:  # delte
         """Camera revision."""
 
         def __init__(self, major, minor):
@@ -58,7 +58,7 @@ class Camera:
         return self.__impl == other._Camera__impl  # pylint: disable=protected-access
 
     @property
-    def model_name(self): # delte
+    def model_name(self):  # delte
         """Get the model name.
 
         Returns:
@@ -68,7 +68,7 @@ class Camera:
         return self.__impl.model_name
 
     @property
-    def revision(self): # delte
+    def revision(self):  # delte
         """Get the camera revision.
 
         Returns:
@@ -88,7 +88,7 @@ class Camera:
         return self.__impl.serial_number
 
     @property
-    def firmware_version(self): #delete
+    def firmware_version(self):  # delete
         """Get the camera's firmware version.
 
         Returns:

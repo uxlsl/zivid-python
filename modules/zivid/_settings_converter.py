@@ -2,18 +2,25 @@ import zivid
 
 
 def to_settings(internal_settings):
-    def _to_frames(internal_frames):
-        def _to_frame(internal_frame):
+    def _to_acquisition(internal_acquisition):
+        def _to_patterns(internal_patterns):
+            def _to_sine(internal_sine):
 
-            return zivid.Settings.Frame(
-                aperture=internal_frame.aperture.value,
-                bidirectional=internal_frame.bidirectional.value,
-                brightness=internal_frame.brightness.value,
-                exposure_time=internal_frame.exposuretime.value,
-                gain=internal_frame.gain.value,
+                return zivid.Settings.Acquisition.Patterns.Sine(
+                    bidirectional=internal_sine.bidirectional.value,
+                )
+
+            return zivid.Settings.Acquisition.Patterns(
+                sine=_to_sine(internal_patterns.sine),
             )
-        return zivid.Settings.Frames([_to_frame(frame) for frame in internal_frames.value])
-        #return zivid.Settings.Frames(frame=_to_frame(internal_frames.frame),)
+
+        return zivid.Settings.Acquisition(
+            patterns=_to_patterns(internal_acquisition.patterns),
+            aperture=internal_acquisition.aperture.value,
+            brightness=internal_acquisition.brightness.value,
+            exposure_time=internal_acquisition.exposuretime.value,
+            gain=internal_acquisition.gain.value,
+        )
 
     def _to_processing(internal_processing):
         def _to_color(internal_color):
@@ -30,18 +37,6 @@ def to_settings(internal_settings):
             )
 
         def _to_filters(internal_filters):
-            def _to_contrast(internal_contrast):
-                def _to_removal(internal_removal):
-
-                    return zivid.Settings.Processing.Filters.Contrast.Removal(
-                        enabled=internal_removal.enabled.value,
-                        threshold=internal_removal.threshold.value,
-                    )
-
-                return zivid.Settings.Processing.Filters.Contrast(
-                    removal=_to_removal(internal_contrast.removal),
-                )
-
             def _to_experimental(internal_experimental):
                 def _to_contrast_distortion(internal_contrast_distortion):
                     def _to_correction(internal_correction):
@@ -69,6 +64,18 @@ def to_settings(internal_settings):
                     contrast_distortion=_to_contrast_distortion(
                         internal_experimental.contrastdistortion
                     ),
+                )
+
+            def _to_noise(internal_noise):
+                def _to_removal(internal_removal):
+
+                    return zivid.Settings.Processing.Filters.Noise.Removal(
+                        enabled=internal_removal.enabled.value,
+                        threshold=internal_removal.threshold.value,
+                    )
+
+                return zivid.Settings.Processing.Filters.Noise(
+                    removal=_to_removal(internal_noise.removal),
                 )
 
             def _to_outlier(internal_outlier):
@@ -107,8 +114,8 @@ def to_settings(internal_settings):
                 )
 
             return zivid.Settings.Processing.Filters(
-                contrast=_to_contrast(internal_filters.contrast),
                 experimental=_to_experimental(internal_filters.experimental),
+                noise=_to_noise(internal_filters.noise),
                 outlier=_to_outlier(internal_filters.outlier),
                 reflection=_to_reflection(internal_filters.reflection),
                 smoothing=_to_smoothing(internal_filters.smoothing),
@@ -120,8 +127,9 @@ def to_settings(internal_settings):
         )
 
     return zivid.Settings(
-        frames=_to_frames(internal_settings.frames),
+        acquisition=_to_acquisition(internal_settings.acquisition),
         processing=_to_processing(internal_settings.processing),
+        acquisitions=internal_settings.acquisitions.value,
     )
 
 
@@ -131,48 +139,63 @@ import _zivid
 def to_internal_settings(settings):
     internal_settings = _zivid.Settings()
 
-    def _to_internal_frames(frames):
-        internal_frames = _zivid.Settings.Frames()
+    def _to_internal_acquisition(acquisition):
+        internal_acquisition = _zivid.Settings.Acquisition()
 
-        def _to_internal_frame(frame):
-            internal_frame = _zivid.Settings.Frames.Frame()
+        def _to_internal_patterns(patterns):
+            internal_patterns = _zivid.Settings.Acquisition.Patterns()
 
-            if frame.aperture is not None:
+            def _to_internal_sine(sine):
+                internal_sine = _zivid.Settings.Acquisition.Patterns.Sine()
 
-                internal_frame.aperture = _zivid.Settings.Frames.Frame.Aperture(frame.aperture)
-            else:
-                internal_frame.aperture = _zivid.Settings.Frames.Frame.Aperture()
-            if frame.bidirectional is not None:
+                if sine.bidirectional is not None:
 
-                internal_frame.bidirectional = _zivid.Settings.Frames.Frame.Bidirectional(
-                    frame.bidirectional
-                )
-            else:
-                internal_frame.bidirectional = _zivid.Settings.Frames.Frame.Bidirectional()
-            if frame.brightness is not None:
+                    internal_sine.bidirectional = _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional(
+                        sine.bidirectional
+                    )
+                else:
+                    internal_sine.bidirectional = (
+                        _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional()
+                    )
+                pass  # no children
+                return internal_sine
 
-                internal_frame.brightness = _zivid.Settings.Frames.Frame.Brightness(
-                    frame.brightness
-                )
-            else:
-                internal_frame.brightness = _zivid.Settings.Frames.Frame.Brightness()
-            if frame.exposure_time is not None:
+            internal_patterns.sine = _to_internal_sine(patterns.sine)
+            return internal_patterns
 
-                internal_frame.exposure_time = _zivid.Settings.Frames.Frame.ExposureTime(
-                    frame.exposure_time
-                )
-            else:
-                internal_frame.exposure_time = _zivid.Settings.Frames.Frame.ExposureTime()
-            if frame.gain is not None:
+        if acquisition.aperture is not None:
 
-                internal_frame.gain = _zivid.Settings.Frames.Frame.Gain(frame.gain)
-            else:
-                internal_frame.gain = _zivid.Settings.Frames.Frame.Gain()
-            pass  # no children
-            return internal_frame
+            internal_acquisition.aperture = _zivid.Settings.Acquisition.Aperture(
+                acquisition.aperture
+            )
+        else:
+            internal_acquisition.aperture = _zivid.Settings.Acquisition.Aperture()
+        if acquisition.brightness is not None:
 
-        internal_frames.frame = _to_internal_frame(frames.frame)
-        return internal_frames
+            internal_acquisition.brightness = _zivid.Settings.Acquisition.Brightness(
+                acquisition.brightness
+            )
+        else:
+            internal_acquisition.brightness = _zivid.Settings.Acquisition.Brightness()
+        if acquisition.exposure_time is not None:
+
+            internal_acquisition.exposure_time = _zivid.Settings.Acquisition.ExposureTime(
+                acquisition.exposure_time
+            )
+        else:
+            internal_acquisition.exposure_time = (
+                _zivid.Settings.Acquisition.ExposureTime()
+            )
+        if acquisition.gain is not None:
+
+            internal_acquisition.gain = _zivid.Settings.Acquisition.Gain(
+                acquisition.gain
+            )
+        else:
+            internal_acquisition.gain = _zivid.Settings.Acquisition.Gain()
+
+        internal_acquisition.patterns = _to_internal_patterns(acquisition.patterns)
+        return internal_acquisition
 
     def _to_internal_processing(processing):
         internal_processing = _zivid.Settings.Processing()
@@ -218,38 +241,6 @@ def to_internal_settings(settings):
 
         def _to_internal_filters(filters):
             internal_filters = _zivid.Settings.Processing.Filters()
-
-            def _to_internal_contrast(contrast):
-                internal_contrast = _zivid.Settings.Processing.Filters.Contrast()
-
-                def _to_internal_removal(removal):
-                    internal_removal = (
-                        _zivid.Settings.Processing.Filters.Contrast.Removal()
-                    )
-
-                    if removal.enabled is not None:
-
-                        internal_removal.enabled = _zivid.Settings.Processing.Filters.Contrast.Removal.Enabled(
-                            removal.enabled
-                        )
-                    else:
-                        internal_removal.enabled = (
-                            _zivid.Settings.Processing.Filters.Contrast.Removal.Enabled()
-                        )
-                    if removal.threshold is not None:
-
-                        internal_removal.threshold = _zivid.Settings.Processing.Filters.Contrast.Removal.Threshold(
-                            removal.threshold
-                        )
-                    else:
-                        internal_removal.threshold = (
-                            _zivid.Settings.Processing.Filters.Contrast.Removal.Threshold()
-                        )
-                    pass  # no children
-                    return internal_removal
-
-                internal_contrast.removal = _to_internal_removal(contrast.removal)
-                return internal_contrast
 
             def _to_internal_experimental(experimental):
                 internal_experimental = (
@@ -325,6 +316,38 @@ def to_internal_settings(settings):
                     experimental.contrast_distortion
                 )
                 return internal_experimental
+
+            def _to_internal_noise(noise):
+                internal_noise = _zivid.Settings.Processing.Filters.Noise()
+
+                def _to_internal_removal(removal):
+                    internal_removal = (
+                        _zivid.Settings.Processing.Filters.Noise.Removal()
+                    )
+
+                    if removal.enabled is not None:
+
+                        internal_removal.enabled = _zivid.Settings.Processing.Filters.Noise.Removal.Enabled(
+                            removal.enabled
+                        )
+                    else:
+                        internal_removal.enabled = (
+                            _zivid.Settings.Processing.Filters.Noise.Removal.Enabled()
+                        )
+                    if removal.threshold is not None:
+
+                        internal_removal.threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
+                            removal.threshold
+                        )
+                    else:
+                        internal_removal.threshold = (
+                            _zivid.Settings.Processing.Filters.Noise.Removal.Threshold()
+                        )
+                    pass  # no children
+                    return internal_removal
+
+                internal_noise.removal = _to_internal_removal(noise.removal)
+                return internal_noise
 
             def _to_internal_outlier(outlier):
                 internal_outlier = _zivid.Settings.Processing.Filters.Outlier()
@@ -413,10 +436,10 @@ def to_internal_settings(settings):
                 internal_smoothing.gaussian = _to_internal_gaussian(smoothing.gaussian)
                 return internal_smoothing
 
-            internal_filters.contrast = _to_internal_contrast(filters.contrast)
             internal_filters.experimental = _to_internal_experimental(
                 filters.experimental
             )
+            internal_filters.noise = _to_internal_noise(filters.noise)
             internal_filters.outlier = _to_internal_outlier(filters.outlier)
             internal_filters.reflection = _to_internal_reflection(filters.reflection)
             internal_filters.smoothing = _to_internal_smoothing(filters.smoothing)
@@ -426,6 +449,12 @@ def to_internal_settings(settings):
         internal_processing.filters = _to_internal_filters(processing.filters)
         return internal_processing
 
-    internal_settings.frames = _to_internal_frames(settings.frames)
+    if settings.acquisitions is not None:
+
+        internal_settings.acquisitions = _zivid.Settings()
+    else:
+        internal_settings.acquisitions = _zivid.Settings()
+
+    internal_settings.acquisition = _to_internal_acquisition(settings.acquisition)
     internal_settings.processing = _to_internal_processing(settings.processing)
     return internal_settings

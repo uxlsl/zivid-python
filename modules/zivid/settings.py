@@ -2,45 +2,85 @@ import _zivid
 
 
 class Settings:
-    class Frame:
+    class Acquisition:
+        class Patterns:
+            class Sine:
+                def __init__(
+                    self,
+                    bidirectional=_zivid.Settings()
+                    .Acquisition.Patterns.Sine()
+                    .Bidirectional()
+                    .value,
+                ):
+                    self.bidirectional = bidirectional
+
+                def __eq__(self, other):
+                    if self.bidirectional == other.bidirectional:
+                        return True
+                    return False
+
+                def __str__(self):
+                    return """Sine:
+                bidirectional: {bidirectional}
+                """.format(
+                        bidirectional=self.bidirectional,
+                    )
+
+            def __init__(
+                self, sine=Sine(),
+            ):
+                self.sine = sine
+
+            def __eq__(self, other):
+                if self.sine == other.sine:
+                    return True
+                return False
+
+            def __str__(self):
+                return """Patterns:
+            sine: {sine}
+            """.format(
+                    sine=self.sine,
+                )
+
         def __init__(
             self,
-            aperture=_zivid.Settings().Frame().Aperture().value,
-            bidirectional=_zivid.Settings().Frame().Bidirectional().value,
-            brightness=_zivid.Settings().Frame().Brightness().value,
-            exposure_time=_zivid.Settings().Frame().ExposureTime().value,
-            gain=_zivid.Settings().Frame().Gain().value,
+            aperture=_zivid.Settings().Acquisition().Aperture().value,
+            brightness=_zivid.Settings().Acquisition().Brightness().value,
+            exposure_time=_zivid.Settings().Acquisition().ExposureTime().value,
+            gain=_zivid.Settings().Acquisition().Gain().value,
+            patterns=Patterns(),
         ):
             self.aperture = aperture
-            self.bidirectional = bidirectional
             self.brightness = brightness
             self.exposure_time = exposure_time
             self.gain = gain
+            self.patterns = patterns
 
         def __eq__(self, other):
             if (
                 self.aperture == other.aperture
-                and self.bidirectional == other.bidirectional
                 and self.brightness == other.brightness
                 and self.exposure_time == other.exposure_time
                 and self.gain == other.gain
+                and self.patterns == other.patterns
             ):
                 return True
             return False
 
         def __str__(self):
-            return """Frame:
+            return """Acquisition:
         aperture: {aperture}
-        bidirectional: {bidirectional}
         brightness: {brightness}
         exposure_time: {exposure_time}
         gain: {gain}
+        patterns: {patterns}
         """.format(
                 aperture=self.aperture,
-                bidirectional=self.bidirectional,
                 brightness=self.brightness,
                 exposure_time=self.exposure_time,
                 gain=self.gain,
+                patterns=self.patterns,
             )
 
     class Processing:
@@ -92,55 +132,6 @@ class Settings:
                 )
 
         class Filters:
-            class Contrast:
-                class Removal:
-                    def __init__(
-                        self,
-                        enabled=_zivid.Settings()
-                        .Processing.Filters.Contrast.Removal()
-                        .Enabled()
-                        .value,
-                        threshold=_zivid.Settings()
-                        .Processing.Filters.Contrast.Removal()
-                        .Threshold()
-                        .value,
-                    ):
-                        self.enabled = enabled
-                        self.threshold = threshold
-
-                    def __eq__(self, other):
-                        if (
-                            self.enabled == other.enabled
-                            and self.threshold == other.threshold
-                        ):
-                            return True
-                        return False
-
-                    def __str__(self):
-                        return """Removal:
-                    enabled: {enabled}
-                    threshold: {threshold}
-                    """.format(
-                            enabled=self.enabled, threshold=self.threshold,
-                        )
-
-                def __init__(
-                    self, removal=Removal(),
-                ):
-                    self.removal = removal
-
-                def __eq__(self, other):
-                    if self.removal == other.removal:
-                        return True
-                    return False
-
-                def __str__(self):
-                    return """Contrast:
-                removal: {removal}
-                """.format(
-                        removal=self.removal,
-                    )
-
             class Experimental:
                 class ContrastDistortion:
                     class Correction:
@@ -242,6 +233,55 @@ class Settings:
                 contrast_distortion: {contrast_distortion}
                 """.format(
                         contrast_distortion=self.contrast_distortion,
+                    )
+
+            class Noise:
+                class Removal:
+                    def __init__(
+                        self,
+                        enabled=_zivid.Settings()
+                        .Processing.Filters.Noise.Removal()
+                        .Enabled()
+                        .value,
+                        threshold=_zivid.Settings()
+                        .Processing.Filters.Noise.Removal()
+                        .Threshold()
+                        .value,
+                    ):
+                        self.enabled = enabled
+                        self.threshold = threshold
+
+                    def __eq__(self, other):
+                        if (
+                            self.enabled == other.enabled
+                            and self.threshold == other.threshold
+                        ):
+                            return True
+                        return False
+
+                    def __str__(self):
+                        return """Removal:
+                    enabled: {enabled}
+                    threshold: {threshold}
+                    """.format(
+                            enabled=self.enabled, threshold=self.threshold,
+                        )
+
+                def __init__(
+                    self, removal=Removal(),
+                ):
+                    self.removal = removal
+
+                def __eq__(self, other):
+                    if self.removal == other.removal:
+                        return True
+                    return False
+
+                def __str__(self):
+                    return """Noise:
+                removal: {removal}
+                """.format(
+                        removal=self.removal,
                     )
 
             class Outlier:
@@ -381,22 +421,22 @@ class Settings:
 
             def __init__(
                 self,
-                contrast=Contrast(),
                 experimental=Experimental(),
+                noise=Noise(),
                 outlier=Outlier(),
                 reflection=Reflection(),
                 smoothing=Smoothing(),
             ):
-                self.contrast = contrast
                 self.experimental = experimental
+                self.noise = noise
                 self.outlier = outlier
                 self.reflection = reflection
                 self.smoothing = smoothing
 
             def __eq__(self, other):
                 if (
-                    self.contrast == other.contrast
-                    and self.experimental == other.experimental
+                    self.experimental == other.experimental
+                    and self.noise == other.noise
                     and self.outlier == other.outlier
                     and self.reflection == other.reflection
                     and self.smoothing == other.smoothing
@@ -406,14 +446,14 @@ class Settings:
 
             def __str__(self):
                 return """Filters:
-            contrast: {contrast}
             experimental: {experimental}
+            noise: {noise}
             outlier: {outlier}
             reflection: {reflection}
             smoothing: {smoothing}
             """.format(
-                    contrast=self.contrast,
                     experimental=self.experimental,
+                    noise=self.noise,
                     outlier=self.outlier,
                     reflection=self.reflection,
                     smoothing=self.smoothing,
@@ -440,18 +480,18 @@ class Settings:
 
     def __init__(
         self,
-        frames=_zivid.Settings().Frames().value,
-        frame=Frame(),
+        acquisitions=_zivid.Settings().Acquisitions().value,
+        acquisition=Acquisition(),
         processing=Processing(),
     ):
-        self.frames = frames
-        self.frame = frame
+        self.acquisitions = acquisitions
+        self.acquisition = acquisition
         self.processing = processing
 
     def __eq__(self, other):
         if (
-            self.frames == other.frames
-            and self.frame == other.frame
+            self.acquisitions == other.acquisitions
+            and self.acquisition == other.acquisition
             and self.processing == other.processing
         ):
             return True
@@ -459,9 +499,11 @@ class Settings:
 
     def __str__(self):
         return """Settings:
-    frames: {frames}
-    frame: {frame}
+    acquisitions: {acquisitions}
+    acquisition: {acquisition}
     processing: {processing}
     """.format(
-            frames=self.frames, frame=self.frame, processing=self.processing,
+            acquisitions=self.acquisitions,
+            acquisition=self.acquisition,
+            processing=self.processing,
         )

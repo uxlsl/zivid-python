@@ -2,58 +2,40 @@ import _zivid
 
 
 class Settings2D:
-    class Frames:
-        class Frame:
-            def __init__(
-                self,
-                aperture=_zivid.Settings2D().Frames().Frame().Aperture().value,
-                brightness=_zivid.Settings2D().Frames().Frame().Brightness().value,
-                exposure_time=_zivid.Settings2D().Frames().Frame().ExposureTime().value,
-                gain=_zivid.Settings2D().Frames().Frame().Gain().value,
-            ):
-                self.aperture = aperture
-                self.brightness = brightness
-                self.exposure_time = exposure_time
-                self.gain = gain
-
-            def __eq__(self, other):
-                if (
-                    self.aperture == other.aperture
-                    and self.brightness == other.brightness
-                    and self.exposure_time == other.exposure_time
-                    and self.gain == other.gain
-                ):
-                    return True
-                return False
-
-            def __str__(self):
-                return """Frame:
-            aperture: {aperture}
-            brightness: {brightness}
-            exposure_time: {exposure_time}
-            gain: {gain}
-            """.format(
-                    aperture=self.aperture,
-                    brightness=self.brightness,
-                    exposure_time=self.exposure_time,
-                    gain=self.gain,
-                )
-
+    class Acquisition:
         def __init__(
-            self, frame=Frame(),
+            self,
+            aperture=_zivid.Settings2D().Acquisition().Aperture().value,
+            brightness=_zivid.Settings2D().Acquisition().Brightness().value,
+            exposure_time=_zivid.Settings2D().Acquisition().ExposureTime().value,
+            gain=_zivid.Settings2D().Acquisition().Gain().value,
         ):
-            self.frame = frame
+            self.aperture = aperture
+            self.brightness = brightness
+            self.exposure_time = exposure_time
+            self.gain = gain
 
         def __eq__(self, other):
-            if self.frame == other.frame:
+            if (
+                self.aperture == other.aperture
+                and self.brightness == other.brightness
+                and self.exposure_time == other.exposure_time
+                and self.gain == other.gain
+            ):
                 return True
             return False
 
         def __str__(self):
-            return """Frames:
-        frame: {frame}
+            return """Acquisition:
+        aperture: {aperture}
+        brightness: {brightness}
+        exposure_time: {exposure_time}
+        gain: {gain}
         """.format(
-                frame=self.frame,
+                aperture=self.aperture,
+                brightness=self.brightness,
+                exposure_time=self.exposure_time,
+                gain=self.gain,
             )
 
     class Processing:
@@ -122,20 +104,31 @@ class Settings2D:
             )
 
     def __init__(
-        self, frames=Frames(), processing=Processing(),
+        self,
+        acquisitions=_zivid.Settings2D().Acquisitions().value,
+        acquisition=Acquisition(),
+        processing=Processing(),
     ):
-        self.frames = frames
+        self.acquisitions = acquisitions
+        self.acquisition = acquisition
         self.processing = processing
 
     def __eq__(self, other):
-        if self.frames == other.frames and self.processing == other.processing:
+        if (
+            self.acquisitions == other.acquisitions
+            and self.acquisition == other.acquisition
+            and self.processing == other.processing
+        ):
             return True
         return False
 
     def __str__(self):
         return """Settings2D:
-    frames: {frames}
+    acquisitions: {acquisitions}
+    acquisition: {acquisition}
     processing: {processing}
     """.format(
-            frames=self.frames, processing=self.processing,
+            acquisitions=self.acquisitions,
+            acquisition=self.acquisition,
+            processing=self.processing,
         )

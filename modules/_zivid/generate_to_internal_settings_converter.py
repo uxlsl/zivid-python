@@ -40,7 +40,9 @@ def start_traverse():
 
 
 def _create_to_internal_converter(node_data, settings_type: str):
-    temp_internal_name = "internal_{name}".format(name=inflection.underscore(node_data.name))
+    temp_internal_name = "internal_{name}".format(
+        name=inflection.underscore(node_data.name)
+    )
     nested_converters = [
         _create_to_internal_converter(element, settings_type=settings_type)
         for element in node_data.children
@@ -49,8 +51,10 @@ def _create_to_internal_converter(node_data, settings_type: str):
     convert_member_logic = ""
     if node_data.member_variables:
         for member in node_data.member_variables:
-            convert_member_logic += "\n    if {name}.{member} is not None:\n".format(name=inflection.underscore(node_data.name),
-             member=inflection.underscore(member),)
+            convert_member_logic += "\n    if {name}.{member} is not None:\n".format(
+                name=inflection.underscore(node_data.name),
+                member=inflection.underscore(member),
+            )
 
             convert_member_logic += "\n        {temp_internal_name}.{member} = _zivid.Settings{path}".format(
                 temp_internal_name=temp_internal_name,
@@ -62,18 +66,17 @@ def _create_to_internal_converter(node_data, settings_type: str):
                     member=inflection.underscore(member),
                 )
                 if node_data.path
-                else "()"
+                else "()",
             )
             convert_member_logic += "\n    else:"
             convert_member_logic += "\n        {temp_internal_name}.{member} = _zivid.Settings{path}".format(
                 temp_internal_name=temp_internal_name,
                 member=inflection.underscore(member),
                 path=".{path}.{member_as_class}()".format(
-                    path=node_data.path,
-                    member_as_class=member,
+                    path=node_data.path, member_as_class=member,
                 )
                 if node_data.path
-                else "()"
+                else "()",
             )
 
     convert_children_logic = ""

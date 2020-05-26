@@ -40,27 +40,33 @@ def start_traverse():
 
 
 def _create_to_settings_converter(node_data, settings_type: str):
-    temp_internal_name = "internal_{name}".format(name=inflection.underscore(node_data.name))
+    temp_internal_name = "internal_{name}".format(
+        name=inflection.underscore(node_data.name)
+    )
     nested_converters = [
         _create_to_settings_converter(element, settings_type=settings_type)
         for element in node_data.children
     ]
     nested_converters_string = "\n".join(nested_converters)
     return_class = "zivid.Settings{path}".format(
-                temp_internal_name=temp_internal_name,
-                path=".{path}".format(
-                    path=node_data.path,
-                )
-                if node_data.path
-                else ""
-            )
+        temp_internal_name=temp_internal_name,
+        path=".{path}".format(path=node_data.path,) if node_data.path else "",
+    )
     member_convert_logic = ""
     for member in node_data.member_variables:
-        member_convert_logic += "{member} = {temp_internal_name}.{member_not_snake_case}.value,".format(member=inflection.underscore(member), member_not_snake_case=member.lower(),temp_internal_name=temp_internal_name)
-    
+        member_convert_logic += "{member} = {temp_internal_name}.{member_not_snake_case}.value,".format(
+            member=inflection.underscore(member),
+            member_not_snake_case=member.lower(),
+            temp_internal_name=temp_internal_name,
+        )
+
     child_convert_logic = ""
     for child in node_data.children:
-        child_convert_logic += "{child}=_to_{child}({temp_internal_name}.{child_not_snake_case}),".format(child=inflection.underscore(child.name), child_not_snake_case=child.name.lower(),temp_internal_name=temp_internal_name)
+        child_convert_logic += "{child}=_to_{child}({temp_internal_name}.{child_not_snake_case}),".format(
+            child=inflection.underscore(child.name),
+            child_not_snake_case=child.name.lower(),
+            temp_internal_name=temp_internal_name,
+        )
 
     base_class = """
 def _to_{target_name}(internal_{target_name}):
@@ -73,7 +79,7 @@ def _to_{target_name}(internal_{target_name}):
         nested_converters=nested_converters_string,
         return_class=return_class,
         member_convert_logic=member_convert_logic,
-        child_convert_logic=child_convert_logic
+        child_convert_logic=child_convert_logic,
     )
     indented_lines = list()
     for line in base_class.splitlines():
