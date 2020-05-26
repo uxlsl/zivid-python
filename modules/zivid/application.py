@@ -50,7 +50,7 @@ class Application:
             )
         )
 
-    def connect_camera(self, serial_number=None, settings=None):
+    def connect_camera(self, serial_number=None, settings=None): # settings argument must be deleted
         """Connect to the next available Zivid Camera.
 
         Args:

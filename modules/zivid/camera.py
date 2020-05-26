@@ -6,13 +6,14 @@ from zivid.settings_2d import Settings2D
 import zivid._settings_converter as _settings_converter
 import zivid._settings_2d_converter as _settings_2d_converter
 import zivid._camera_state_converter as _camera_state_converter
+import zivid._camera_info_converter as _camera_info_converter
 import _zivid
 
 
 class Camera:
     """Interface to one Zivid camera."""
 
-    class Revision:
+    class Revision: # delte
         """Camera revision."""
 
         def __init__(self, major, minor):
@@ -57,7 +58,7 @@ class Camera:
         return self.__impl == other._Camera__impl  # pylint: disable=protected-access
 
     @property
-    def model_name(self):
+    def model_name(self): # delte
         """Get the model name.
 
         Returns:
@@ -67,7 +68,7 @@ class Camera:
         return self.__impl.model_name
 
     @property
-    def revision(self):
+    def revision(self): # delte
         """Get the camera revision.
 
         Returns:
@@ -87,7 +88,7 @@ class Camera:
         return self.__impl.serial_number
 
     @property
-    def firmware_version(self):
+    def firmware_version(self): #delete
         """Get the camera's firmware version.
 
         Returns:

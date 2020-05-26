@@ -27,6 +27,7 @@ try:
         Settings2D,
         Frame2D,
         Image,
+        CameraInfo,
     )
 except ImportError as ex:
     import platform

@@ -2,7 +2,7 @@ import _zivid
 
 
 class Settings:
-    class Frames:
+    class Frames: # delete this? settings will only contain a member that is a Sequence[Frame]
         class Frame:
             def __init__(
                 self,
