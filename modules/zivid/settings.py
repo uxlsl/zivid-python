@@ -2,63 +2,45 @@ import _zivid
 
 
 class Settings:
-    class Frames: # delete this? settings will only contain a member that is a Sequence[Frame]
-        class Frame:
-            def __init__(
-                self,
-                aperture=_zivid.Settings().Frames().Frame().Aperture().value,
-                bidirectional=_zivid.Settings().Frames().Frame().Bidirectional().value,
-                brightness=_zivid.Settings().Frames().Frame().Brightness().value,
-                exposure_time=_zivid.Settings().Frames().Frame().ExposureTime().value,
-                gain=_zivid.Settings().Frames().Frame().Gain().value,
-            ):
-                self.aperture = aperture
-                self.bidirectional = bidirectional
-                self.brightness = brightness
-                self.exposure_time = exposure_time
-                self.gain = gain
-
-            def __eq__(self, other):
-                if (
-                    self.aperture == other.aperture
-                    and self.bidirectional == other.bidirectional
-                    and self.brightness == other.brightness
-                    and self.exposure_time == other.exposure_time
-                    and self.gain == other.gain
-                ):
-                    return True
-                return False
-
-            def __str__(self):
-                return """Frame:
-            aperture: {aperture}
-            bidirectional: {bidirectional}
-            brightness: {brightness}
-            exposure_time: {exposure_time}
-            gain: {gain}
-            """.format(
-                    aperture=self.aperture,
-                    bidirectional=self.bidirectional,
-                    brightness=self.brightness,
-                    exposure_time=self.exposure_time,
-                    gain=self.gain,
-                )
-
+    class Frame:
         def __init__(
-            self, frame=Frame(),
+            self,
+            aperture=_zivid.Settings().Frame().Aperture().value,
+            bidirectional=_zivid.Settings().Frame().Bidirectional().value,
+            brightness=_zivid.Settings().Frame().Brightness().value,
+            exposure_time=_zivid.Settings().Frame().ExposureTime().value,
+            gain=_zivid.Settings().Frame().Gain().value,
         ):
-            self.frame = frame
+            self.aperture = aperture
+            self.bidirectional = bidirectional
+            self.brightness = brightness
+            self.exposure_time = exposure_time
+            self.gain = gain
 
         def __eq__(self, other):
-            if self.frame == other.frame:
+            if (
+                self.aperture == other.aperture
+                and self.bidirectional == other.bidirectional
+                and self.brightness == other.brightness
+                and self.exposure_time == other.exposure_time
+                and self.gain == other.gain
+            ):
                 return True
             return False
 
         def __str__(self):
-            return """Frames:
-        frame: {frame}
+            return """Frame:
+        aperture: {aperture}
+        bidirectional: {bidirectional}
+        brightness: {brightness}
+        exposure_time: {exposure_time}
+        gain: {gain}
         """.format(
-                frame=self.frame,
+                aperture=self.aperture,
+                bidirectional=self.bidirectional,
+                brightness=self.brightness,
+                exposure_time=self.exposure_time,
+                gain=self.gain,
             )
 
     class Processing:
@@ -457,20 +439,29 @@ class Settings:
             )
 
     def __init__(
-        self, frames=Frames(), processing=Processing(),
+        self,
+        frames=_zivid.Settings().Frames().value,
+        frame=Frame(),
+        processing=Processing(),
     ):
         self.frames = frames
+        self.frame = frame
         self.processing = processing
 
     def __eq__(self, other):
-        if self.frames == other.frames and self.processing == other.processing:
+        if (
+            self.frames == other.frames
+            and self.frame == other.frame
+            and self.processing == other.processing
+        ):
             return True
         return False
 
     def __str__(self):
         return """Settings:
     frames: {frames}
+    frame: {frame}
     processing: {processing}
     """.format(
-            frames=self.frames, processing=self.processing,
+            frames=self.frames, frame=self.frame, processing=self.processing,
         )

@@ -85,6 +85,13 @@ namespace ZividPython
             
             if constexpr(Target::nodeType == Zivid::DataModel::NodeType::group)
             {
+                // TODO: Workaround for no API to access uninstansiated nodes.
+                // This generator should work on types and not instances.
+                if constexpr(std::is_same_v<Target, Zivid::Settings> || std::is_same_v<Target, Zivid::Settings2D>)
+                {
+                    wrapDataModel<false>(pyClass, typename Target::Frame{});
+                }
+
                 target.forEach([&](const auto &member) {
                     wrapDataModel<false>(pyClass, member);
 
@@ -185,7 +192,7 @@ namespace ZividPython
             {
                 using ValueType = typename Target::ValueType::value_type;
 
-                wrapDataModel<false>(pyClass, ValueType{});
+                //wrapDataModel<false>(pyClass, ValueType{});
                 
                 pyClass.def_property_readonly("value", &Target::value)
                 .def("append", [](Target &dest, ValueType value){
