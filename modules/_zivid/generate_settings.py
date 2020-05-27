@@ -12,7 +12,7 @@ from _zivid.common import (
 )
 
 
-def _start_traverse():
+def start_traverse():
     from _zivid._zivid import Settings
     import tempfile
     from pathlib import Path
@@ -28,6 +28,7 @@ def _start_traverse():
             new_lines.append(line[4:])
 
         temp_file.write_text("\n".join(new_lines))
+        print(temp_file.read_text())
         subprocess.check_output((f"black {temp_file}"), shell=True)
         print(temp_file.read_text())
         path_to_settings = (

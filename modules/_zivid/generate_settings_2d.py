@@ -12,7 +12,7 @@ from _zivid.common import (
 )
 
 
-def _start_traverse():
+def start_traverse():
     from _zivid._zivid import Settings2D
     import tempfile
     from pathlib import Path
