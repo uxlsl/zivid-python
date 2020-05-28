@@ -127,9 +127,8 @@ def to_settings(internal_settings):
         )
 
     return zivid.Settings(
-        acquisition=_to_acquisition(internal_settings.acquisition),
         processing=_to_processing(internal_settings.processing),
-        acquisitions=internal_settings.acquisitions.value,
+        acquisitions=[_to_acquisition(element) for element in internal_settings.acquisitions.value],
     )
 
 
@@ -164,6 +163,8 @@ def to_internal_settings(settings):
             return internal_patterns
 
         if acquisition.aperture is not None:
+            print(acquisition.aperture)
+            print(type(acquisition.aperture))
 
             internal_acquisition.aperture = _zivid.Settings.Acquisition.Aperture(
                 acquisition.aperture
@@ -449,12 +450,15 @@ def to_internal_settings(settings):
         internal_processing.filters = _to_internal_filters(processing.filters)
         return internal_processing
 
-    if settings.acquisitions is not None:
+    if settings.acquisitions is None:
 
-        internal_settings.acquisitions = _zivid.Settings()
+        internal_settings.acquisitions = _zivid.Settings().Acquisitions() # TODO
     else:
-        internal_settings.acquisitions = _zivid.Settings()
+        temp = _zivid.Settings().Acquisitions()
+        for acq in settings.acquisitions:
+            temp.append(_to_internal_acquisition(acq))
+        internal_settings.acquisitions = temp
 
-    internal_settings.acquisition = _to_internal_acquisition(settings.acquisition)
+    #internal_settings.acquisition = _to_internal_acquisition(settings.acquisition)
     internal_settings.processing = _to_internal_processing(settings.processing)
     return internal_settings

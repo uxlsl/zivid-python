@@ -1,4 +1,6 @@
+from typing import Type
 import _zivid
+from zivid._settings_converter import to_internal_settings
 
 
 class Settings:
@@ -796,11 +798,11 @@ class Settings:
 
     @property
     def acquisitions(self):
-        return self._acquisitions.value
+        return self._acquisitions
 
     @acquisitions.setter
     def acquisitions(self, value):
-        self._acquisitions = _zivid.Settings.Acquisitions(_convert_to_acquistions(value))
+        self._acquisitions = _convert_to_acquistions(value)
 
     def __eq__(self, other):
         if (
@@ -815,13 +817,84 @@ class Settings:
     acquisitions: {acquisitions}
     processing: {processing}
     """.format(
-            acquisitions=self.acquisitions,
-            processing=self.processing,
+            acquisitions=self.acquisitions, processing=self.processing,
         )
 
 
 def _convert_to_acquistions(inputs):
-    temp = _zivid.Settings().Acquisitions()
+    temp = []#Settings().Acquisitions()
     for acquisition_element in inputs:
-        temp.append(acquisition_element)
+        if isinstance(acquisition_element, Settings.Acquisition):
+            temp.append(acquisition_element)
+        elif isinstance(acquisition_element, Settings.Acquisition):
+            #temp_settings = Settings()
+            #temp_settings.acquisitions = [acquisition_element]
+            #acuis = to_internal_settings(temp_settings).acquisitions
+            #print(acuis.value[0])
+            #temp.append(acuis.value[0])
+            temp.append(_to_internal_acquisition(acquisition_element))
+        else:
+            raise TypeError(
+                "Unsupported type {type_of_acquisition_element}".format(
+                    type_of_acquisition_element=type(acquisition_element)
+                )
+            )
+    print(temp)
     return temp
+
+
+def _to_internal_acquisition(acquisition):
+    internal_acquisition = _zivid.Settings.Acquisition()
+
+    def _to_internal_patterns(patterns):
+        internal_patterns = _zivid.Settings.Acquisition.Patterns()
+
+        def _to_internal_sine(sine):
+            internal_sine = _zivid.Settings.Acquisition.Patterns.Sine()
+            if sine.bidirectional is not None:
+
+                internal_sine.bidirectional = _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional(
+                    sine.bidirectional
+                )
+            else:
+                internal_sine.bidirectional = (
+                    _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional()
+                )
+            pass  # no children
+            return internal_sine
+
+        internal_patterns.sine = _to_internal_sine(patterns.sine)
+        return internal_patterns
+
+    if acquisition.aperture is not None:
+        internal_acquisition.aperture = _zivid.Settings.Acquisition.Aperture(
+            acquisition.aperture
+        )
+    else:
+        internal_acquisition.aperture = _zivid.Settings.Acquisition.Aperture()
+    if acquisition.brightness is not None:
+
+        internal_acquisition.brightness = _zivid.Settings.Acquisition.Brightness(
+            acquisition.brightness
+        )
+    else:
+        internal_acquisition.brightness = _zivid.Settings.Acquisition.Brightness()
+    if acquisition.exposure_time is not None:
+
+        internal_acquisition.exposure_time = _zivid.Settings.Acquisition.ExposureTime(
+            acquisition.exposure_time
+        )
+    else:
+        internal_acquisition.exposure_time = (
+            _zivid.Settings.Acquisition.ExposureTime()
+        )
+    if acquisition.gain is not None:
+
+        internal_acquisition.gain = _zivid.Settings.Acquisition.Gain(
+            acquisition.gain
+        )
+    else:
+        internal_acquisition.gain = _zivid.Settings.Acquisition.Gain()
+
+    internal_acquisition.patterns = _to_internal_patterns(acquisition.patterns)
+    return internal_acquisition

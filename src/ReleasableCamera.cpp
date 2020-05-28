@@ -16,6 +16,7 @@ namespace ZividPython
             .def(py::self == py::self) // NOLINT
             .def(py::self != py::self) // NOLINT
             .def("disconnect", &ReleasableCamera::disconnect)
+            .def("connect", &ReleasableCamera::connect)
             .def("capture", py::overload_cast<const Zivid::Settings &>(&ReleasableCamera::capture), py::arg("settings"))
             .def("capture", py::overload_cast<const Zivid::Settings2D &>(&ReleasableCamera::capture), py::arg("settings_2d"))
             .def_property_readonly("state", &ReleasableCamera::state)
