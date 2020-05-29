@@ -128,7 +128,9 @@ def to_settings(internal_settings):
 
     return zivid.Settings(
         processing=_to_processing(internal_settings.processing),
-        acquisitions=[_to_acquisition(element) for element in internal_settings.acquisitions.value],
+        acquisitions=[
+            _to_acquisition(element) for element in internal_settings.acquisitions.value
+        ],
     )
 
 
@@ -452,13 +454,13 @@ def to_internal_settings(settings):
 
     if settings.acquisitions is None:
 
-        internal_settings.acquisitions = _zivid.Settings().Acquisitions() # TODO
+        internal_settings.acquisitions = _zivid.Settings().Acquisitions()  # TODO
     else:
         temp = _zivid.Settings().Acquisitions()
         for acq in settings.acquisitions:
             temp.append(_to_internal_acquisition(acq))
         internal_settings.acquisitions = temp
 
-    #internal_settings.acquisition = _to_internal_acquisition(settings.acquisition)
+    # internal_settings.acquisition = _to_internal_acquisition(settings.acquisition)
     internal_settings.processing = _to_internal_processing(settings.processing)
     return internal_settings

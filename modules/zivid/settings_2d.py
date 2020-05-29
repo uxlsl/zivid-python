@@ -198,19 +198,19 @@ class Settings2D:
         processing=Processing(),
     ):
 
-        if acquisitions is not None:
-            self._acquisitions = _zivid.Settings2D.Acquisitions(acquisitions)
-        else:
-            self._acquisitions = _zivid.Settings2D.Acquisitions()
+        #if acquisitions is not None:
+        self._acquisitions = _convert_to_acquistions(acquisitions)
+        #else:
+        #    self._acquisitions = _zivid.Settings2D.Acquisitions()
         self.processing = processing
 
     @property
     def acquisitions(self):
-        return self._acquisitions.value
+        return self._acquisitions
 
     @acquisitions.setter
     def acquisitions(self, value):
-        self._acquisitions = _zivid.Settings2D.Acquisitions(value)
+        self._acquisitions = _convert_to_acquistions(value)#_zivid.Settings2D.Acquisitions(value)
 
     def __eq__(self, other):
         if (
@@ -227,3 +227,62 @@ class Settings2D:
     """.format(
             acquisitions=self.acquisitions, processing=self.processing,
         )
+
+
+def _convert_to_acquistions(inputs):
+    temp = []  # Settings().Acquisitions()
+    for acquisition_element in inputs:
+        if isinstance(acquisition_element, Settings2D.Acquisition):
+            temp.append(acquisition_element)
+        elif isinstance(acquisition_element, Settings2D.Acquisition):
+            # temp_settings = Settings()
+            # temp_settings.acquisitions = [acquisition_element]
+            # acuis = to_internal_settings(temp_settings).acquisitions
+            # print(acuis.value[0])
+            # temp.append(acuis.value[0])
+            temp.append(_to_internal_acquisition(acquisition_element))
+        else:
+            raise TypeError(
+                "Unsupported type {type_of_acquisition_element}".format(
+                    type_of_acquisition_element=type(acquisition_element)
+                )
+            )
+    print(temp)
+    return temp
+
+
+def _to_internal_acquisition(acquisition):
+        internal_acquisition = _zivid.Settings2D.Acquisition()
+
+        if acquisition.aperture is not None:
+
+            internal_acquisition.aperture = _zivid.Settings2D.Acquisition.Aperture(
+                acquisition.aperture
+            )
+        else:
+            internal_acquisition.aperture = _zivid.Settings2D.Acquisition.Aperture()
+        if acquisition.brightness is not None:
+
+            internal_acquisition.brightness = _zivid.Settings2D.Acquisition.Brightness(
+                acquisition.brightness
+            )
+        else:
+            internal_acquisition.brightness = _zivid.Settings2D.Acquisition.Brightness()
+        if acquisition.exposure_time is not None:
+
+            internal_acquisition.exposure_time = _zivid.Settings2D.Acquisition.ExposureTime(
+                acquisition.exposure_time
+            )
+        else:
+            internal_acquisition.exposure_time = (
+                _zivid.Settings2D.Acquisition.ExposureTime()
+            )
+        if acquisition.gain is not None:
+
+            internal_acquisition.gain = _zivid.Settings2D.Acquisition.Gain(
+                acquisition.gain
+            )
+        else:
+            internal_acquisition.gain = _zivid.Settings2D.Acquisition.Gain()
+        pass  # no children
+        return internal_acquisition

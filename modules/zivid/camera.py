@@ -13,26 +13,6 @@ import _zivid
 class Camera:
     """Interface to one Zivid camera."""
 
-    class Revision:  # delte
-        """Camera revision."""
-
-        def __init__(self, major, minor):
-            """Initialize camera revision with major and minor vision.
-
-            Args:
-                major: Major hardware revision
-                minor: Minor hardware revision
-
-            """
-            self.major = major
-            self.minor = minor
-
-        def __eq__(self, other):
-            return self.major == other.major and self.minor == other.minor
-
-        def __str__(self):
-            return "{}.{}".format(self.major, self.minor)
-
     def __init__(self, internal_camera):
         """Initialize camera with an internal camera.
 
@@ -57,46 +37,6 @@ class Camera:
     def __eq__(self, other):
         return self.__impl == other._Camera__impl  # pylint: disable=protected-access
 
-    @property
-    def model_name(self):  # delte
-        """Get the model name.
-
-        Returns:
-            A string
-
-        """
-        return self.__impl.model_name
-
-    @property
-    def revision(self):  # delte
-        """Get the camera revision.
-
-        Returns:
-            A Revision instance
-
-        """
-        return Camera.Revision(self.__impl.revision.major, self.__impl.revision.minor)
-
-    @property
-    def serial_number(self):
-        """Get the serial number of the Zivid camera.
-
-        Returns:
-            A string
-
-        """
-        return self.__impl.serial_number
-
-    @property
-    def firmware_version(self):  # delete
-        """Get the camera's firmware version.
-
-        Returns:
-            A string
-
-        """
-        return self.__impl.firmware_version
-
     def capture(self, settings):
         """Capture a single frame or a single 2d frame.
 
@@ -113,12 +53,24 @@ class Camera:
             )
         elif isinstance(settings, Settings2D):
             return Frame2D(
-                self.__impl.capture_2d(
-                    _settings_2d_converter.to_internal_settings_2d(settings_2d)
+                self.__impl.capture(
+                    _settings_2d_converter.to_internal_settings_2d(settings)
                 )
             )
         else:
             raise TypeError("Unsupported settings type: {}".format(type(settings)))
+
+    @property
+    def info(self):
+        """Get the current camera info.
+
+        Returns:
+            The current camera info
+
+        """
+        # TODO
+        return self.__impl.info#_camera_state_converter.to_camera_state(self.__impl.state)
+
 
     @property
     def state(self):
@@ -138,15 +90,6 @@ class Camera:
         """Disconnect from the camera and free all resources associated with it."""
         self.__impl.disconnect()
 
-    @property
-    def user_data_max_size_bytes(self):
-        """Return the ammount of data that can be stored in the camera.
-
-        Returns:
-            An int
-
-        """
-        return self.__impl.user_data_max_size_bytes
 
     def write_user_data(self, user_data):
         """Write user data to camera. The total number of writes supported depends on camera model and size of data.

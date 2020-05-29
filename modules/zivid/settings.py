@@ -822,16 +822,16 @@ class Settings:
 
 
 def _convert_to_acquistions(inputs):
-    temp = []#Settings().Acquisitions()
+    temp = []  # Settings().Acquisitions()
     for acquisition_element in inputs:
         if isinstance(acquisition_element, Settings.Acquisition):
             temp.append(acquisition_element)
         elif isinstance(acquisition_element, Settings.Acquisition):
-            #temp_settings = Settings()
-            #temp_settings.acquisitions = [acquisition_element]
-            #acuis = to_internal_settings(temp_settings).acquisitions
-            #print(acuis.value[0])
-            #temp.append(acuis.value[0])
+            # temp_settings = Settings()
+            # temp_settings.acquisitions = [acquisition_element]
+            # acuis = to_internal_settings(temp_settings).acquisitions
+            # print(acuis.value[0])
+            # temp.append(acuis.value[0])
             temp.append(_to_internal_acquisition(acquisition_element))
         else:
             raise TypeError(
@@ -885,14 +885,10 @@ def _to_internal_acquisition(acquisition):
             acquisition.exposure_time
         )
     else:
-        internal_acquisition.exposure_time = (
-            _zivid.Settings.Acquisition.ExposureTime()
-        )
+        internal_acquisition.exposure_time = _zivid.Settings.Acquisition.ExposureTime()
     if acquisition.gain is not None:
 
-        internal_acquisition.gain = _zivid.Settings.Acquisition.Gain(
-            acquisition.gain
-        )
+        internal_acquisition.gain = _zivid.Settings.Acquisition.Gain(acquisition.gain)
     else:
         internal_acquisition.gain = _zivid.Settings.Acquisition.Gain()
 

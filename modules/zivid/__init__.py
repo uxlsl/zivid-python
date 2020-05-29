@@ -1,9 +1,7 @@
 """This file imports all non protected classes, modules and packages from the current level."""
 
 
-from _zivid.generate_files import generate
 
-generate()
 
 import zivid._version
 
@@ -27,3 +25,7 @@ from zivid.sdk_version import SDKVersion
 from zivid.settings import Settings
 from zivid.settings_2d import Settings2D
 from zivid.camera_info import CameraInfo
+
+from _zivid.generate_files import generate
+
+generate()
