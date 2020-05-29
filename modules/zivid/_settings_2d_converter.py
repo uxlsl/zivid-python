@@ -106,20 +106,37 @@ def to_internal_settings_2d(settings2_d):
     internal_settings2_d.processing = _to_internal_processing(settings2_d.processing)
     return internal_settings2_d
 
-def to_settings_2d(internal_settings_2d):
-    """Convert internal settings 2d type to settings 2d.
+import zivid
 
-    Args:
-        internal_settings_2d: a internal settings 2d object
 
-    Returns:
-        a settings 2d object
+def to_settings_2d(internal_settings2_d):
+    def _to_acquisition(internal_acquisition):
 
-    """
+        return zivid.Settings2D.Acquisition(
+            aperture=internal_acquisition.aperture.value,
+            brightness=internal_acquisition.brightness.value,
+            exposure_time=internal_acquisition.exposuretime.value,
+            gain=internal_acquisition.gain.value,
+        )
 
-    return Settings2D(
-        brightness=internal_settings_2d.brightness.value,
-        exposure_time=internal_settings_2d.exposuretime.value,
-        gain=internal_settings_2d.gain.value,
-        iris=internal_settings_2d.iris.value,
+    def _to_processing(internal_processing):
+        def _to_color(internal_color):
+            def _to_balance(internal_balance):
+
+                return zivid.Settings2D.Processing.Color.Balance(
+                    blue=internal_balance.blue.value,
+                    green=internal_balance.green.value,
+                    red=internal_balance.red.value,
+                )
+
+            return zivid.Settings2D.Processing.Color(
+                balance=_to_balance(internal_color.balance),
+            )
+
+        return zivid.Settings2D.Processing(color=_to_color(internal_processing.color),)
+
+    return zivid.Settings2D(
+        processing=_to_processing(internal_settings2_d.processing),
+        acquisitions=internal_settings2_d.acquisitions.value,
     )
+
