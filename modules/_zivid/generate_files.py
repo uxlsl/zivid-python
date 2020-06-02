@@ -16,7 +16,7 @@ def generate():
     pass
     _zivid.generate_to_camera_state_converter.start_traverse()
     # _zivid.generate_camera_state.start_traverse()
-    #_zivid.generate_frame_info.start_traverse()
+    # _zivid.generate_frame_info.start_traverse()
     # _zivid.generate_to_frame_info_converter.start_traverse()
     # _zivid.generate_to_settings_2d_converter.start_traverse()
     # _zivid.generate_to_internal_settings_2d_converter.start_traverse()

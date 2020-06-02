@@ -1,8 +1,6 @@
 """This file imports all non protected classes, modules and packages from the current level."""
 
 
-
-
 import zivid._version
 
 __version__ = zivid._version.get_version(__name__)  # pylint: disable=protected-access

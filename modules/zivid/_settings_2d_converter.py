@@ -90,9 +90,9 @@ def to_internal_settings_2d(settings2_d):
         internal_processing.color = _to_internal_color(processing.color)
         return internal_processing
 
-    #if settings2_d.acquisitions is not None:
+    # if settings2_d.acquisitions is not None:
     #    internal_settings2_d.acquisitions = _zivid.Settings2D() # TODO
-    #else:
+    # else:
     #    internal_settings2_d.acquisitions = _zivid.Settings2D().Acquisitions()
 
     if settings2_d.acquisitions is None:
@@ -105,6 +105,7 @@ def to_internal_settings_2d(settings2_d):
 
     internal_settings2_d.processing = _to_internal_processing(settings2_d.processing)
     return internal_settings2_d
+
 
 import zivid
 
@@ -139,4 +140,3 @@ def to_settings_2d(internal_settings2_d):
         processing=_to_processing(internal_settings2_d.processing),
         acquisitions=internal_settings2_d.acquisitions.value,
     )
-

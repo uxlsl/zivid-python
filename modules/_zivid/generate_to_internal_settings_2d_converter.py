@@ -23,7 +23,9 @@ def start_traverse():
     with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:
         temp_file = Path(temp_file.name)
         raw_text = _imports(internal=True, settings=False)
-        raw_text += _create_to_internal_converter(data_model, settings_type="Settings2D")
+        raw_text += _create_to_internal_converter(
+            data_model, settings_type="Settings2D"
+        )
 
         new_lines = []
         for line in raw_text.splitlines():

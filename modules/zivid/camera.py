@@ -69,8 +69,9 @@ class Camera:
 
         """
         # TODO
-        return _camera_info_converter.to_camera_info(self.__impl.info)#_camera_state_converter.to_camera_state(self.__impl.state)
-
+        return _camera_info_converter.to_camera_info(
+            self.__impl.info
+        )  # _camera_state_converter.to_camera_state(self.__impl.state)
 
     @property
     def state(self):
@@ -89,7 +90,6 @@ class Camera:
     def disconnect(self):
         """Disconnect from the camera and free all resources associated with it."""
         self.__impl.disconnect()
-
 
     def write_user_data(self, user_data):
         """Write user data to camera. The total number of writes supported depends on camera model and size of data.
