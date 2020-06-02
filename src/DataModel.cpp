@@ -1,4 +1,4 @@
-#include <Zivid/DataModelNodeType.h>
+#include <Zivid/DataModel/NodeType.h>
 
 #include <ZividPython/DataModel.h>
 #include <ZividPython/Wrappers.h>

@@ -41,9 +41,6 @@ namespace ZividPython
             pyClass.def(py::init())
                 .def("__repr__", &Target::toString)
                 .def("to_string", &Target::toString)
-                .def("set_from_string", 
-                py::overload_cast<const std::string &>(&Target::setFromString), 
-                py::arg("string_value"))
                 .def(py::self == py::self) // NOLINT
                 .def(py::self != py::self) // NOLINT
                 .def_readonly_static("node_type", &Target::nodeType)
@@ -55,9 +52,9 @@ namespace ZividPython
                 //pyClass.def(py::init<const std::string &>(), py::arg("file_name"))
                 //    .def("save", &Target::save, py::arg("file_name"))
                 //    .def("load", &Target::load, py::arg("file_name")); //TODO: fix når save/load bare tar et argument
-                pyClass.def("set_from_string", 
-                py::overload_cast<const std::string &, const std::string &>(&Target::setFromString), 
-                py::arg("path"),py::arg("string_value"));
+                //pyClass.def("set_from_string", 
+                //py::overload_cast<const std::string &, const std::string &>(&Target::setFromString), 
+                //py::arg("path"),py::arg("string_value"));
             }
 
             // This is inside out because of bug in MSVC,
@@ -68,6 +65,9 @@ namespace ZividPython
             }
             else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafValue)
             {
+                //pyClass.def("set_from_string", 
+                //    py::overload_cast<const std::string &>(&Target::setFromString), 
+                //    py::arg("string_value"));
                 pyClass.def("__bool__", [](const Target &value) {
                     return Target{ typename Target::ValueType{} } != value; // NOLINT
                 });

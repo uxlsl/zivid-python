@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Zivid/DataModelNodeType.h>
+#include <Zivid/DataModel/NodeType.h>
 
 #include <pybind11/pybind11.h>
 

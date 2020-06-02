@@ -5,7 +5,6 @@ set(SOURCES
     CalibrationResidual.cpp
     DataModel.cpp
     Detector.cpp
-    Environment.cpp
     Firmware.cpp
     HandEye.cpp
     CaptureAssistant.cpp

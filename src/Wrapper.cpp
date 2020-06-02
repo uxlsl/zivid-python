@@ -5,7 +5,6 @@
 
 #include <ZividPython/CaptureAssistant.h>
 #include <ZividPython/DataModel.h>
-#include <ZividPython/Environment.h>
 #include <ZividPython/Firmware.h>
 #include <ZividPython/HandEye.h>
 #include <ZividPython/Pose.h>
@@ -42,7 +41,6 @@ ZIVID_PYTHON_MODULE // NOLINT
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, Image);
     ZIVID_PYTHON_WRAP_CLASS_BUFFER_AS_RELEASABLE(module, PointCloud);
 
-    ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Environment);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Firmware);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, Version);
     ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(module, HandEye);

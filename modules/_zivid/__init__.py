@@ -15,7 +15,6 @@ try:
         Application,
         Camera,
         CameraState,
-        environment,
         firmware,
         hand_eye,
         capture_assistant,
