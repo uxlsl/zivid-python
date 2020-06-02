@@ -69,7 +69,7 @@ class Camera:
 
         """
         # TODO
-        return self.__impl.info#_camera_state_converter.to_camera_state(self.__impl.state)
+        return _camera_info_converter.to_camera_info(self.__impl.info)#_camera_state_converter.to_camera_state(self.__impl.state)
 
 
     @property

@@ -817,7 +817,7 @@ class Settings:
     acquisitions: {acquisitions}
     processing: {processing}
     """.format(
-            acquisitions=self.acquisitions, processing=self.processing,
+            acquisitions="\n".join([str(element) for element in self.acquisitions]), processing=self.processing,
         )
 
 
