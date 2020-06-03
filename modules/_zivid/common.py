@@ -191,6 +191,10 @@ def _create_properties(node_data, settings_type: str):
     )
     set_property_template = "    @{member}.setter\n    def {member}(self,value):\n        self._{member} = _zivid.{settings_type}{path}.{non_snake_member}(value)\n"
     for member in node_data.member_variables:
+        try:
+            node_data.path
+        except:
+            print("hello")
         path = ".{path}".format(path=node_data.path,) if node_data.path else ""
         get_properties += get_property_template.format(
             member=inflection.underscore(member)
@@ -255,6 +259,10 @@ def _recursion(current_class, indentation_level):
     child_classes = [
         element for element in child_classes if element not in to_be_removed
     ]
+    # try:
+    #    current_class.path
+    # except:
+    #    print("hello2")
 
     my_class = NodeData(
         name=current_class.name,
