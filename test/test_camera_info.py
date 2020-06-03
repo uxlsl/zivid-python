@@ -1,5 +1,4 @@
 # pylint: disable=import-outside-toplevel
-import pytest
 
 
 # def test_revision(file_camera):

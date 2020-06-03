@@ -1,6 +1,4 @@
 # pylint: disable=import-outside-toplevel
-import datetime
-import pytest
 
 
 # def test_ambient_light_frequency():

@@ -80,10 +80,8 @@ def test_load(frame, sample_point_cloud):
 
 
 def test_settings(frame):
-    import zivid
-
     with pytest.raises(RuntimeError):
-        frame.settings
+        _ = frame.settings
 
 
 def test_state(frame):
