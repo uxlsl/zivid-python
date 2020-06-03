@@ -48,10 +48,10 @@ def test_illegal_settings(file_camera):
     with pytest.raises(RuntimeError):
         file_camera.capture(zivid.Settings())
 
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         file_camera.capture([1, 2, 3, 4, 5])
 
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         file_camera.capture([zivid.Settings(), zivid.Settings(), 3])
 
     with pytest.raises(TypeError):
@@ -61,5 +61,5 @@ def test_illegal_settings(file_camera):
 def test_empty_settings_list(file_camera):
     import _zivid
 
-    with pytest.raises(RuntimeError):
+    with pytest.raises(TypeError):
         file_camera.capture([])
