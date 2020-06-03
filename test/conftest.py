@@ -65,7 +65,7 @@ def physical_camera_image_2d_fixture(physical_camera_frame_2d):
 
 @pytest.fixture(name="point_cloud")
 def point_cloud_fixture(frame):
-    with frame.get_point_cloud() as point_cloud:
+    with frame.point_cloud() as point_cloud:
         yield point_cloud
 
 

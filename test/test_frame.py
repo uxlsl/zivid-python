@@ -13,10 +13,10 @@ def test_illegal_init(application):  # pylint: disable=unused-argument
         zivid.frame.Frame(12345)
 
 
-def test_get_point_cloud(frame):
+def test_point_cloud(frame):
     import zivid
 
-    point_cloud = frame.get_point_cloud()
+    point_cloud = frame.point_cloud()
     assert isinstance(point_cloud, zivid.PointCloud)
 
 
