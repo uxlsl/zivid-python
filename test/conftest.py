@@ -74,31 +74,31 @@ def point_cloud_fixture(frame):
         yield point_cloud
 
 
-@pytest.fixture(name="random_settings")
-def random_settings_fixture():
-    heavily_modified_settings = zivid.Settings(
-        bidirectional=choice([True, False]),
-        blue_balance=uniform(1, 8),
-        brightness=uniform(0, 1.8),
-        exposure_time=datetime.timedelta(microseconds=randint(6500, 100000)),
-        filters=zivid.Settings.Filters(
-            contrast=zivid.Settings.Filters.Contrast(
-                enabled=choice([True, False]), threshold=uniform(0, 100)
-            ),
-            outlier=zivid.Settings.Filters.Outlier(
-                enabled=choice([True, False]), threshold=uniform(0, 100)
-            ),
-            saturated=zivid.Settings.Filters.Saturated(enabled=choice([True, False])),
-            reflection=zivid.Settings.Filters.Reflection(enabled=choice([True, False])),
-            gaussian=zivid.Settings.Filters.Gaussian(
-                enabled=choice([True, False]), sigma=uniform(0.5, 5)
-            ),
-        ),
-        gain=uniform(1, 16),
-        iris=randint(0, 72),
-        red_balance=uniform(1, 8),
-    )
-    yield heavily_modified_settings
+# @pytest.fixture(name="random_settings")
+# def random_settings_fixture():
+#     heavily_modified_settings = zivid.Settings(
+#         bidirectional=choice([True, False]),
+#         blue_balance=uniform(1, 8),
+#         brightness=uniform(0, 1.8),
+#         exposure_time=datetime.timedelta(microseconds=randint(6500, 100000)),
+#         filters=zivid.Settings.Filters(
+#             contrast=zivid.Settings.Filters.Contrast(
+#                 enabled=choice([True, False]), threshold=uniform(0, 100)
+#             ),
+#             outlier=zivid.Settings.Filters.Outlier(
+#                 enabled=choice([True, False]), threshold=uniform(0, 100)
+#             ),
+#             saturated=zivid.Settings.Filters.Saturated(enabled=choice([True, False])),
+#             reflection=zivid.Settings.Filters.Reflection(enabled=choice([True, False])),
+#             gaussian=zivid.Settings.Filters.Gaussian(
+#                 enabled=choice([True, False]), sigma=uniform(0.5, 5)
+#             ),
+#         ),
+#         gain=uniform(1, 16),
+#         iris=randint(0, 72),
+#         red_balance=uniform(1, 8),
+#     )
+#     yield heavily_modified_settings
 
 
 @pytest.fixture(name="three_frames")
