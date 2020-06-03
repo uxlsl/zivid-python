@@ -82,9 +82,8 @@ def test_load(frame, sample_point_cloud):
 def test_settings(frame):
     import zivid
 
-    settings = frame.settings
-    assert settings
-    assert isinstance(settings, zivid.Settings)
+    with pytest.raises(RuntimeError):
+        frame.settings
 
 
 def test_state(frame):
