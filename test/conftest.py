@@ -32,9 +32,14 @@ def sample_point_cloud_fixture(sample_data_file):
     yield sample_data_file[0]
 
 
+@pytest.fixture(name="file_camera_file")
+def file_camera_file_fixture(sample_data_file):
+    yield sample_data_file[1]
+
+
 @pytest.fixture(name="file_camera")
-def file_camera_fixture(application, sample_data_file):
-    with application.create_file_camera(sample_data_file[1]) as file_cam:
+def file_camera_fixture(application, file_camera_file):
+    with application.create_file_camera(file_camera_file) as file_cam:
         yield file_cam
 
 

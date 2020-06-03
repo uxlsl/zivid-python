@@ -17,24 +17,12 @@ def test_release(application, sample_point_cloud):
         application.create_file_camera(sample_point_cloud)
 
 
-def test_create_file_camera(application, sample_point_cloud):
+def test_create_file_camera(application, file_camera_file):
     import zivid
 
-    file_camera = application.create_file_camera(sample_point_cloud)
+    file_camera = application.create_file_camera(file_camera_file)
     assert file_camera
     assert isinstance(file_camera, zivid.camera.Camera)
-
-
-def test_create_file_camera_with_settings(application, sample_point_cloud):
-    import zivid
-
-    with application.create_file_camera(sample_point_cloud) as file_camera:
-        settings = file_camera.settings
-
-    file_camera = application.create_file_camera(sample_point_cloud, settings=settings)
-    assert file_camera
-    assert isinstance(file_camera, zivid.camera.Camera)
-    assert file_camera.settings == settings
 
 
 @pytest.mark.physical_camera
@@ -60,23 +48,6 @@ def test_connect_camera_serial_number(application):
 
 
 @pytest.mark.physical_camera
-def test_connect_camera_serial_number_and_settings(application):
-    import zivid
-
-    with application.connect_camera() as cam:
-        serial_number = cam.serial_number
-
-    settings = zivid.Settings()
-
-    with application.connect_camera(
-        serial_number=serial_number, settings=settings
-    ) as cam:
-        assert cam
-        assert isinstance(cam, zivid.camera.Camera)
-        assert cam.settings == settings
-
-
-@pytest.mark.physical_camera
 def test_connect_camera_settings(application):
     import zivid
 
@@ -96,9 +67,9 @@ def test_cameras_list_of_cameras(application):
         assert isinstance(camera, zivid.Camera)
 
 
-def test_cameras_one_camera(application, sample_point_cloud):
+def test_cameras_one_camera(application, file_camera_file):
     orig_len = len(application.cameras())
-    with application.create_file_camera(sample_point_cloud) as file_camera:
+    with application.create_file_camera(file_camera_file) as file_camera:
         assert file_camera
         cameras = application.cameras()
         assert len(cameras) == orig_len + 1
