@@ -1,12 +1,6 @@
 """This file imports used classes, modules and packages."""
-"""This file imports used classes, modules and packages."""
-import inspect
-from collections import namedtuple
-from dataclasses import dataclass
-from typing import Tuple
 import subprocess
 from _zivid.common import (
-    _create_class,
     _imports,
     _recursion,
 )
@@ -17,7 +11,6 @@ import inflection
 
 def start_traverse():
     from _zivid._zivid import Settings2D as InternalSettings
-    from zivid import Settings
 
     data_model = _recursion(InternalSettings, indentation_level=0)
     with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:

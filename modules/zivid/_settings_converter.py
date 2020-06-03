@@ -461,6 +461,5 @@ def to_internal_settings(settings):
             temp.append(_to_internal_acquisition(acq))
         internal_settings.acquisitions = temp
 
-    # internal_settings.acquisition = _to_internal_acquisition(settings.acquisition)
     internal_settings.processing = _to_internal_processing(settings.processing)
     return internal_settings
