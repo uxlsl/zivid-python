@@ -18,14 +18,23 @@ def application_fixture():
 @pytest.fixture(name="sample_data_file", scope="session")
 def sample_data_file_fixture():
     with tempfile.TemporaryDirectory() as temp_dir:
-        sample_data = Path(temp_dir) / "MiscObjects.zdf"
-        download_and_extract(sample_data)
-        yield sample_data
+        point_cloud_destination = Path(temp_dir) / "MiscObjects.zdf"
+        file_camera_destination = Path(temp_dir) / "FileCameraZividOne.zfc"
+        download_and_extract(
+            file_camera_destination=file_camera_destination,
+            point_cloud_destination=point_cloud_destination,
+        )
+        yield point_cloud_destination, file_camera_destination
+
+
+@pytest.fixture(name="sample_point_cloud")
+def sample_point_cloud_fixture(sample_data_file):
+    yield sample_data_file[0]
 
 
 @pytest.fixture(name="file_camera")
 def file_camera_fixture(application, sample_data_file):
-    with application.create_file_camera(sample_data_file) as file_cam:
+    with application.create_file_camera(sample_data_file[1]) as file_cam:
         yield file_cam
 
 
@@ -36,8 +45,8 @@ def physical_camera_fixture(application):
 
 
 @pytest.fixture(name="frame")
-def frame_fixture(application, sample_data_file):  # pylint: disable=unused-argument
-    with zivid.Frame(sample_data_file) as frame:
+def frame_fixture(application, sample_point_cloud):  # pylint: disable=unused-argument
+    with zivid.Frame(sample_point_cloud) as frame:
         yield frame
 
 
@@ -89,9 +98,9 @@ def random_settings_fixture():
 
 @pytest.fixture(name="three_frames")
 def three_frames_fixture(
-    application, sample_data_file  # pylint: disable=unused-argument
+    application, sample_point_cloud  # pylint: disable=unused-argument
 ):
-    frames = [zivid.Frame(sample_data_file)] * 3
+    frames = [zivid.Frame(sample_point_cloud)] * 3
     yield frames
     for fram in frames:
         fram.release()

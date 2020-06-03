@@ -15,10 +15,10 @@ def test_illegal_init(application):  # pylint: disable=unused-argument
         zivid.camera.Camera(12345)
 
 
-def test_init_with(application, sample_data_file):
+def test_init_with(application, sample_point_cloud):
     import zivid
 
-    with application.create_file_camera(sample_data_file) as file_camera:
+    with application.create_file_camera(sample_point_cloud) as file_camera:
         assert file_camera
         assert isinstance(file_camera, zivid.camera.Camera)
 
@@ -52,10 +52,10 @@ def test_set_settings(file_camera):
     assert isinstance(file_camera.settings, zivid.Settings)
 
 
-def test_equal(application, sample_data_file):
+def test_equal(application, sample_point_cloud):
     import zivid
 
-    with application.create_file_camera(sample_data_file) as file_camera:
+    with application.create_file_camera(sample_point_cloud) as file_camera:
         camera_handle = zivid.Camera(
             file_camera._Camera__impl  # pylint: disable=protected-access
         )
@@ -64,10 +64,12 @@ def test_equal(application, sample_data_file):
         assert camera_handle == file_camera
 
 
-def test_not_equal(application, sample_data_file):
+def test_not_equal(application, sample_point_cloud):
     with application.create_file_camera(
-        sample_data_file
-    ) as file_camera1, application.create_file_camera(sample_data_file) as file_camera2:
+        sample_point_cloud
+    ) as file_camera1, application.create_file_camera(
+        sample_point_cloud
+    ) as file_camera2:
         assert file_camera1 != file_camera2
 
 
