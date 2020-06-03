@@ -6,7 +6,7 @@ def _main():
     app = Application()
     camera = app.create_file_camera("FileCameraZividOne.zfc")
 
-    settings = Settings(frames=[Settings.Frame(iris=22,)])
+    settings = Settings(acquisitions=[Settings.Acquisition(aperture=5.66,)])
 
     with camera.capture(settings) as frame:
         frame.save("results.zdf")
