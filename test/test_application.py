@@ -10,11 +10,11 @@ def test_init_with():
         assert isinstance(app, zivid.Application)
 
 
-def test_release(application, sample_point_cloud):
-    assert application.create_file_camera(sample_point_cloud)
+def test_release(application, file_camera_file):
+    assert application.create_file_camera(file_camera_file)
     application.release()
     with pytest.raises(RuntimeError):
-        application.create_file_camera(sample_point_cloud)
+        application.create_file_camera(file_camera_file)
 
 
 def test_create_file_camera(application, file_camera_file):
