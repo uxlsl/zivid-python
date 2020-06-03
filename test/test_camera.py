@@ -52,10 +52,10 @@ def test_init_with(application, file_camera_file):
 #     assert isinstance(file_camera.settings, zivid.Settings)
 
 
-def test_equal(application, sample_point_cloud):
+def test_equal(application, file_camera_file):
     import zivid
 
-    with application.create_file_camera(sample_point_cloud) as file_camera:
+    with application.create_file_camera(file_camera_file) as file_camera:
         camera_handle = zivid.Camera(
             file_camera._Camera__impl  # pylint: disable=protected-access
         )
@@ -64,12 +64,10 @@ def test_equal(application, sample_point_cloud):
         assert camera_handle == file_camera
 
 
-def test_not_equal(application, sample_point_cloud):
+def test_not_equal(application, file_camera_file):
     with application.create_file_camera(
-        sample_point_cloud
-    ) as file_camera1, application.create_file_camera(
-        sample_point_cloud
-    ) as file_camera2:
+        file_camera_file
+    ) as file_camera1, application.create_file_camera(file_camera_file) as file_camera2:
         assert file_camera1 != file_camera2
 
 
@@ -90,25 +88,6 @@ def test_to_string(file_camera):
     string = str(file_camera)
     assert string
     assert isinstance(string, str)
-
-
-def test_update_settings_all_settings(file_camera):
-    settings = file_camera.settings
-    # leaving settings untouched since file camera has not correctly implemented set or get settings
-
-    with file_camera.update_settings() as updater:
-        updater.settings = settings
-
-    assert file_camera.settings == settings
-
-
-def test_update_settings_one_setting(file_camera):
-    iris = file_camera.settings.iris
-    # leaving settings untouched since file camera has not correctly implemented set or get settings
-    with file_camera.update_settings() as updater:
-        updater.settings.iris = iris
-
-    assert file_camera.settings.iris == iris
 
 
 @pytest.mark.physical_camera
