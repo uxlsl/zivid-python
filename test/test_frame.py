@@ -21,10 +21,10 @@ def test_point_cloud(frame):
 
 
 def test_release(frame):
-    frame.get_point_cloud()
+    frame.point_cloud()
     frame.release()
     with pytest.raises(RuntimeError):
-        frame.get_point_cloud()
+        frame.point_cloud()
 
 
 def test_path_init(application, sample_point_cloud):  # pylint: disable=unused-argument
@@ -64,9 +64,9 @@ def test_context_manager(
     import zivid
 
     with zivid.frame.Frame(sample_point_cloud) as frame:
-        frame.get_point_cloud()
+        frame.point_cloud()
     with pytest.raises(RuntimeError):
-        frame.get_point_cloud()
+        frame.point_cloud()
 
 
 def test_to_string(frame):
