@@ -4,7 +4,7 @@ from zivid import Application, Settings
 
 def _main():
     app = Application()
-    camera = app.create_file_camera("MiscObjects.zdf")
+    camera = app.create_file_camera("FileCameraZividOne.zfc")
 
     settings = Settings(frames=[Settings.Frame(iris=22,)])
 
