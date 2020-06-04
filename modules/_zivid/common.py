@@ -147,27 +147,12 @@ def _create_str_special_member_function(node_data, settings_type: str):
             variable_name=element
         )
 
-        # member_variables_str.append(
-        #    f"self._{member.variable_name} == other._{member.variable_name}"
-        # )
     for child in child_class_member_variables:
         element = child.variable_name
         member_variables_str += f"{element}: {{{element}}}\n    "
         formatting_string += "{variable_name}=self.{variable_name},".format(
             variable_name=element
         )
-        # member_variables_str.append(
-        #    f"self.{child.variable_name} == other.{child.variable_name}"
-        # )
-
-    #    for variable_name_str_to_be_formatted, variable_name in [
-    #        (f"{element}: {{{element}}}\n    ", element)
-    #        for element in _variable_names(node_data, settings_type=settings_type)
-    #    ]:
-    #        member_variables_str += variable_name_str_to_be_formatted
-    #        formatting_string += "{variable_name}=self._{variable_name},".format(
-    #            variable_name=variable_name
-    #        )
 
     member_variables_str.strip()
     str_content = """'''{name}:
