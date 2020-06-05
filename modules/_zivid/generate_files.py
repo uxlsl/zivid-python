@@ -11,12 +11,12 @@ import _zivid.generate_to_frame_info_converter
 import _zivid.generate_camera_state
 import _zivid.generate_to_camera_state_converter
 
-# import _zivid.generate_suggest_settings
+import _zivid.generate_suggest_settings
 
 
 def generate():
     pass
-    # _zivid.generate_suggest_settings.start_traverse()
+    _zivid.generate_suggest_settings.start_traverse()
     # _zivid.generate_to_camera_state_converter.start_traverse()
     # _zivid.generate_camera_state.start_traverse()
     # _zivid.generate_frame_info.start_traverse()

@@ -4,59 +4,129 @@ import zivid._settings_converter as _settings_converter
 from zivid._make_enum_wrapper import _make_enum_wrapper
 
 
-class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
-    AmbientLightFrequency = _make_enum_wrapper(
-        _zivid.capture_assistant.SuggestSettingsParameters().AmbientLightFrequency(),
-        "Ensure compatibility with the frequency of the ambient light in the scene.",
-    )
-    """Input to the Capture Assistant algorithm.
+class SuggestSettingsParameters:
+    class AmbientLightFrequency:
 
-    Used to specify a constraint on the total capture time for the settings suggested by the Capture Assistant,
-    and optionally specify the ambient light frequency.
-    The capture time constraint assumes a computer meeting Zivid's recommended minimum compute power.
+        hz50 = (
+            _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz50
+        )
+        hz60 = (
+            _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz60
+        )
+        none = (
+            _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.none
+        )
 
-    """
+        def __init__(self, value=none):
+            self._value = value
 
-    def __init__(self, max_capture_time, ambient_light_frequency=None):
-        """Initialize SuggestSettingsParameters.
+        def __eq__(self, other):
+            if self._value == other._value:
+                return True
+            return False
 
-        Args:
-            max_capture_time: an instance of datetime.timedelta
-            ambient_light_frequency: a member of the enum zivid.capture_assistant.AmbientLightFrequency
+        def __str__(self):
+            return """AmbientLightFrequency: {value}""".format(value=self._value.name)
 
-        """
-        if ambient_light_frequency is None:
-            self.__impl = _zivid.capture_assistant.SuggestSettingsParameters(
+    def __init__(
+        self,
+        max_capture_time=_zivid.capture_assistant.SuggestSettingsParameters()
+        .MaxCaptureTime()
+        .value,
+        ambient_light_frequency=AmbientLightFrequency(),
+    ):
+
+        if max_capture_time is not None:
+            self._max_capture_time = _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(
                 max_capture_time
             )
         else:
-            self.__impl = _zivid.capture_assistant.SuggestSettingsParameters(
-                max_capture_time,
-                ambient_light_frequency._to_internal(),  # pylint: disable=protected-access
+            self._max_capture_time = (
+                _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime()
             )
+        self.ambient_light_frequency = ambient_light_frequency
 
     @property
     def max_capture_time(self):
-        """Get max capture time.
+        return self._max_capture_time.value
 
-        Returns:
-            Instance of datetime.timedelta
+    @max_capture_time.setter
+    def max_capture_time(self, value):
+        self._max_capture_time = _zivid.capture_assistant.SuggestSettingsParameters.MaxCaptureTime(
+            value
+        )
 
-        """
-        return self.__impl.maxCaptureTime()
-
-    @property
-    def ambient_light_frequency(self):
-        """Get ambient light frequency.
-
-        Returns:
-            Instance of AmbientLightFrequency
-
-        """
-        return AmbientLightFrequency(self.__impl.ambientLightFrequency().name)
+    def __eq__(self, other):
+        if (
+            self._max_capture_time == other._max_capture_time
+            and self.ambient_light_frequency == other.ambient_light_frequency
+        ):
+            return True
+        return False
 
     def __str__(self):
-        return self.__impl.to_string()
+        return """SuggestSettingsParameters:
+    max_capture_time: {max_capture_time}
+    ambient_light_frequency: {ambient_light_frequency}
+    """.format(
+            max_capture_time=self.max_capture_time,
+            ambient_light_frequency=self.ambient_light_frequency,
+        )
+
+
+# class SuggestSettingsParameters:  # pylint: disable=too-few-public-methods
+#     AmbientLightFrequency = _make_enum_wrapper(
+#         _zivid.capture_assistant.SuggestSettingsParameters().AmbientLightFrequency(),
+#         "Ensure compatibility with the frequency of the ambient light in the scene.",
+#     )
+#     """Input to the Capture Assistant algorithm.
+#
+#     Used to specify a constraint on the total capture time for the settings suggested by the Capture Assistant,
+#     and optionally specify the ambient light frequency.
+#     The capture time constraint assumes a computer meeting Zivid's recommended minimum compute power.
+#
+#     """
+#
+#     def __init__(self, max_capture_time, ambient_light_frequency=None):
+#         """Initialize SuggestSettingsParameters.
+#
+#         Args:
+#             max_capture_time: an instance of datetime.timedelta
+#             ambient_light_frequency: a member of the enum zivid.capture_assistant.AmbientLightFrequency
+#
+#         """
+#         if ambient_light_frequency is None:
+#             self.__impl = _zivid.capture_assistant.SuggestSettingsParameters(
+#                 max_capture_time
+#             )
+#         else:
+#             self.__impl = _zivid.capture_assistant.SuggestSettingsParameters(
+#                 max_capture_time,
+#                 ambient_light_frequency._to_internal(),  # pylint: disable=protected-access
+#             )
+#
+#     @property
+#     def max_capture_time(self):
+#         """Get max capture time.
+#
+#         Returns:
+#             Instance of datetime.timedelta
+#
+#         """
+#         return self.__impl.maxCaptureTime()
+#
+#     @property
+#     def ambient_light_frequency(self):
+#         """Get ambient light frequency.
+#
+#         Returns:
+#             Instance of AmbientLightFrequency
+#
+#         """
+#         return AmbientLightFrequency(self.__impl.ambientLightFrequency().name)
+#
+#     def __str__(self):
+#         return self.__impl.to_string()
 
 
 def suggest_settings(camera, suggest_settings_parameters):

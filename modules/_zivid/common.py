@@ -15,6 +15,9 @@ class MemberVariable:
 class NodeData:
     name: str
     is_leaf: bool
+    is_enum: bool
+    enum_vars: tuple
+    enum_default_value: str
     path: str
     children: tuple
     member_variables: tuple
@@ -80,6 +83,8 @@ def _variable_names(node_data, settings_type: str):
 
 
 def _create_init_special_member_function(node_data, settings_type: str):
+    if node_data.is_enum:
+        return "\n    def __init__(self,value=none):\n        self._value = value\n"
     member_variables = _get_member_variables(node_data, settings_type)
     child_class_member_variables = _get_child_class_member_variables(node_data)
     signature_vars = ""
@@ -112,6 +117,8 @@ def _create_init_special_member_function(node_data, settings_type: str):
 
 
 def _create_eq_special_member_function(node_data, settings_type: str):
+    if node_data.is_enum:
+        return "\n    def __eq__(self,other):\n        if self.value == other.value:\n            return True\n        return False"
     member_variables_equality = list()
     member_variables = _get_member_variables(node_data, settings_type)
     child_class_member_variables = _get_child_class_member_variables(node_data)
@@ -176,10 +183,6 @@ def _create_properties(node_data, settings_type: str):
     )
     set_property_template = "    @{member}.setter\n    def {member}(self,value):\n        self._{member} = _zivid.{settings_type}{path}.{non_snake_member}(value)\n"
     for member in node_data.member_variables:
-        try:
-            node_data.path
-        except:
-            print("hello")
         path = ".{path}".format(path=node_data.path,) if node_data.path else ""
         get_properties += get_property_template.format(
             member=inflection.underscore(member)
@@ -193,6 +196,17 @@ def _create_properties(node_data, settings_type: str):
     return f"{get_properties}\n{set_properties}"
 
 
+def _create_class_variables(node_data):
+    sub_strings = []
+    for enum_key, enum_value in node_data.enum_vars:
+        sub_strings.append(
+            f"{enum_key} = _zivid.capture_assistant.SuggestSettingsParameters.{node_data.path}.enum.{enum_value}"
+        )  # {enum_value}")
+    return "\n    ".join(
+        sub_strings
+    )  # + f"# _zivid.capture_assistant.{node_data.path}.enum"
+
+
 def _create_class(node_data, settings_type: str):
     nested_classes = [
         _create_class(element, settings_type=settings_type)
@@ -202,6 +216,7 @@ def _create_class(node_data, settings_type: str):
     base_class = """
 class {class_name}:
     {nested_classes}
+    {class_variables}
     {init_special_member_function}
     {get_set_properties}
     {eq_special_member_function}
@@ -209,6 +224,7 @@ class {class_name}:
 """.format(
         class_name=node_data.name,
         nested_classes=nested_classes_string,
+        class_variables=_create_class_variables(node_data),
         init_special_member_function=_create_init_special_member_function(
             node_data, settings_type=settings_type
         ),
@@ -228,12 +244,14 @@ class {class_name}:
 
 def _recursion(current_class, indentation_level):
     child_classes = list()
-
-    for my_cls in _inner_classes_list(current_class):
-        child_classes.append(
-            _recursion(my_cls, indentation_level=indentation_level + 1)
-        )
-    is_leaf = not bool(_inner_classes_list(current_class))
+    if not (hasattr(current_class, "valid_values") and hasattr(current_class, "enum")):
+        for my_cls in _inner_classes_list(current_class):
+            child_classes.append(
+                _recursion(my_cls, indentation_level=indentation_level + 1)
+            )
+        is_leaf = not bool(_inner_classes_list(current_class))
+    else:
+        is_leaf = False
 
     member_variables = list()
     to_be_removed = list()
@@ -244,15 +262,71 @@ def _recursion(current_class, indentation_level):
     child_classes = [
         element for element in child_classes if element not in to_be_removed
     ]
+    # import enum
+    # if isinstance(current_class, enum.Enum):
+    #     print("is enum")
+    # else:
+    #     print("is not enum")
     # try:
-    #    current_class.path
-    # except:
-    #    print("hello2")
+    print(current_class.name)
+    print(dir(current_class))
+    # print(dir(current_class.name))
+    if hasattr(current_class, "valid_values") and hasattr(current_class, "enum"):
+        # _ = current_class.path
+        # print("has path")
+        print("this is a enum thingy")
+        path = current_class.path.replace("/", ".")
+        is_enum = True
+        # print(current_class.enum)
+        # print(dir(current_class.enum))
+        # print(current_class.enum.hz50)
+        # print(dir(current_class.enum.hz50))
+        # print(current_class.enum.hz50.name)
+        print("defaultvalue:")
+        print(current_class().value)
+        print(dir(current_class().value))
+        print(current_class().value.name)
+        enum_default_value = current_class().value.name
+        enum_vars = []
+        members = [a for a in dir(current_class.enum)]
+        for member in members:
+            if str(member).startswith("__"):
+                continue
+            if str(member) == "name":
+                continue
+            print("this is member: " + member)
+            # print("___")
+            print(getattr(current_class.enum, member).name)
+            enum_vars.append((member, getattr(current_class.enum, member).name))
+            # print("--")
+            # print(dir(getattr(current_class.enum, member)))
+        #
+        # enum_vars = []#current_class.enum
+
+    else:
+        path = current_class.path.replace("/", ".")
+        is_enum = False
+        # print("does not have path")
+        print("this is not a enum thingy")
+        enum_vars = []
+        enum_default_value = None
+    #   path = None
+    #   is_enum=True
+    # except Exception:
+    #   print("hello2")
+    #   path = current_class.path.replace("/", ".")
+    #   is_enum=False
+    print(enum_vars)
+    print(is_enum)
+    print("-----------------------\n-------------------------")
 
     my_class = NodeData(
         name=current_class.name,
         is_leaf=is_leaf,
-        path=current_class.path.replace("/", "."),
+        is_enum=is_enum,
+        enum_vars=enum_vars,
+        enum_default_value=enum_default_value,
+        path=path,
         children=child_classes,
         member_variables=member_variables,
         indentation_level=indentation_level,

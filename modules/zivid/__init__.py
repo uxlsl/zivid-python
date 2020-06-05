@@ -23,6 +23,6 @@ from zivid.settings import Settings
 from zivid.settings_2d import Settings2D
 from zivid.camera_info import CameraInfo
 
-# from _zivid.generate_files import generate
-#
-# generate()
+from _zivid.generate_files import generate
+
+generate()
