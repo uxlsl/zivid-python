@@ -6,16 +6,37 @@ from zivid._make_enum_wrapper import _make_enum_wrapper
 
 class SuggestSettingsParameters:
     class AmbientLightFrequency:
+        hz50 = "hz50" # class
+        hz60 = "hz60"
+        none = "none"
 
-        hz50 = (
-            _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz50
-        )
-        hz60 = (
-            _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz60
-        )
-        none = (
-            _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.none
-        )
+        _valid_values = {"hz50": _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz50,
+        "hz60" :_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz60,
+        "none" :_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.none,}
+        #hz50 = (
+        #    _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz50
+        #)
+        #hz60 = (
+        #    _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz60
+        #)
+        #none = (
+        #    _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.none
+        #)
+        @property
+        def valid_values():
+            return [hz50, hz60, none]#[to_ambient_light_frequency(value) for value in _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency().valid_values()]
+
+
+        # @property.setter
+        # def hz50(self,value):
+        #     if in dict("hz50": _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz50):
+        #        self._value = _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz50
+        #     else:
+        #         raise ValueError(f"{value} is not in {self.valid_values()}")
+        #         #raise sosdmksm
+
+        
+
 
         def __init__(self, value=none):
             self._value = value

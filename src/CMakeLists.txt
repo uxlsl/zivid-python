@@ -6,7 +6,7 @@ set(SOURCES
     DataModel.cpp
     Calibration/Detector.cpp
     Firmware.cpp
-    Calibration/HandEye.cpp
+    Calibration/Calibration.cpp
     CaptureAssistant.cpp
     NodeType.cpp
     ReleasablePointCloud.cpp

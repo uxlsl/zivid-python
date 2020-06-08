@@ -32,6 +32,15 @@ class MultiCameraOutput:
 def calibrate_multi_camera(detection_results):
     pass
 
+import zivid.calibration.hand_eye
+zivid.calibration.calibrate_eye_in_hand
+
+from zivid.calibration import calibrate_eye_in_hand
+calibrate_eye_in_hand
+
+
+
+
 
 # namespace Zivid
 # {
