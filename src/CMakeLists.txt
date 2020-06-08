@@ -1,16 +1,16 @@
 project(_zivid LANGUAGES CXX C)
 
 set(SOURCES
-    Calibrate.cpp
-    CalibrationResidual.cpp
+    Calibration/Calibrate.cpp
+    Calibration/CalibrationResidual.cpp
     DataModel.cpp
-    Detector.cpp
+    Calibration/Detector.cpp
     Firmware.cpp
-    HandEye.cpp
+    Calibration/HandEye.cpp
     CaptureAssistant.cpp
     NodeType.cpp
     ReleasablePointCloud.cpp
-    Pose.cpp
+    Calibration/Pose.cpp
     ReleasableCamera.cpp
     ReleasableFrame.cpp
     SingletonApplication.cpp

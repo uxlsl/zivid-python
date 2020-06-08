@@ -3,10 +3,10 @@
 #include <Zivid/Calibration/Pose.h>
 #include <Zivid/PointCloud.h>
 
-#include <ZividPython/Calibrate.h>
-#include <ZividPython/CalibrationResidual.h>
-#include <ZividPython/Detector.h>
-#include <ZividPython/Pose.h>
+#include <ZividPython/Calibration/Calibrate.h>
+#include <ZividPython/Calibration/CalibrationResidual.h>
+#include <ZividPython/Calibration/Detector.h>
+#include <ZividPython/Calibration/Pose.h>
 #include <ZividPython/ReleasablePointCloud.h>
 #include <ZividPython/Wrappers.h>
 

@@ -1,5 +1,5 @@
 #include <ZividPython/Matrix.h>
-#include <ZividPython/Pose.h>
+#include <ZividPython/Calibration/Pose.h>
 
 #include <pybind11/pybind11.h>
 

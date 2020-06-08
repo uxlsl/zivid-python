@@ -1,6 +1,6 @@
 #include <Zivid/Calibration/HandEye.h>
 
-#include <ZividPython/CalibrationResidual.h>
+#include <ZividPython/Calibration/CalibrationResidual.h>
 
 #include <pybind11/pybind11.h>
 

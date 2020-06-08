@@ -6,8 +6,8 @@
 #include <ZividPython/CaptureAssistant.h>
 #include <ZividPython/DataModel.h>
 #include <ZividPython/Firmware.h>
-#include <ZividPython/HandEye.h>
-#include <ZividPython/Pose.h>
+#include <ZividPython/Calibration/HandEye.h>
+#include <ZividPython/Calibration/Pose.h>
 #include <ZividPython/ReleasableCamera.h>
 #include <ZividPython/ReleasableFrame.h>
 #include <ZividPython/ReleasableFrame2D.h>

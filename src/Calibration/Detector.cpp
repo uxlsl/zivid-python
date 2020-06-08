@@ -1,6 +1,6 @@
 #include <Zivid/Calibration/Detector.h>
 
-#include <ZividPython/Detector.h>
+#include <ZividPython/Calibration/Detector.h>
 
 #include <pybind11/pybind11.h>
 
