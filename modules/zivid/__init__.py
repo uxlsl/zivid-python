@@ -9,6 +9,7 @@ import zivid.firmware
 import zivid.hand_eye
 import zivid.capture_assistant
 import zivid.hdr
+import zivid.calibration
 
 from zivid.application import Application
 from zivid.camera import Camera
