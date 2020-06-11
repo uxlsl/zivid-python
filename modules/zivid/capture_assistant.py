@@ -6,26 +6,67 @@ from zivid._make_enum_wrapper import _make_enum_wrapper
 
 class SuggestSettingsParameters:
     class AmbientLightFrequency:
-        hz50 = "hz50" # class
+        hz50 = "hz50"  # class
         hz60 = "hz60"
         none = "none"
 
-        _valid_values = {"hz50": _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz50,
-        "hz60" :_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz60,
-        "none" :_zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.none,}
-        #hz50 = (
+        _valid_values = {
+            "hz50": _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz50,
+            "hz60": _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz60,
+            "none": _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.none,
+        }
+        # hz50 = (
         #    _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz50
-        #)
-        #hz60 = (
+        # )
+        # hz60 = (
         #    _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.hz60
-        #)
-        #none = (
+        # )
+        # none = (
         #    _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency.enum.none
-        #)
+        # )
         @property
-        def valid_values():
-            return [hz50, hz60, none]#[to_ambient_light_frequency(value) for value in _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency().valid_values()]
+        def valid_values(cls):
+            return [
+                hz50,
+                hz60,
+                none,
+            ]  # [to_ambient_light_frequency(value) for value in _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency().valid_values()]
 
+        def _convert_to_internal_value(self, value):
+            try:
+                return self._valid_values[value]
+            except Exception as ex:
+                raise RuntimeError("failed again") from ex  # TODO
+
+        def _is_valid_internal_value(self, value):
+            if value in self._valid_values:
+                return True
+            return False
+            # except Exception as ex:
+            #     raise RuntimeError("failed again") from ex  # TODO
+
+
+        @property
+        def value(self):
+            for (
+                key,
+                internal_value,
+            ) in (
+                self._valid_values.items()
+            ):  # for name, age in dictionary.iteritems():  (for Python 2.x)
+                if internal_value == self._value:
+                    print(f"Looking at value: {key}: {internal_value}")
+                    print(f"using value: {self._value}")
+                    return key
+            raise ValueError(f"Unsupported value: {self._value}")
+
+        @value.setter
+        def value(self, value):
+            # if value in self.valid_values:
+            if self._is_valid_internal_value(value):
+                self._value = value
+            else:
+                raise ValueError(f"Unsupported value: {value}")
 
         # @property.setter
         # def hz50(self,value):
@@ -34,9 +75,6 @@ class SuggestSettingsParameters:
         #     else:
         #         raise ValueError(f"{value} is not in {self.valid_values()}")
         #         #raise sosdmksm
-
-        
-
 
         def __init__(self, value=none):
             self._value = value
@@ -47,7 +85,7 @@ class SuggestSettingsParameters:
             return False
 
         def __str__(self):
-            return """AmbientLightFrequency: {value}""".format(value=self._value.name)
+            return """AmbientLightFrequency: {value}""".format(value=self._value)
 
     def __init__(
         self,
