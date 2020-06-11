@@ -14,7 +14,7 @@
 
 #include <vector>
 
-namespace ZividPython::HandEye
+namespace ZividPython::Calibration
 {
     void wrapAsSubmodule(pybind11::module &dest)
     {
@@ -33,4 +33,4 @@ namespace ZividPython::HandEye
             .def("calibrate_eye_in_hand", &Zivid::Calibration::calibrateEyeInHand)
             .def("calibrate_eye_to_hand", &Zivid::Calibration::calibrateEyeToHand);
     }
-} // namespace ZividPython::HandEye
+} // namespace ZividPython::Calibration

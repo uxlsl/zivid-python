@@ -2,7 +2,7 @@
 
 #include <ZividPython/Wrappers.h>
 
-namespace ZividPython::HandEye
+namespace ZividPython::Calibration
 {
     void wrapClass(pybind11::class_<Zivid::HandEye::CheckerboardDetector> pyClass);
-} // namespace ZividPython::HandEye
+} // namespace ZividPython::Calibration

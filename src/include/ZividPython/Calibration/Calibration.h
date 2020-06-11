@@ -2,7 +2,7 @@
 
 #include <ZividPython/Wrappers.h>
 
-namespace ZividPython::HandEye
+namespace ZividPython::Calibration
 {
     void wrapAsSubmodule(pybind11::module &dest);
-} // namespace ZividPython::HandEye
+} // namespace ZividPython::Calibration
