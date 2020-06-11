@@ -101,7 +101,18 @@ def _check_cpp17_compiler():
             ) from ex
 
 
+def _check_python_interpreter_is_64_bit():
+    import sys
+
+    is_64_bits = sys.maxsize > 2 ** 32
+    if not is_64_bits:
+        raise RuntimeError(
+            "Current python interpreter is not of correct architecture. The interpreter must be of 64 bits"
+        )
+
+
 def _main():
+    _check_python_interpreter_is_64_bit()
     # This list is a duplicate of the build-system requirements in pyproject.toml.
     # The purpose of these checks is to help users with PIP<19 lacking support for
     # pyproject.toml
