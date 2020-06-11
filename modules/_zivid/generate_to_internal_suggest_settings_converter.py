@@ -18,7 +18,7 @@ import inflection
 def start_traverse():
     import _zivid
 
-    #from _zivid._zivid.capture_assistant import SuggestSettingsParamters as InternalSettings
+    # from _zivid._zivid.capture_assistant import SuggestSettingsParamters as InternalSettings
     print(dir(_zivid.capture_assistant))
     InternalSettings = _zivid.capture_assistant.SuggestSettingsParameters
     from zivid import Settings

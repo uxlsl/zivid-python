@@ -7,12 +7,12 @@ def to_internal_suggest_settings_parameters(suggest_settings_parameters):
     )
 
     def _to_internal_ambient_light_frequency(ambient_light_frequency):
-        #internal_ambient_light_frequency = (
+        # internal_ambient_light_frequency = (
         #    _zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency()
-        #)
-#
-        #pass  # no children
-        #return internal_ambient_light_frequency
+        # )
+        #
+        # pass  # no children
+        # return internal_ambient_light_frequency
         print(ambient_light_frequency.value)
         print(ambient_light_frequency._value)
         return ambient_light_frequency._valid_values[ambient_light_frequency.value]
