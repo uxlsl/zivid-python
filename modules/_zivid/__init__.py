@@ -8,7 +8,7 @@ try:
         Camera,
         CameraState,
         firmware,
-        hand_eye,
+        calibration,
         capture_assistant,
         Frame,
         FrameInfo,

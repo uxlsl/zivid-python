@@ -1,12 +1,15 @@
+import _zivid
+
+
 class Pose:
     def __init__(self, transformation_matrix):
-        pass
+        self.__impl = _zivid.calibration.Pose(transformation_matrix)
 
     def to_matrix(self):
-        pass
+        print(dir(self.__impl))
 
     def __str__(self):
-        pass
+        return str(self.__impl)
 
 
 # namespace Zivid

@@ -1,19 +1,24 @@
+import _zivid
+
+
 class DetectionResult:
-    def __init__(self, internal_detection_result):
-        pass
+    def __init__(self, impl):
+        self.__impl = impl
 
     def valid(self):
-        pass
+        return self.__impl.valid()
 
     def __bool__(self):
-        pass
+        return self.valid()
 
     def __str__(self):
-        pass
+        return str(self.__impl)
 
 
 def detect_feature_points(point_cloud):
-    pass
+    return DetectionResult(
+        _zivid.calibration.detect_feature_points(point_cloud._PointCloud__impl)
+    )
 
 
 # namespace Zivid

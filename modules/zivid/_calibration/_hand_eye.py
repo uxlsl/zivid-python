@@ -1,57 +1,65 @@
+import _zivid
+from zivid._calibration._pose import Pose
+from zivid._calibration._detector import DetectionResult
+
+
 class HandEyeInput:
     def __init__(self, robot_pose, detection_result):
-        pass
+        self.__impl = _zivid.calibration.CalibrationInput(
+            robot_pose._Pose__impl,  # pylint: disable=protected-access
+            detection_result._DetectionResult__impl,  # pylint: disable=protected-access
+        )
 
     def pose(self):
-        pass
+        return Pose(self.__impl.pose)
 
     def detection_result(self):
-        pass
+        return DetectionResult(self.__impl.detection_result)
 
     def __str__(self):
-        pass
+        return str(self.__impl)
 
 
 class HandEyeResidual:
     def __init__(self, rotation, translation):
-        pass
+        self.__impl = _zivid.calibration.HandEyeResidual(rotation, translation,)
 
     def rotation(self):
-        pass
+        return self.__impl.rotation
 
     def translation(self):
-        pass
+        return self.__impl.translation
 
     def __str__(self):
-        pass
+        return str(self.__impl)
 
 
 class HandEyeOutput:
     def __init__(self, transform, residuals):
-        pass
+        self.__impl = _zivid.calibration.HandEyeOutput(transform, residuals)
 
     def valid(self):
-        pass
+        return self.__impl.valid()
 
     def __bool__(self):
-        pass
+        return self.valid()
 
     def transform(self):
-        pass
+        return self.__impl.transform
 
     def residuals(self):
-        pass
+        return self.__impl.residuals
 
     def __str__(self):
-        pass
+        return str(self.__impl)
 
 
-def calibrate_eye_in_hand(input):
-    pass
+def calibrate_eye_in_hand(calibration_inputs):
+    return HandEyeOutput(_zivid.calibration.calibrate_eye_in_hand(calibration_inputs))
 
 
-def calibrate_eye_to_hand(input):
-    pass
+def calibrate_eye_to_hand(calibration_inputs):
+    return HandEyeOutput(_zivid.calibration.calibrate_eye_to_hand(calibration_inputs))
 
 
 # namespace Zivid
