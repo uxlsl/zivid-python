@@ -5,7 +5,7 @@ from zivid._calibration._detector import DetectionResult
 
 class HandEyeInput:
     def __init__(self, robot_pose, detection_result):
-        self.__impl = _zivid.calibration.CalibrationInput(
+        self.__impl = _zivid.calibration.HandEyeInput(
             robot_pose._Pose__impl,  # pylint: disable=protected-access
             detection_result._DetectionResult__impl,  # pylint: disable=protected-access
         )
@@ -55,7 +55,7 @@ class HandEyeOutput:
 
 
 def calibrate_eye_in_hand(calibration_inputs):
-    return HandEyeOutput(_zivid.calibration.calibrate_eye_in_hand(calibration_inputs))
+    return HandEyeOutput(_zivid.calibration.calibrate_eye_in_hand([calibration_input for calibration_input in calibration_inputs]))
 
 
 def calibrate_eye_to_hand(calibration_inputs):
