@@ -55,7 +55,11 @@ class HandEyeOutput:
 
 
 def calibrate_eye_in_hand(calibration_inputs):
-    return HandEyeOutput(_zivid.calibration.calibrate_eye_in_hand([calibration_input for calibration_input in calibration_inputs]))
+    return HandEyeOutput(
+        _zivid.calibration.calibrate_eye_in_hand(
+            [calibration_input for calibration_input in calibration_inputs]
+        )
+    )
 
 
 def calibrate_eye_to_hand(calibration_inputs):
