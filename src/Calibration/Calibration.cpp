@@ -36,6 +36,7 @@ namespace ZividPython::Calibration
                      return Zivid::Calibration::detectFeaturePoints(releasablePointCloud.impl());
                  })
             .def("calibrate_eye_in_hand", &Zivid::Calibration::calibrateEyeInHand)
-            .def("calibrate_eye_to_hand", &Zivid::Calibration::calibrateEyeToHand);
+            .def("calibrate_eye_to_hand", &Zivid::Calibration::calibrateEyeToHand)
+            .def("calibrate_multi_camera", &Zivid::Calibration::calibrateMultiCamera);
     }
 } // namespace ZividPython::Calibration
