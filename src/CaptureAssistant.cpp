@@ -22,5 +22,6 @@ namespace ZividPython::CaptureAssistant
                     const Zivid::CaptureAssistant::SuggestSettingsParameters &suggestSettingsParameters) {
                      return Zivid::CaptureAssistant::suggestSettings(camera.impl(), suggestSettingsParameters);
                  });
+        
     }
 } // namespace ZividPython::CaptureAssistant

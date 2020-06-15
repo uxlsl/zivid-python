@@ -7,6 +7,7 @@ set(SOURCES
     Calibration/Detector.cpp
     Firmware.cpp
     Calibration/Calibration.cpp
+    Calibration/MultiCamera.cpp
     CaptureAssistant.cpp
     NodeType.cpp
     ReleasablePointCloud.cpp

@@ -2,11 +2,13 @@
 #include <Zivid/Calibration/Detector.h>
 #include <Zivid/Calibration/Pose.h>
 #include <Zivid/PointCloud.h>
+#include <Zivid/Calibration/MultiCamera.h>
 
 #include <ZividPython/Calibration/Calibrate.h>
 #include <ZividPython/Calibration/CalibrationResidual.h>
 #include <ZividPython/Calibration/Detector.h>
 #include <ZividPython/Calibration/Pose.h>
+#include <ZividPython/Calibration/MultiCamera.h>
 #include <ZividPython/ReleasablePointCloud.h>
 #include <ZividPython/Wrappers.h>
 
@@ -25,6 +27,9 @@ namespace ZividPython::Calibration
         ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeInput);
         ZIVID_PYTHON_WRAP_CLASS(dest, DetectionResult);
         ZIVID_PYTHON_WRAP_CLASS(dest, HandEyeResidual);
+
+        ZIVID_PYTHON_WRAP_CLASS(dest, MultiCameraResidual);
+        ZIVID_PYTHON_WRAP_CLASS(dest, MultiCameraOutput);
 
         dest.def("detect_feature_points",
                  [](const ReleasablePointCloud &releasablePointCloud) {
