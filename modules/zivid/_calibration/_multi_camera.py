@@ -2,38 +2,53 @@ import _zivid
 
 
 class MultiCameraResidual:
-    def __init__(self, translation):
-        pass
+    def __init__(self, internal_multi_camera_residual):
+        if not isinstance(
+            internal_multi_camera_residual, _zivid.calibration.MultiCameraResidual
+        ):
+            raise TypeError(f"Unsupported type: {type(internal_multi_camera_residual)}")
+        self.__impl = internal_multi_camera_residual
 
     def translation(self):
-        pass
+        return self.__impl.translation()
 
     def __str__(self):
-        pass
+        return str(self.__impl)
 
 
 class MultiCameraOutput:
-    def __init__(self, transforms, residuals):
-        pass
+    def __init__(self, internal_multi_camera_output):
+        if not isinstance(
+            internal_multi_camera_output, _zivid.calibration.MultiCameraOutput
+        ):
+            raise TypeError(f"Unsupported type: {type(internal_multi_camera_output)}")
+        self.__impl = internal_multi_camera_output
 
     def valid(self):
-        pass
+        return self.__impl.valid()
 
     def __bool__(self):
-        pass
+        return bool(self.__impl)
 
     def transforms(self):
-        pass
+        return self.__impl.transforms()
 
     def residuals(self):
-        pass
+        return self.__impl.residuals()
 
     def __str__(self):
-        pass
+        return str(self.__impl)
 
 
 def calibrate_multi_camera(detection_results):
-    pass
+    return MultiCameraOutput(
+        _zivid.calibration.calibrate_multi_camera(
+            [
+                detection_result._DetectionResult__impl
+                for detection_result in detection_results
+            ]
+        )
+    )
 
 
 # import zivid.calibration.hand_eye

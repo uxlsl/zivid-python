@@ -9,7 +9,7 @@ class DetectionResult:
         return self.__impl.valid()
 
     def __bool__(self):
-        return self.valid()
+        return bool(self.__impl)
 
     def __str__(self):
         return str(self.__impl)
