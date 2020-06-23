@@ -84,6 +84,46 @@ def test_default_settings(application):  # pylint: disable=unused-argument
     assert settings.processing.filters.smoothing.gaussian.sigma is None
 
 
+def test_set_acquisition_list():
+    from zivid import Settings
+
+    settings = Settings()
+
+    settings.acquisitions = [Settings.Acquisition(), settings.Acquisition()]
+    assert settings.acquisitions is not None
+    assert isinstance(settings.acquisitions, list)
+    for element in settings.acquisitions:
+        assert isinstance(element, Settings.Acquisition)
+
+
+def test_set_acquisition_generator():
+    from zivid import Settings
+
+    settings = Settings()
+
+    def _generator():
+        for i in range(3):
+            yield Settings.Acquisition()
+
+    settings.acquisitions = _generator()
+    assert settings.acquisitions is not None
+    assert isinstance(settings.acquisitions, list)
+    for element in settings.acquisitions:
+        assert isinstance(element, Settings.Acquisition)
+
+
+def test_set_acquisition_tuple():
+    from zivid import Settings
+
+    settings = Settings()
+
+    settings.acquisitions = (Settings.Acquisition(), settings.Acquisition())
+    assert settings.acquisitions is not None
+    assert isinstance(settings.acquisitions, list)
+    for element in settings.acquisitions:
+        assert isinstance(element, Settings.Acquisition)
+
+
 def test_default_acquisition(application):  # pylint: disable=unused-argument
     import zivid
     import datetime
