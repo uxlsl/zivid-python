@@ -422,18 +422,17 @@ def create_to_internal_converter(node_data, settings_type: str):
     if node_data.member_variables:
         for member in node_data.member_variables:
             convert_member_logic += "\n    if {name}.{member} is not None:\n".format(
-                name=inflection.underscore(node_data.name),
-                member=inflection.underscore(member),
+                name=inflection.underscore(node_data.name), member=member.snake_case,
             )
 
             convert_member_logic += "\n        {temp_internal_name}.{member} = _zivid.{settings_type}{path}".format(
                 temp_internal_name=temp_internal_name,
-                member=inflection.underscore(member),
+                member=member.snake_case,
                 path=".{path}.{member_as_class}({name}.{member})".format(
                     path=node_data.path,
-                    member_as_class=member,
+                    member_as_class=member.camel_case,
                     name=inflection.underscore(node_data.name),
-                    member=inflection.underscore(member),
+                    member=member.snake_case,
                 )
                 if node_data.path
                 else "()",
@@ -442,9 +441,9 @@ def create_to_internal_converter(node_data, settings_type: str):
             convert_member_logic += "\n    else:"
             convert_member_logic += "\n        {temp_internal_name}.{member} = _zivid.{settings_type}{path}".format(
                 temp_internal_name=temp_internal_name,
-                member=inflection.underscore(member),
+                member=member.snake_case,
                 path=".{path}.{member_as_class}()".format(
-                    path=node_data.path, member_as_class=member,
+                    path=node_data.path, member_as_class=member.camel_case,
                 )
                 if node_data.path
                 else "()",

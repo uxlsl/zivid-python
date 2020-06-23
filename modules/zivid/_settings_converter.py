@@ -563,18 +563,12 @@ def to_internal_settings(settings):
     to_internal_processing = _to_internal_processing
 
     if settings.acquisitions is None:
-        # print("acquis is None")
         internal_settings.acquisitions = _zivid.Settings().Acquisitions()  # TODO
     else:
-        # print("acquis is not None")
         temp = _zivid.Settings().Acquisitions()
         for acq in settings.acquisitions:
-            # print("this is acqui:")
-            # print(acq)
             temp.append(_to_internal_acquisition(acq))
         internal_settings.acquisitions = temp
 
     internal_settings.processing = _to_internal_processing(settings.processing)
-    # print("this is internal settings")
-    # print(internal_settings)
     return internal_settings
