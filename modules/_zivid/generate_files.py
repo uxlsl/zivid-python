@@ -28,7 +28,7 @@ def generate():
     # _zivid.generate_frame_info.start_traverse()
     # _zivid.generate_to_frame_info_converter.start_traverse()
 
-    # _zivid.generate_camera_state.start_traverse()
+    _zivid.generate_camera_state.start_traverse()
     # _zivid.generate_to_camera_state_converter.start_traverse()
 
     # _zivid.generate_settings_2d.start_traverse()
@@ -38,4 +38,4 @@ def generate():
     # needs redoing
     # _zivid.generate_suggest_settings_parameters.start_traverse()
     # _zivid.generate_to_internal_suggest_settings_parameters_converter.start_traverse()
-    _zivid.generate_to_suggest_settings_parameters_converter.start_traverse()
+    # _zivid.generate_to_suggest_settings_parameters_converter.start_traverse()

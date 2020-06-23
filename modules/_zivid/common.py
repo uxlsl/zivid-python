@@ -1,13 +1,14 @@
 import inspect
-from typing import List
+from typing import List, Tuple
 from dataclasses import dataclass
 import inflection
 
 
 @dataclass
 class MemberVariable:
-    name: str
-    variable_name: str
+    camel_case: str
+    snake_case: str
+    # variable_name: str
     default_value: str
 
 
@@ -20,7 +21,7 @@ class NodeData:
     enum_default_value: str
     path: str
     children: tuple
-    member_variables: tuple
+    member_variables: Tuple[MemberVariable]
     indentation_level: int
 
 
@@ -45,14 +46,19 @@ def _get_member_variables(node_data, settings_type: str):
     member_variables = []
     if node_data.member_variables:
         for member_var in node_data.member_variables:
-            default_value = f"_zivid.{settings_type}().{f'{node_data.path}().' if node_data.path else ''}{member_var}().value"
-            name = member_var
-            variable_name = inflection.underscore(member_var)
+            print(member_var)
+            default_value = f"_zivid.{settings_type}().{f'{node_data.path}().' if node_data.path else ''}{member_var.camel_case}().value"
+            # camel_case = member_var
+            # snake_case
+            # variable_name = member_var.snake_case#inflection.underscore(member_var)
             member_variables.append(
                 MemberVariable(
-                    name=name, default_value=default_value, variable_name=variable_name
+                    camel_case=member_var.camel_case,
+                    default_value=default_value,
+                    snake_case=member_var.snake_case,
                 )
             )
+    print(member_variables)
     return member_variables
 
 
@@ -62,8 +68,8 @@ def _get_child_class_member_variables(node_data):
         for child in node_data.children:
             child_class_members_variables.append(
                 MemberVariable(
-                    name=child.name,
-                    variable_name=inflection.underscore(child.name),
+                    camel_case=child.name,
+                    snake_case=inflection.underscore(child.name),
                     # default_value=f"{child.name}()",
                     default_value="None",
                 )
@@ -77,9 +83,9 @@ def _variable_names(node_data, settings_type: str):
     child_class_member_variables = _get_child_class_member_variables(node_data)
     variable_names = list()
     for member in member_variables:
-        variable_names.append(member.variable_name)
+        variable_names.append(member.snake_case)
     for child_class in child_class_member_variables:
-        variable_names.append(child_class.variable_name)
+        variable_names.append(child_class.snake_case)
     return variable_names
 
 
@@ -92,19 +98,21 @@ def _create_init_special_member_function(node_data, settings_type: str):
     member_variable_set = ""
     path = ".{path}".format(path=node_data.path,) if node_data.path else ""
     for member in member_variables:
-        signature_vars += f"{member.variable_name}={member.default_value},"
-        member_variable_set += f"\n        if {member.variable_name} is not None:"
-        member_variable_set += f"\n            self._{member.variable_name} = _zivid.{settings_type}{path}.{inflection.camelize(member.variable_name)}({member.variable_name})"
+        signature_vars += f"{member.snake_case}={member.default_value},"
+        member_variable_set += f"\n        if {member.snake_case} is not None:"
+        member_variable_set += f"\n            self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}({member.snake_case})"
         member_variable_set += f"\n        else:"
-        member_variable_set += f"\n            self._{member.variable_name} = _zivid.{settings_type}{path}.{inflection.camelize(member.variable_name)}()"
+        member_variable_set += f"\n            self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}()"
 
     for child_class in child_class_member_variables:
-        signature_vars += f"{child_class.variable_name}={child_class.default_value},"
-        member_variable_set += f"\n        if {child_class.variable_name} is None:"
-        member_variable_set += f"\n            {child_class.variable_name} = zivid.{settings_type}{path}.{child_class.name}()"
-        member_variable_set += f"\n        if not isinstance({child_class.variable_name}, zivid.{settings_type}{path}.{child_class.name}):"
-        member_variable_set += f"\n            raise TypeError('Unsupported type: {{value}}'.format(value=type({child_class.variable_name})))"
-        member_variable_set += f"\n        self._{inflection.underscore(child_class.name)} = {inflection.underscore(child_class.name)}"
+        signature_vars += f"{child_class.snake_case}={child_class.default_value},"
+        member_variable_set += f"\n        if {child_class.snake_case} is None:"
+        member_variable_set += f"\n            {child_class.snake_case} = zivid.{settings_type}{path}.{child_class.camel_case}()"
+        member_variable_set += f"\n        if not isinstance({child_class.snake_case}, zivid.{settings_type}{path}.{child_class.camel_case}):"
+        member_variable_set += f"\n            raise TypeError('Unsupported type: {{value}}'.format(value=type({child_class.snake_case})))"
+        member_variable_set += (
+            f"\n        self._{child_class.snake_case} = {child_class.snake_case}"
+        )
 
     # for variable_name in _variable_names(node_data, settings_type):
     #    path = ".{path}".format(path=node_data.path,) if node_data.path else ""
@@ -129,11 +137,11 @@ def _create_eq_special_member_function(node_data, settings_type: str):
     child_class_member_variables = _get_child_class_member_variables(node_data)
     for member in member_variables:
         member_variables_equality.append(
-            f"self._{member.variable_name} == other._{member.variable_name}"
+            f"self._{member.snake_case} == other._{member.snake_case}"
         )
     for child in child_class_member_variables:
         member_variables_equality.append(
-            f"self._{child.variable_name} == other._{child.variable_name}"
+            f"self._{child.snake_case} == other._{child.snake_case}"
         )
     equality_logic = " and ".join(member_variables_equality)
     return """def __eq__(self, other):
@@ -153,14 +161,14 @@ def _create_str_special_member_function(node_data, settings_type: str):
     member_variables = _get_member_variables(node_data, settings_type)
     child_class_member_variables = _get_child_class_member_variables(node_data)
     for member in member_variables:
-        element = member.variable_name
+        element = member.snake_case
         member_variables_str += f"{element}: {{{element}}}\n    "
         formatting_string += "{variable_name}=self.{variable_name},".format(
             variable_name=element
         )
 
     for child in child_class_member_variables:
-        element = child.variable_name
+        element = child.snake_case
         member_variables_str += f"{element}: {{{element}}}\n    "
         formatting_string += "{variable_name}=self.{variable_name},".format(
             variable_name=element
@@ -189,13 +197,11 @@ def _create_properties(node_data, settings_type: str):
     set_member_property_template = "    @{member}.setter\n    def {member}(self,value):\n        self._{member} = _zivid.{settings_type}{path}.{non_snake_member}(value)\n"
     for member in node_data.member_variables:
         path = ".{path}".format(path=node_data.path,) if node_data.path else ""
-        get_properties += get_member_property_template.format(
-            member=inflection.underscore(member)
-        )
+        get_properties += get_member_property_template.format(member=member.snake_case)
         set_properties += set_member_property_template.format(
-            member=inflection.underscore(member),
+            member=member.snake_case,
             path=path,
-            non_snake_member=member,
+            non_snake_member=member.camel_case,
             settings_type=settings_type,
         )
     set_child_property_template = "    @{member}.setter\n    def {member}(self,value):\n        if not isinstance(value, zivid.{settings_type}{path}.{non_snake_member}):\n            raise TypeError('Unsupported type {{value}}'.format(value=type(value)))\n        self._{member} = value\n"
@@ -277,7 +283,15 @@ def _recursion(current_class, indentation_level):
     to_be_removed = list()
     for child in child_classes:
         if child.is_leaf:
-            member_variables.append(child.name)
+            print(child.name)
+            print(type(child.name))
+            member_variables.append(
+                MemberVariable(
+                    camel_case=child.name,
+                    snake_case=inflection.underscore(child.name),
+                    default_value="None",
+                )
+            )
             to_be_removed.append(child)
     child_classes = [
         element for element in child_classes if element not in to_be_removed
