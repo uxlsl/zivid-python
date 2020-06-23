@@ -362,7 +362,7 @@ def create_to_not_internal_converter(node_data, settings_type: str):
     member_convert_logic = ""
     for member in node_data.member_variables:
         member_convert_logic += "{member} = {temp_internal_name}.{member}.value,".format(
-            member=inflection.underscore(member),
+            member=member.snake_case,
             # member_not_snake_case=member.lower(),
             temp_internal_name=temp_internal_name,
         )
