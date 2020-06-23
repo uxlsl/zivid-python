@@ -58,9 +58,3 @@ def calibrate_multi_camera(detection_results):
         )
     )
 
-
-# import zivid.calibration.hand_eye
-# zivid.calibration.calibrate_eye_in_hand
-#
-# from zivid.calibration import calibrate_eye_in_hand
-# calibrate_eye_in_hand
