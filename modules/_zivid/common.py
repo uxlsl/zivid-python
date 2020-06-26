@@ -155,37 +155,50 @@ def _create_eq_special_member_function(node_data, settings_type: str):
 
 
 def _create_str_special_member_function(node_data, settings_type: str):
-    member_variables_str = "    "
-    formatting_string = ""
-
+    str_content = ""
     member_variables = _get_member_variables(node_data, settings_type)
-    child_class_member_variables = _get_child_class_member_variables(node_data)
     for member in member_variables:
-        element = member.snake_case
-        member_variables_str += f"{element}: {{{element}}}\n    "
-        formatting_string += "{variable_name}=self.{variable_name},".format(
-            variable_name=element
-        )
 
-    for child in child_class_member_variables:
-        element = child.snake_case
-        member_variables_str += f"{element}: {{{element}}}\n    "
-        formatting_string += "{variable_name}=self.{variable_name},".format(
-            variable_name=element
-        )
 
-    member_variables_str.strip()
-    str_content = """'''{name}:
-{member_variables_str}'''.format({formatting_string})""".format(
-        name=node_data.name,
-        member_variables_str=member_variables_str,
-        formatting_string=formatting_string,
-    )
     return """def __str__(self):
             return {str_content}""".format(
         str_content=str_content
     )
 
+
+## 
+## def _create_str_special_member_function(node_data, settings_type: str):
+##     member_variables_str = "    "
+##     formatting_string = ""
+## 
+##     member_variables = _get_member_variables(node_data, settings_type)
+##     child_class_member_variables = _get_child_class_member_variables(node_data)
+##     for member in member_variables:
+##         element = member.snake_case
+##         member_variables_str += f"{element}: {{{element}}}\n    "
+##         formatting_string += "{variable_name}=self.{variable_name},".format(
+##             variable_name=element
+##         )
+## 
+##     for child in child_class_member_variables:
+##         element = child.snake_case
+##         member_variables_str += f"{element}: {{{element}}}\n    "
+##         formatting_string += "{variable_name}=self.{variable_name},".format(
+##             variable_name=element
+##         )
+## 
+##     member_variables_str.strip()
+##     str_content = """'''{name}:
+## {member_variables_str}'''.format({formatting_string})""".format(
+##         name=node_data.name,
+##         member_variables_str=member_variables_str,
+##         formatting_string=formatting_string,
+##     )
+##     return """def __str__(self):
+##             return {str_content}""".format(
+##         str_content=str_content
+##     )
+## 
 
 def _create_properties(node_data, settings_type: str):
     get_properties = "\n"
