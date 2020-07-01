@@ -1,93 +1,16 @@
 import _zivid
 import zivid
+import zivid._settings_converter
 
 
 class Settings:
     class Acquisition:
-        class Patterns:
-            class Sine:
-                def __init__(
-                    self,
-                    bidirectional=_zivid.Settings()
-                    .Acquisition.Patterns.Sine()
-                    .Bidirectional()
-                    .value,
-                ):
-
-                    if bidirectional is not None:
-                        self._bidirectional = _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional(
-                            bidirectional
-                        )
-                    else:
-                        self._bidirectional = (
-                            _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional()
-                        )
-
-                @property
-                def bidirectional(self):
-                    return self._bidirectional.value
-
-                @bidirectional.setter
-                def bidirectional(self, value):
-                    self._bidirectional = _zivid.Settings.Acquisition.Patterns.Sine.Bidirectional(
-                        value
-                    )
-
-                def __eq__(self, other):
-                    if self._bidirectional == other._bidirectional:
-                        return True
-                    return False
-
-                def __str__(self):
-                    return """Sine:
-                bidirectional: {bidirectional}
-                """.format(
-                        bidirectional=self.bidirectional,
-                    )
-
-            def __init__(
-                self, sine=None,
-            ):
-
-                if sine is None:
-                    sine = zivid.Settings.Acquisition.Patterns.Sine()
-                if not isinstance(sine, zivid.Settings.Acquisition.Patterns.Sine):
-                    raise TypeError(
-                        "Unsupported type: {value}".format(value=type(sine))
-                    )
-                self._sine = sine
-
-            @property
-            def sine(self):
-                return self._sine
-
-            @sine.setter
-            def sine(self, value):
-                if not isinstance(value, zivid.Settings.Acquisition.Patterns.Sine):
-                    raise TypeError(
-                        "Unsupported type {value}".format(value=type(value))
-                    )
-                self._sine = value
-
-            def __eq__(self, other):
-                if self._sine == other._sine:
-                    return True
-                return False
-
-            def __str__(self):
-                return """Patterns:
-            sine: {sine}
-            """.format(
-                    sine=self.sine,
-                )
-
         def __init__(
             self,
             aperture=_zivid.Settings().Acquisition().Aperture().value,
             brightness=_zivid.Settings().Acquisition().Brightness().value,
             exposure_time=_zivid.Settings().Acquisition().ExposureTime().value,
             gain=_zivid.Settings().Acquisition().Gain().value,
-            patterns=None,
         ):
 
             if aperture is not None:
@@ -108,13 +31,6 @@ class Settings:
                 self._gain = _zivid.Settings.Acquisition.Gain(gain)
             else:
                 self._gain = _zivid.Settings.Acquisition.Gain()
-            if patterns is None:
-                patterns = zivid.Settings.Acquisition.Patterns()
-            if not isinstance(patterns, zivid.Settings.Acquisition.Patterns):
-                raise TypeError(
-                    "Unsupported type: {value}".format(value=type(patterns))
-                )
-            self._patterns = patterns
 
         @property
         def aperture(self):
@@ -132,10 +48,6 @@ class Settings:
         def gain(self):
             return self._gain.value
 
-        @property
-        def patterns(self):
-            return self._patterns
-
         @aperture.setter
         def aperture(self, value):
             self._aperture = _zivid.Settings.Acquisition.Aperture(value)
@@ -152,37 +64,18 @@ class Settings:
         def gain(self, value):
             self._gain = _zivid.Settings.Acquisition.Gain(value)
 
-        @patterns.setter
-        def patterns(self, value):
-            if not isinstance(value, zivid.Settings.Acquisition.Patterns):
-                raise TypeError("Unsupported type {value}".format(value=type(value)))
-            self._patterns = value
-
         def __eq__(self, other):
             if (
                 self._aperture == other._aperture
                 and self._brightness == other._brightness
                 and self._exposure_time == other._exposure_time
                 and self._gain == other._gain
-                and self._patterns == other._patterns
             ):
                 return True
             return False
 
         def __str__(self):
-            return """Acquisition:
-        aperture: {aperture}
-        brightness: {brightness}
-        exposure_time: {exposure_time}
-        gain: {gain}
-        patterns: {patterns}
-        """.format(
-                aperture=self.aperture,
-                brightness=self.brightness,
-                exposure_time=self.exposure_time,
-                gain=self.gain,
-                patterns=self.patterns,
-            )
+            return str(zivid._settings_converter.to_internal_acquisition(self))
 
     class Processing:
         class Color:
@@ -243,12 +136,10 @@ class Settings:
                     return False
 
                 def __str__(self):
-                    return """Balance:
-                blue: {blue}
-                green: {green}
-                red: {red}
-                """.format(
-                        blue=self.blue, green=self.green, red=self.red,
+                    return str(
+                        zivid._settings_converter.to_internal_processing_color_balance(
+                            self
+                        )
                     )
 
             def __init__(
@@ -281,11 +172,7 @@ class Settings:
                 return False
 
             def __str__(self):
-                return """Color:
-            balance: {balance}
-            """.format(
-                    balance=self.balance,
-                )
+                return str(zivid._settings_converter.to_internal_processing_color(self))
 
         class Filters:
             class Experimental:
@@ -349,11 +236,10 @@ class Settings:
                             return False
 
                         def __str__(self):
-                            return """Correction:
-                        enabled: {enabled}
-                        strength: {strength}
-                        """.format(
-                                enabled=self.enabled, strength=self.strength,
+                            return str(
+                                zivid._settings_converter.to_internal_processing_filters_experimental_contrast_distortion_correction(
+                                    self
+                                )
                             )
 
                     class Removal:
@@ -415,11 +301,10 @@ class Settings:
                             return False
 
                         def __str__(self):
-                            return """Removal:
-                        enabled: {enabled}
-                        threshold: {threshold}
-                        """.format(
-                                enabled=self.enabled, threshold=self.threshold,
+                            return str(
+                                zivid._settings_converter.to_internal_processing_filters_experimental_contrast_distortion_removal(
+                                    self
+                                )
                             )
 
                     def __init__(
@@ -492,11 +377,10 @@ class Settings:
                         return False
 
                     def __str__(self):
-                        return """ContrastDistortion:
-                    correction: {correction}
-                    removal: {removal}
-                    """.format(
-                            correction=self.correction, removal=self.removal,
+                        return str(
+                            zivid._settings_converter.to_internal_processing_filters_experimental_contrast_distortion(
+                                self
+                            )
                         )
 
                 def __init__(
@@ -539,10 +423,10 @@ class Settings:
                     return False
 
                 def __str__(self):
-                    return """Experimental:
-                contrast_distortion: {contrast_distortion}
-                """.format(
-                        contrast_distortion=self.contrast_distortion,
+                    return str(
+                        zivid._settings_converter.to_internal_processing_filters_experimental(
+                            self
+                        )
                     )
 
             class Noise:
@@ -605,11 +489,10 @@ class Settings:
                         return False
 
                     def __str__(self):
-                        return """Removal:
-                    enabled: {enabled}
-                    threshold: {threshold}
-                    """.format(
-                            enabled=self.enabled, threshold=self.threshold,
+                        return str(
+                            zivid._settings_converter.to_internal_processing_filters_noise_removal(
+                                self
+                            )
                         )
 
                 def __init__(
@@ -646,10 +529,10 @@ class Settings:
                     return False
 
                 def __str__(self):
-                    return """Noise:
-                removal: {removal}
-                """.format(
-                        removal=self.removal,
+                    return str(
+                        zivid._settings_converter.to_internal_processing_filters_noise(
+                            self
+                        )
                     )
 
             class Outlier:
@@ -712,11 +595,10 @@ class Settings:
                         return False
 
                     def __str__(self):
-                        return """Removal:
-                    enabled: {enabled}
-                    threshold: {threshold}
-                    """.format(
-                            enabled=self.enabled, threshold=self.threshold,
+                        return str(
+                            zivid._settings_converter.to_internal_processing_filters_outlier_removal(
+                                self
+                            )
                         )
 
                 def __init__(
@@ -753,10 +635,10 @@ class Settings:
                     return False
 
                 def __str__(self):
-                    return """Outlier:
-                removal: {removal}
-                """.format(
-                        removal=self.removal,
+                    return str(
+                        zivid._settings_converter.to_internal_processing_filters_outlier(
+                            self
+                        )
                     )
 
             class Reflection:
@@ -794,10 +676,10 @@ class Settings:
                         return False
 
                     def __str__(self):
-                        return """Removal:
-                    enabled: {enabled}
-                    """.format(
-                            enabled=self.enabled,
+                        return str(
+                            zivid._settings_converter.to_internal_processing_filters_reflection_removal(
+                                self
+                            )
                         )
 
                 def __init__(
@@ -834,10 +716,10 @@ class Settings:
                     return False
 
                 def __str__(self):
-                    return """Reflection:
-                removal: {removal}
-                """.format(
-                        removal=self.removal,
+                    return str(
+                        zivid._settings_converter.to_internal_processing_filters_reflection(
+                            self
+                        )
                     )
 
             class Smoothing:
@@ -900,11 +782,10 @@ class Settings:
                         return False
 
                     def __str__(self):
-                        return """Gaussian:
-                    enabled: {enabled}
-                    sigma: {sigma}
-                    """.format(
-                            enabled=self.enabled, sigma=self.sigma,
+                        return str(
+                            zivid._settings_converter.to_internal_processing_filters_smoothing_gaussian(
+                                self
+                            )
                         )
 
                 def __init__(
@@ -943,10 +824,10 @@ class Settings:
                     return False
 
                 def __str__(self):
-                    return """Smoothing:
-                gaussian: {gaussian}
-                """.format(
-                        gaussian=self.gaussian,
+                    return str(
+                        zivid._settings_converter.to_internal_processing_filters_smoothing(
+                            self
+                        )
                     )
 
             def __init__(
@@ -1074,18 +955,8 @@ class Settings:
                 return False
 
             def __str__(self):
-                return """Filters:
-            experimental: {experimental}
-            noise: {noise}
-            outlier: {outlier}
-            reflection: {reflection}
-            smoothing: {smoothing}
-            """.format(
-                    experimental=self.experimental,
-                    noise=self.noise,
-                    outlier=self.outlier,
-                    reflection=self.reflection,
-                    smoothing=self.smoothing,
+                return str(
+                    zivid._settings_converter.to_internal_processing_filters(self)
                 )
 
         def __init__(
@@ -1129,12 +1000,45 @@ class Settings:
             return False
 
         def __str__(self):
-            return """Processing:
-        color: {color}
-        filters: {filters}
-        """.format(
-                color=self.color, filters=self.filters,
-            )
+            return str(zivid._settings_converter.to_internal_processing(self))
+
+    def __init__(
+        self, acquisitions=None, processing=None,
+    ):
+        from collections.abc import Iterable
+
+        if acquisitions is None:
+            acquisitions = _zivid.Settings().Acquisitions().value
+        if not isinstance(acquisitions, Iterable):
+            raise TypeError("Unsupported type: {value}".format(value=type(processing)))
+        self._acquisitions = _convert_to_acquistions(acquisitions)
+
+        if processing is None:
+            processing = zivid.Settings.Processing()
+        if not isinstance(processing, zivid.Settings.Processing):
+            raise TypeError("Unsupported type: {value}".format(value=type(processing)))
+        self._processing = processing
+
+    @property
+    def processing(self):
+        return self._processing
+
+    @processing.setter
+    def processing(self, value):
+        if not isinstance(value, zivid.Settings.Processing):
+            raise TypeError("Unsupported type {value}".format(value=type(value)))
+        self._processing = value
+
+    def __eq__(self, other):
+        if (
+            self._acquisitions == other._acquisitions
+            and self._processing == other._processing
+        ):
+            return True
+        return False
+
+    def __str__(self):
+        return str(zivid._settings_converter.to_internal_settings(self))
 
     def __init__(
         self, acquisitions=None, processing=None,
@@ -1157,16 +1061,6 @@ class Settings:
     def acquisitions(self):
         return self._acquisitions
 
-    @property
-    def processing(self):
-        return self._processing
-
-    @processing.setter
-    def processing(self, value):
-        if not isinstance(value, zivid.Settings.Processing):
-            raise TypeError("Unsupported type {value}".format(value=type(value)))
-        self._processing = value
-
     @acquisitions.setter
     def acquisitions(self, value):
         from collections.abc import Iterable
@@ -1184,13 +1078,7 @@ class Settings:
         return False
 
     def __str__(self):
-        return """Settings:
-    acquisitions: {acquisitions}
-    processing: {processing}
-    """.format(
-            acquisitions="\n".join([str(element) for element in self.acquisitions]),
-            processing=self.processing,
-        )
+        return str(zivid._settings_converter.to_internal_settings(self))
 
 
 def _convert_to_acquistions(inputs):

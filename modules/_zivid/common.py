@@ -33,12 +33,16 @@ def _inner_classes_list(cls) -> List:
     ]
 
 
-def _imports(internal: bool, settings: bool) -> str:
+def _imports(
+    internal: bool, settings: bool, additional_imports: tuple = tuple()
+) -> str:
     imports = ""
     if internal:
         imports += "    import _zivid\n"
     if settings:
         imports += "    import zivid\n"
+    for additional_import in additional_imports:
+        imports += f"    import {additional_import}"
     return imports
 
 
@@ -159,9 +163,14 @@ def _create_str_special_member_function(node_data, settings_type: str):
     member_variables = _get_member_variables(node_data, settings_type)
     # for member in member_variables:
     #     pass
-    str_content = "str(to_internal_something(self))"
+    standard_path = inflection.underscore(node_data.path.replace(".", "_"))
+    if not standard_path:
+        output = inflection.underscore(node_data.name)
+    else:
+        output = standard_path
+    to_internal_function = f"to_internal_{output}"  # _{node_data.name}"
+    str_content = f"str(zivid._{inflection.underscore(settings_type)}_converter.{to_internal_function}(self))"
     # str_content
-
 
     return """def __str__(self):
             return {str_content}""".format(
@@ -169,11 +178,11 @@ def _create_str_special_member_function(node_data, settings_type: str):
     )
 
 
-## 
+##
 ## def _create_str_special_member_function(node_data, settings_type: str):
 ##     member_variables_str = "    "
 ##     formatting_string = ""
-## 
+##
 ##     member_variables = _get_member_variables(node_data, settings_type)
 ##     child_class_member_variables = _get_child_class_member_variables(node_data)
 ##     for member in member_variables:
@@ -182,14 +191,14 @@ def _create_str_special_member_function(node_data, settings_type: str):
 ##         formatting_string += "{variable_name}=self.{variable_name},".format(
 ##             variable_name=element
 ##         )
-## 
+##
 ##     for child in child_class_member_variables:
 ##         element = child.snake_case
 ##         member_variables_str += f"{element}: {{{element}}}\n    "
 ##         formatting_string += "{variable_name}=self.{variable_name},".format(
 ##             variable_name=element
 ##         )
-## 
+##
 ##     member_variables_str.strip()
 ##     str_content = """'''{name}:
 ## {member_variables_str}'''.format({formatting_string})""".format(
@@ -201,7 +210,8 @@ def _create_str_special_member_function(node_data, settings_type: str):
 ##             return {str_content}""".format(
 ##         str_content=str_content
 ##     )
-## 
+##
+
 
 def _create_properties(node_data, settings_type: str):
     get_properties = "\n"

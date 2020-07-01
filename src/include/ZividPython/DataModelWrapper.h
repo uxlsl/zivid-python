@@ -125,7 +125,9 @@ namespace ZividPython
                         pyEnum.export_values();
                     });
                 }
-                pyClass.def(py::init<const std::conditional_t<Zivid::DataModel::IsOptional<Target>::value, std::optional<ValueType>, ValueType> &> (), py::arg("value"))
+                //pyClass.def(py::init<const std::conditional_t<Zivid::DataModel::IsOptional<Target>::value, std::optional<ValueType>, ValueType> &> (), py::arg("value"))
+                pyClass
+                    .def(py::init<const ValueType &>(), py::arg("value"))
 
                     .def_property_readonly("value",
                                            [](const Target &target) -> std::optional<typename Target::ValueType> {

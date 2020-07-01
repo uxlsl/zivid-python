@@ -57,4 +57,3 @@ def calibrate_multi_camera(detection_results):
             ]
         )
     )
-
