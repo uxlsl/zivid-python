@@ -157,7 +157,10 @@ def _create_eq_special_member_function(node_data, settings_type: str):
 def _create_str_special_member_function(node_data, settings_type: str):
     str_content = ""
     member_variables = _get_member_variables(node_data, settings_type)
-    for member in member_variables:
+    # for member in member_variables:
+    #     pass
+    str_content = "str(to_internal_something(self))"
+    # str_content
 
 
     return """def __str__(self):
