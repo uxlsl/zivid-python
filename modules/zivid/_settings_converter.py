@@ -1,25 +1,12 @@
+"""Auto generated, do not edit"""
 import zivid
+import _zivid
 
 
 def to_settings(internal_settings):
     def _to_acquisition(internal_acquisition):
-        def _to_patterns(internal_patterns):
-            def _to_sine(internal_sine):
 
-                return zivid.Settings.Acquisition.Patterns.Sine(
-                    bidirectional=internal_sine.bidirectional.value,
-                )
-
-            global to_acquisition_patterns_sine
-            to_acquisition_patterns_sine = _to_sine
-            return zivid.Settings.Acquisition.Patterns(
-                sine=_to_sine(internal_patterns.sine),
-            )
-
-        global to_acquisition_patterns
-        to_acquisition_patterns = _to_patterns
         return zivid.Settings.Acquisition(
-            patterns=_to_patterns(internal_acquisition.patterns),
             aperture=internal_acquisition.aperture.value,
             brightness=internal_acquisition.brightness.value,
             exposure_time=internal_acquisition.exposure_time.value,
@@ -171,24 +158,12 @@ def to_settings(internal_settings):
     global to_processing
     to_processing = _to_processing
 
-    # check here as well
-    # print("printing aquis before converting from internal:")
-    # for e in [element for element in internal_settings.acquisitions.value]:
-    #     print(e)
-    # print("printing acuqis after internally converted")
-    # for e in [
-    #     _to_acquisition(element) for element in internal_settings.acquisitions.value
-    # ]:
-    #     print(e)
     return zivid.Settings(
         processing=_to_processing(internal_settings.processing),
         acquisitions=[
             _to_acquisition(element) for element in internal_settings.acquisitions.value
         ],
     )
-
-
-import _zivid
 
 
 def to_internal_settings(settings):
