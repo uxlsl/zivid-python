@@ -1,3 +1,4 @@
+"""Auto generated, do not edit"""
 import _zivid
 import zivid
 import zivid._settings_converter
