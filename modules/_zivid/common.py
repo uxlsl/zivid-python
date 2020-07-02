@@ -41,7 +41,7 @@ def _inner_classes_list(cls) -> List:
 def _imports(
     internal: bool, settings: bool, additional_imports: tuple = tuple()
 ) -> str:
-    imports = ""
+    imports = "    '''Auto generated, do not edit'''\n"
     if internal:
         imports += "    import _zivid\n"
     if settings:
