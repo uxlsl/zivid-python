@@ -9,15 +9,15 @@ from _zivid.common import (
     _create_class,
     _imports,
     _recursion,
-    common_class_generation,
+    common_to_internal_generation,
 )
+import tempfile
+from pathlib import Path
+import inflection
+from _zivid import CameraState
 
 
 def start_traverse():
-    from _zivid._zivid import CameraState
-
-    common_class_generation(
-        internal_class=CameraState,
-        settings_type="CameraState",
-        converter_import="_camera_state_converter",
+    common_to_internal_generation(
+        internal_class=CameraState, settings_type="CameraState"
     )

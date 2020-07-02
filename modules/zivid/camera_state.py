@@ -1,5 +1,7 @@
+"""Auto generated, do not edit"""
 import _zivid
 import zivid
+import zivid._camera_state_converter
 
 
 class CameraState:
@@ -13,26 +15,11 @@ class CameraState:
             pcb=_zivid.CameraState().Temperature().PCB().value,
         ):
 
-            if dmd is not None:
-                self._dmd = _zivid.CameraState.Temperature.DMD(dmd)
-            else:
-                self._dmd = _zivid.CameraState.Temperature.DMD()
-            if general is not None:
-                self._general = _zivid.CameraState.Temperature.General(general)
-            else:
-                self._general = _zivid.CameraState.Temperature.General()
-            if led is not None:
-                self._led = _zivid.CameraState.Temperature.LED(led)
-            else:
-                self._led = _zivid.CameraState.Temperature.LED()
-            if lens is not None:
-                self._lens = _zivid.CameraState.Temperature.Lens(lens)
-            else:
-                self._lens = _zivid.CameraState.Temperature.Lens()
-            if pcb is not None:
-                self._pcb = _zivid.CameraState.Temperature.PCB(pcb)
-            else:
-                self._pcb = _zivid.CameraState.Temperature.PCB()
+            self._dmd = _zivid.CameraState.Temperature.DMD(dmd)
+            self._general = _zivid.CameraState.Temperature.General(general)
+            self._led = _zivid.CameraState.Temperature.LED(led)
+            self._lens = _zivid.CameraState.Temperature.Lens(lens)
+            self._pcb = _zivid.CameraState.Temperature.PCB(pcb)
 
         @property
         def dmd(self):
@@ -86,19 +73,7 @@ class CameraState:
             return False
 
         def __str__(self):
-            return """Temperature:
-        dmd: {dmd}
-        general: {general}
-        led: {led}
-        lens: {lens}
-        pcb: {pcb}
-        """.format(
-                dmd=self.dmd,
-                general=self.general,
-                led=self.led,
-                lens=self.lens,
-                pcb=self.pcb,
-            )
+            return str(zivid._camera_state_converter.to_internal_temperature(self))
 
     def __init__(
         self,
@@ -107,14 +82,8 @@ class CameraState:
         temperature=None,
     ):
 
-        if available is not None:
-            self._available = _zivid.CameraState.Available(available)
-        else:
-            self._available = _zivid.CameraState.Available()
-        if connected is not None:
-            self._connected = _zivid.CameraState.Connected(connected)
-        else:
-            self._connected = _zivid.CameraState.Connected()
+        self._available = _zivid.CameraState.Available(available)
+        self._connected = _zivid.CameraState.Connected(connected)
         if temperature is None:
             temperature = zivid.CameraState.Temperature()
         if not isinstance(temperature, zivid.CameraState.Temperature):
@@ -157,12 +126,4 @@ class CameraState:
         return False
 
     def __str__(self):
-        return """CameraState:
-    available: {available}
-    connected: {connected}
-    temperature: {temperature}
-    """.format(
-            available=self.available,
-            connected=self.connected,
-            temperature=self.temperature,
-        )
+        return str(zivid._camera_state_converter.to_internal_camera_state(self))
