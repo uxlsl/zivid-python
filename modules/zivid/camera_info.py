@@ -1,5 +1,7 @@
+"""Auto generated, do not edit"""
 import _zivid
 import zivid
+import zivid._camera_info_converter
 
 
 class CameraInfo:
@@ -10,14 +12,8 @@ class CameraInfo:
             minor=_zivid.CameraInfo().Revision().Minor().value,
         ):
 
-            if major is not None:
-                self._major = _zivid.CameraInfo.Revision.Major(major)
-            else:
-                self._major = _zivid.CameraInfo.Revision.Major()
-            if minor is not None:
-                self._minor = _zivid.CameraInfo.Revision.Minor(minor)
-            else:
-                self._minor = _zivid.CameraInfo.Revision.Minor()
+            self._major = _zivid.CameraInfo.Revision.Major(major)
+            self._minor = _zivid.CameraInfo.Revision.Minor(minor)
 
         @property
         def major(self):
@@ -41,24 +37,16 @@ class CameraInfo:
             return False
 
         def __str__(self):
-            return """Revision:
-        major: {major}
-        minor: {minor}
-        """.format(
-                major=self.major, minor=self.minor,
-            )
+            return str(zivid._camera_info_converter.to_internal_revision(self))
 
     class UserData:
         def __init__(
             self, max_size_bytes=_zivid.CameraInfo().UserData().MaxSizeBytes().value,
         ):
 
-            if max_size_bytes is not None:
-                self._max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(
-                    max_size_bytes
-                )
-            else:
-                self._max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes()
+            self._max_size_bytes = _zivid.CameraInfo.UserData.MaxSizeBytes(
+                max_size_bytes
+            )
 
         @property
         def max_size_bytes(self):
@@ -74,11 +62,7 @@ class CameraInfo:
             return False
 
         def __str__(self):
-            return """UserData:
-        max_size_bytes: {max_size_bytes}
-        """.format(
-                max_size_bytes=self.max_size_bytes,
-            )
+            return str(zivid._camera_info_converter.to_internal_user_data(self))
 
     def __init__(
         self,
@@ -89,18 +73,9 @@ class CameraInfo:
         user_data=None,
     ):
 
-        if firmware_version is not None:
-            self._firmware_version = _zivid.CameraInfo.FirmwareVersion(firmware_version)
-        else:
-            self._firmware_version = _zivid.CameraInfo.FirmwareVersion()
-        if model_name is not None:
-            self._model_name = _zivid.CameraInfo.ModelName(model_name)
-        else:
-            self._model_name = _zivid.CameraInfo.ModelName()
-        if serial_number is not None:
-            self._serial_number = _zivid.CameraInfo.SerialNumber(serial_number)
-        else:
-            self._serial_number = _zivid.CameraInfo.SerialNumber()
+        self._firmware_version = _zivid.CameraInfo.FirmwareVersion(firmware_version)
+        self._model_name = _zivid.CameraInfo.ModelName(model_name)
+        self._serial_number = _zivid.CameraInfo.SerialNumber(serial_number)
         if revision is None:
             revision = zivid.CameraInfo.Revision()
         if not isinstance(revision, zivid.CameraInfo.Revision):
@@ -168,16 +143,4 @@ class CameraInfo:
         return False
 
     def __str__(self):
-        return """CameraInfo:
-    firmware_version: {firmware_version}
-    model_name: {model_name}
-    serial_number: {serial_number}
-    revision: {revision}
-    user_data: {user_data}
-    """.format(
-            firmware_version=self.firmware_version,
-            model_name=self.model_name,
-            serial_number=self.serial_number,
-            revision=self.revision,
-            user_data=self.user_data,
-        )
+        return str(zivid._camera_info_converter.to_internal_camera_info(self))
