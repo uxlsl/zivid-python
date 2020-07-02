@@ -125,21 +125,35 @@ namespace ZividPython
                         pyEnum.export_values();
                     });
                 }
-                //pyClass.def(py::init<const std::conditional_t<Zivid::DataModel::IsOptional<Target>::value, std::optional<ValueType>, ValueType> &> (), py::arg("value"))
-                pyClass
-                    .def(py::init<const ValueType &>(), py::arg("value"))
+                if constexpr(!Zivid::DataModel::IsOptional<Target>::value)
+                {
+                    pyClass.def(py::init<const ValueType &>(), py::arg("value"));
+                }
+                else
+                {
+                    pyClass.def(py::init([](std::optional<ValueType> &value) {
+                                    if(value)
+                                    {
+                                        return std::make_unique<Target>(value.value());
+                                    }
+                                    return std::make_unique<Target>();
+                                }),
+                                py::arg("value"));
+                }
+                //pyClass
+                //    .def(py::init<const ValueType &>(), py::arg("value"))
 
-                    .def_property_readonly("value",
-                                           [](const Target &target) -> std::optional<typename Target::ValueType> {
-                                               if(hasValue(target))
-                                               {
-                                                   return target.value();
-                                               }
-                                               else
-                                               {
-                                                   return {};
-                                               }
-                                           });
+                pyClass.def_property_readonly(
+                    "value", [](const Target &target) -> std::optional<typename Target::ValueType> {
+                        if(hasValue(target))
+                        {
+                            return target.value();
+                        }
+                        else
+                        {
+                            return {};
+                        }
+                    });
 
                 if constexpr(!std::is_same_v<ValueType, bool>)
                 {
