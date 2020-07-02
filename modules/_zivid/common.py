@@ -452,11 +452,11 @@ def create_to_internal_converter(node_data, settings_type: str):
     convert_member_logic = ""
     if node_data.member_variables:
         for member in node_data.member_variables:
-            convert_member_logic += "\n    if {name}.{member} is not None:\n".format(
-                name=inflection.underscore(node_data.name), member=member.snake_case,
-            )
+            # convert_member_logic += "\n    if {name}.{member} is not None:\n".format(
+            #     name=inflection.underscore(node_data.name), member=member.snake_case,
+            # )
 
-            convert_member_logic += "\n        {temp_internal_name}.{member} = _zivid.{settings_type}{path}".format(
+            convert_member_logic += "\n    {temp_internal_name}.{member} = _zivid.{settings_type}{path}".format(
                 temp_internal_name=temp_internal_name,
                 member=member.snake_case,
                 path=".{path}.{member_as_class}({name}.{member})".format(
@@ -466,20 +466,24 @@ def create_to_internal_converter(node_data, settings_type: str):
                     member=member.snake_case,
                 )
                 if node_data.path
-                else "()",
+                else ".{member_as_class}({name}.{member})".format(
+                    member_as_class=member.camel_case,
+                    name=inflection.underscore(node_data.name),
+                    member=member.snake_case,
+                ),
                 settings_type=settings_type,
             )
-            convert_member_logic += "\n    else:"
-            convert_member_logic += "\n        {temp_internal_name}.{member} = _zivid.{settings_type}{path}".format(
-                temp_internal_name=temp_internal_name,
-                member=member.snake_case,
-                path=".{path}.{member_as_class}()".format(
-                    path=node_data.path, member_as_class=member.camel_case,
-                )
-                if node_data.path
-                else "()",
-                settings_type=settings_type,
-            )
+            # convert_member_logic += "\n    else:"
+            # convert_member_logic += "\n        {temp_internal_name}.{member} = _zivid.{settings_type}{path}".format(
+            #     temp_internal_name=temp_internal_name,
+            #     member=member.snake_case,
+            #     path=".{path}.{member_as_class}()".format(
+            #         path=node_data.path, member_as_class=member.camel_case,
+            #     )
+            #     if node_data.path
+            #     else "()",
+            #     settings_type=settings_type,
+            # )
 
     convert_children_logic = ""
     global_functions = ""
@@ -549,7 +553,7 @@ def common_class_generation(*, internal_class, settings_type, converter_import):
         raw_text = _imports(
             internal=True,
             settings=True,
-            additional_imports=(f"zivid.{converter_import}",),  # _settings_converter
+            additional_imports=(f"zivid.{converter_import}",),
         )
         raw_text += _create_class(data_model, settings_type=settings_type)
 
@@ -567,5 +571,24 @@ def common_class_generation(*, internal_class, settings_type, converter_import):
         path_to_settings.write_text(temp_file.read_text())
 
 
-# def _create_settings_py(data_model, settings_type):
-#     return _create_class(data_model, settings_type="Settings")
+def common_to_internal_generation(*, internal_class, settings_type):
+    data_model = _recursion(internal_class, indentation_level=0)
+    with tempfile.NamedTemporaryFile(suffix=".py") as temp_file:
+        temp_file = Path(temp_file.name)
+        raw_text = _imports(internal=True, settings=False)
+        raw_text += create_to_internal_converter(
+            data_model, settings_type=settings_type
+        )
+
+        new_lines = []
+        for line in raw_text.splitlines():
+            new_lines.append(line[4:])
+
+        temp_file.write_text("\n".join(new_lines))
+        print(temp_file.read_text())
+        subprocess.check_output((f"black {temp_file}"), shell=True)
+        print(temp_file.read_text())
+        path_to_settings = (
+            Path(__file__).resolve() / ".." / ".." / "zivid" / "settings__3d.py"
+        ).resolve()
+        path_to_settings.write_text(temp_file.read_text())

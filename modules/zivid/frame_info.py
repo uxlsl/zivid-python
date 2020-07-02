@@ -1,5 +1,7 @@
+"""Auto generated, do not edit"""
 import _zivid
 import zivid
+import zivid._frame_info_converter
 
 
 class FrameInfo:
@@ -8,10 +10,7 @@ class FrameInfo:
             self, core=_zivid.FrameInfo().SoftwareVersion().Core().value,
         ):
 
-            if core is not None:
-                self._core = _zivid.FrameInfo.SoftwareVersion.Core(core)
-            else:
-                self._core = _zivid.FrameInfo.SoftwareVersion.Core()
+            self._core = _zivid.FrameInfo.SoftwareVersion.Core(core)
 
         @property
         def core(self):
@@ -27,20 +26,13 @@ class FrameInfo:
             return False
 
         def __str__(self):
-            return """SoftwareVersion:
-        core: {core}
-        """.format(
-                core=self.core,
-            )
+            return str(zivid._frame_info_converter.to_internal_software_version(self))
 
     def __init__(
         self, time_stamp=_zivid.FrameInfo().TimeStamp().value, software_version=None,
     ):
 
-        if time_stamp is not None:
-            self._time_stamp = _zivid.FrameInfo.TimeStamp(time_stamp)
-        else:
-            self._time_stamp = _zivid.FrameInfo.TimeStamp()
+        self._time_stamp = _zivid.FrameInfo.TimeStamp(time_stamp)
         if software_version is None:
             software_version = zivid.FrameInfo.SoftwareVersion()
         if not isinstance(software_version, zivid.FrameInfo.SoftwareVersion):
@@ -76,9 +68,4 @@ class FrameInfo:
         return False
 
     def __str__(self):
-        return """FrameInfo:
-    time_stamp: {time_stamp}
-    software_version: {software_version}
-    """.format(
-            time_stamp=self.time_stamp, software_version=self.software_version,
-        )
+        return str(zivid._frame_info_converter.to_internal_frame_info(self))
