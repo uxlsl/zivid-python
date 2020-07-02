@@ -12,8 +12,8 @@ def test_to_internal_camera_info_to_camera_info_modified():
         to_internal_camera_info(modified_camera_info)
     )
     assert modified_camera_info == converted_camera_info
-    assert isinstance(converted_camera_info, camera_info)
-    assert isinstance(modified_camera_info, camera_info)
+    assert isinstance(converted_camera_info, CameraInfo)
+    assert isinstance(modified_camera_info, CameraInfo)
 
 
 def test_to_internal_camera_info_to_camera_info_default():
@@ -23,8 +23,8 @@ def test_to_internal_camera_info_to_camera_info_default():
     default_camera_info = CameraInfo()
     converted_camera_info = to_camera_info(to_internal_camera_info(default_camera_info))
     assert default_camera_info == converted_camera_info
-    assert isinstance(converted_camera_info, camera_info)
-    assert isinstance(default_camera_info, camera_info)
+    assert isinstance(converted_camera_info, CameraInfo)
+    assert isinstance(default_camera_info, CameraInfo)
 
 
 #

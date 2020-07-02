@@ -12,8 +12,8 @@ def test_to_internal_camera_state_to_camera_state_modified():
         to_internal_camera_state(modified_camera_state)
     )
     assert modified_camera_state == converted_camera_state
-    assert isinstance(converted_camera_state, camera_state)
-    assert isinstance(modified_camera_state, camera_state)
+    assert isinstance(converted_camera_state, CameraState)
+    assert isinstance(modified_camera_state, CameraState)
 
 
 def test_to_internal_camera_state_to_camera_state_default():
@@ -25,5 +25,5 @@ def test_to_internal_camera_state_to_camera_state_default():
         to_internal_camera_state(default_camera_state)
     )
     assert default_camera_state == converted_camera_state
-    assert isinstance(converted_camera_state, camera_state)
-    assert isinstance(default_camera_state, camera_state)
+    assert isinstance(converted_camera_state, CameraState)
+    assert isinstance(default_camera_state, CameraState)
