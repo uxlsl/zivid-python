@@ -48,4 +48,4 @@ def generate():
     # needs redoing
     # _zivid.generate_suggest_settings_parameters.start_traverse()
     # _zivid.generate_to_internal_suggest_settings_parameters_converter.start_traverse()
-    # _zivid.generate_to_suggest_settings_parameters_converter.start_traverse()
+    _zivid.generate_to_suggest_settings_parameters_converter.start_traverse()
