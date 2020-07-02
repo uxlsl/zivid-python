@@ -108,10 +108,10 @@ def _create_init_special_member_function(node_data, settings_type: str):
     path = ".{path}".format(path=node_data.path,) if node_data.path else ""
     for member in member_variables:
         signature_vars += f"{member.snake_case}={member.default_value},"
-        member_variable_set += f"\n        if {member.snake_case} is not None:"
-        member_variable_set += f"\n            self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}({member.snake_case})"
-        member_variable_set += f"\n        else:"
-        member_variable_set += f"\n            self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}()"
+        # member_variable_set += f"\n        if {member.snake_case} is not None:"
+        member_variable_set += f"\n        self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}({member.snake_case})"
+        # member_variable_set += f"\n        else:"
+        # member_variable_set += f"\n            self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}()"
 
     for child_class in child_class_member_variables:
         signature_vars += f"{child_class.snake_case}={child_class.default_value},"

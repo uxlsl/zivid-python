@@ -296,38 +296,3 @@ def _convert_to_acquistions(inputs):
                 )
             )
     return temp
-
-
-def _to_internal_acquisition(acquisition):
-    internal_acquisition = _zivid.Settings2D.Acquisition()
-
-    if acquisition.aperture is not None:
-
-        internal_acquisition.aperture = _zivid.Settings2D.Acquisition.Aperture(
-            acquisition.aperture
-        )
-    else:
-        internal_acquisition.aperture = _zivid.Settings2D.Acquisition.Aperture()
-    if acquisition.brightness is not None:
-
-        internal_acquisition.brightness = _zivid.Settings2D.Acquisition.Brightness(
-            acquisition.brightness
-        )
-    else:
-        internal_acquisition.brightness = _zivid.Settings2D.Acquisition.Brightness()
-    if acquisition.exposure_time is not None:
-
-        internal_acquisition.exposure_time = _zivid.Settings2D.Acquisition.ExposureTime(
-            acquisition.exposure_time
-        )
-    else:
-        internal_acquisition.exposure_time = (
-            _zivid.Settings2D.Acquisition.ExposureTime()
-        )
-    if acquisition.gain is not None:
-
-        internal_acquisition.gain = _zivid.Settings2D.Acquisition.Gain(acquisition.gain)
-    else:
-        internal_acquisition.gain = _zivid.Settings2D.Acquisition.Gain()
-    pass  # no children
-    return internal_acquisition

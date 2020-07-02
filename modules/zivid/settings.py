@@ -13,24 +13,12 @@ class Settings:
             gain=_zivid.Settings().Acquisition().Gain().value,
         ):
 
-            if aperture is not None:
-                self._aperture = _zivid.Settings.Acquisition.Aperture(aperture)
-            else:
-                self._aperture = _zivid.Settings.Acquisition.Aperture()
-            if brightness is not None:
-                self._brightness = _zivid.Settings.Acquisition.Brightness(brightness)
-            else:
-                self._brightness = _zivid.Settings.Acquisition.Brightness()
-            if exposure_time is not None:
-                self._exposure_time = _zivid.Settings.Acquisition.ExposureTime(
-                    exposure_time
-                )
-            else:
-                self._exposure_time = _zivid.Settings.Acquisition.ExposureTime()
-            if gain is not None:
-                self._gain = _zivid.Settings.Acquisition.Gain(gain)
-            else:
-                self._gain = _zivid.Settings.Acquisition.Gain()
+            self._aperture = _zivid.Settings.Acquisition.Aperture(aperture)
+            self._brightness = _zivid.Settings.Acquisition.Brightness(brightness)
+            self._exposure_time = _zivid.Settings.Acquisition.ExposureTime(
+                exposure_time
+            )
+            self._gain = _zivid.Settings.Acquisition.Gain(gain)
 
         @property
         def aperture(self):
@@ -87,20 +75,9 @@ class Settings:
                     red=_zivid.Settings().Processing.Color.Balance().Red().value,
                 ):
 
-                    if blue is not None:
-                        self._blue = _zivid.Settings.Processing.Color.Balance.Blue(blue)
-                    else:
-                        self._blue = _zivid.Settings.Processing.Color.Balance.Blue()
-                    if green is not None:
-                        self._green = _zivid.Settings.Processing.Color.Balance.Green(
-                            green
-                        )
-                    else:
-                        self._green = _zivid.Settings.Processing.Color.Balance.Green()
-                    if red is not None:
-                        self._red = _zivid.Settings.Processing.Color.Balance.Red(red)
-                    else:
-                        self._red = _zivid.Settings.Processing.Color.Balance.Red()
+                    self._blue = _zivid.Settings.Processing.Color.Balance.Blue(blue)
+                    self._green = _zivid.Settings.Processing.Color.Balance.Green(green)
+                    self._red = _zivid.Settings.Processing.Color.Balance.Red(red)
 
                 @property
                 def blue(self):
@@ -190,22 +167,12 @@ class Settings:
                             .value,
                         ):
 
-                            if enabled is not None:
-                                self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Enabled(
-                                    enabled
-                                )
-                            else:
-                                self._enabled = (
-                                    _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Enabled()
-                                )
-                            if strength is not None:
-                                self._strength = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength(
-                                    strength
-                                )
-                            else:
-                                self._strength = (
-                                    _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength()
-                                )
+                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Enabled(
+                                enabled
+                            )
+                            self._strength = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength(
+                                strength
+                            )
 
                         @property
                         def enabled(self):
@@ -255,22 +222,12 @@ class Settings:
                             .value,
                         ):
 
-                            if enabled is not None:
-                                self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Enabled(
-                                    enabled
-                                )
-                            else:
-                                self._enabled = (
-                                    _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Enabled()
-                                )
-                            if threshold is not None:
-                                self._threshold = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold(
-                                    threshold
-                                )
-                            else:
-                                self._threshold = (
-                                    _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold()
-                                )
+                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Enabled(
+                                enabled
+                            )
+                            self._threshold = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold(
+                                threshold
+                            )
 
                         @property
                         def enabled(self):
@@ -443,22 +400,12 @@ class Settings:
                         .value,
                     ):
 
-                        if enabled is not None:
-                            self._enabled = _zivid.Settings.Processing.Filters.Noise.Removal.Enabled(
-                                enabled
-                            )
-                        else:
-                            self._enabled = (
-                                _zivid.Settings.Processing.Filters.Noise.Removal.Enabled()
-                            )
-                        if threshold is not None:
-                            self._threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
-                                threshold
-                            )
-                        else:
-                            self._threshold = (
-                                _zivid.Settings.Processing.Filters.Noise.Removal.Threshold()
-                            )
+                        self._enabled = _zivid.Settings.Processing.Filters.Noise.Removal.Enabled(
+                            enabled
+                        )
+                        self._threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
+                            threshold
+                        )
 
                     @property
                     def enabled(self):
@@ -549,22 +496,12 @@ class Settings:
                         .value,
                     ):
 
-                        if enabled is not None:
-                            self._enabled = _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled(
-                                enabled
-                            )
-                        else:
-                            self._enabled = (
-                                _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled()
-                            )
-                        if threshold is not None:
-                            self._threshold = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(
-                                threshold
-                            )
-                        else:
-                            self._threshold = (
-                                _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold()
-                            )
+                        self._enabled = _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled(
+                            enabled
+                        )
+                        self._threshold = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(
+                            threshold
+                        )
 
                     @property
                     def enabled(self):
@@ -651,14 +588,9 @@ class Settings:
                         .value,
                     ):
 
-                        if enabled is not None:
-                            self._enabled = _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(
-                                enabled
-                            )
-                        else:
-                            self._enabled = (
-                                _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled()
-                            )
+                        self._enabled = _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(
+                            enabled
+                        )
 
                     @property
                     def enabled(self):
@@ -736,22 +668,12 @@ class Settings:
                         .value,
                     ):
 
-                        if enabled is not None:
-                            self._enabled = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled(
-                                enabled
-                            )
-                        else:
-                            self._enabled = (
-                                _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled()
-                            )
-                        if sigma is not None:
-                            self._sigma = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(
-                                sigma
-                            )
-                        else:
-                            self._sigma = (
-                                _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma()
-                            )
+                        self._enabled = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled(
+                            enabled
+                        )
+                        self._sigma = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(
+                            sigma
+                        )
 
                     @property
                     def enabled(self):
@@ -1002,23 +924,6 @@ class Settings:
         def __str__(self):
             return str(zivid._settings_converter.to_internal_processing(self))
 
-    def __init__(
-        self, acquisitions=None, processing=None,
-    ):
-        from collections.abc import Iterable
-
-        if acquisitions is None:
-            acquisitions = _zivid.Settings().Acquisitions().value
-        if not isinstance(acquisitions, Iterable):
-            raise TypeError("Unsupported type: {value}".format(value=type(processing)))
-        self._acquisitions = _convert_to_acquistions(acquisitions)
-
-        if processing is None:
-            processing = zivid.Settings.Processing()
-        if not isinstance(processing, zivid.Settings.Processing):
-            raise TypeError("Unsupported type: {value}".format(value=type(processing)))
-        self._processing = processing
-
     @property
     def processing(self):
         return self._processing
@@ -1032,6 +937,7 @@ class Settings:
     def __eq__(self, other):
         if (
             self._acquisitions == other._acquisitions
+            and self._acquisition == other._acquisition
             and self._processing == other._processing
         ):
             return True
@@ -1039,6 +945,33 @@ class Settings:
 
     def __str__(self):
         return str(zivid._settings_converter.to_internal_settings(self))
+
+    def __init__(
+        self, acquisitions=None, processing=None,
+    ):
+        from collections.abc import Iterable
+
+        if acquisitions is None:
+            acquisitions = _zivid.Settings().Acquisitions().value
+        if not isinstance(acquisitions, Iterable):
+            raise TypeError(
+                "Unsupported type: {value}".format(value=type(acquisitions))
+            )
+        self._acquisitions = _convert_to_acquistions(acquisitions)
+
+        if processing is None:
+            processing = zivid.Settings.Processing()
+        if not isinstance(processing, zivid.Settings.Processing):
+            raise TypeError("Unsupported type: {value}".format(value=type(processing)))
+        self._processing = processing
+
+    def __eq__(self, other):
+        if (
+            self._acquisitions == other._acquisitions
+            and self._processing == other._processing
+        ):
+            return True
+        return False
 
     def __init__(
         self, acquisitions=None, processing=None,
@@ -1076,9 +1009,6 @@ class Settings:
         ):
             return True
         return False
-
-    def __str__(self):
-        return str(zivid._settings_converter.to_internal_settings(self))
 
 
 def _convert_to_acquistions(inputs):
