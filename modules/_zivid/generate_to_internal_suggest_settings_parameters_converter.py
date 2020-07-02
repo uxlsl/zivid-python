@@ -20,7 +20,7 @@ from _zivid._zivid.capture_assistant import SuggestSettingsParameters
 def start_traverse():
     common_to_internal_generation(
         internal_class=SuggestSettingsParameters,
-        settings_type="SuggestSettingsParameters",
+        settings_type="capture_assistant.SuggestSettingsParameters",
     )
 
 

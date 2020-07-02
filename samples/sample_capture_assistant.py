@@ -17,7 +17,7 @@ def _main():
         camera, suggest_settings_parameters
     )
 
-    with camera.capture(camera) as frame:
+    with camera.capture(settings) as frame:
         frame.save("result.zdf")
 
 
