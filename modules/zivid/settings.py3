@@ -113,3 +113,62 @@ def _to_internal_acquisition(acquisition):
 
     internal_acquisition.patterns = _to_internal_patterns(acquisition.patterns)
     return internal_acquisition
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+type_map_basic_types = 
+{
+    int: (int, float),
+    ...
+}
+
+type_map = type_map_basic_types + {typing.Optional[k], (typing.Optional[vV] for vv in v) for k,v in type_map_basic_types}
+
+
+def gen():
+
+
+
+class Settings:
+    class Acquisition:
+        def __init__(
+            self,
+            aperture=_zivid.Settings().Acquisition().Aperture().value_type [int, None, float], # " "
+            brightness : =_zivid.Settings().Acquisition().Brightness().value,
+            exposure_time=_zivid.Settings().Acquisition().ExposureTime().value,
+            gain=_zivid.Settings().Acquisition().Gain().value,
+        ):
+            if isinstance(aperture, *type_map(_zivid.Settings.Acquisition.Aperture.value_type))
+                self._aperture = _zivid.Settings.Acquisition.Aperture(aperture)
+            else:
+                raise "ERR"
+
+            try:
+                self._aperture = _zivid.Settings.Acquisition.Aperture(aperture)
+            except TypeError:
+                raise TypeError(get_type_error_message(_zivid.Settings.Acquisition.Aperture.value_type))
+
+            self._brightness = _zivid.Settings.Acquisition.Brightness(brightness)
+            self._exposure_time = _zivid.Settings.Acquisition.ExposureTime(
+                exposure_time
+            )
+            self._gain = _zivid.Settings.Acquisition.Gain(gain)

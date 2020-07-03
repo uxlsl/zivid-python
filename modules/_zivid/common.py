@@ -28,6 +28,7 @@ class NodeData:
     children: tuple
     member_variables: Tuple[MemberVariable]
     indentation_level: int
+    leaf_underlying_type: str
 
 
 def _inner_classes_list(cls) -> List:
@@ -217,6 +218,9 @@ def _create_str_special_member_function(node_data, settings_type: str):
 ##     )
 ##
 
+def _leaf_underlying_type():
+    return "some_type"
+
 
 def _create_properties(node_data, settings_type: str):
     get_properties = "\n"
@@ -361,6 +365,10 @@ def _recursion(current_class, indentation_level):
     print(enum_vars)
     print(is_enum)
     print("-----------------------\n-------------------------")
+    if is_leaf:
+        leaf_underlying_type = current_class.value_type
+    else:
+        leaf_underlying_type = None
 
     my_class = NodeData(
         name=current_class.name,
@@ -372,6 +380,7 @@ def _recursion(current_class, indentation_level):
         children=child_classes,
         member_variables=member_variables,
         indentation_level=indentation_level,
+        leaf_underlying_type=leaf_underlying_type,
     )
     return my_class
 

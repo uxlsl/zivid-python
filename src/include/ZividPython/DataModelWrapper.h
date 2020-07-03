@@ -1,10 +1,10 @@
 #pragma once
 
 #include "DepdendentFalse.h"
+#include <pybind11/chrono.h>
 #include <pybind11/operators.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include <pybind11/chrono.h>
 
 #include <Zivid/Settings2D.h>
 
@@ -34,6 +34,24 @@ namespace ZividPython
             }
             return true;
         }
+
+        template<typename T>
+        struct TypeName
+        {
+            static constexpr const char *value{ "TODO, replace" };
+        };
+
+        template<>
+        struct TypeName<int>
+        {
+            static constexpr const char *value{ "int" };
+        };
+
+        template<typename T>
+        struct TypeName<std::optional<T>>
+        {
+            static constexpr const char *value{ TypeName<T>::value };
+        };
 
         template<bool isRoot, typename Dest, typename Target>
         void wrapDataModel(Dest &dest, const Target &target)
@@ -112,6 +130,12 @@ namespace ZividPython
             else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafValue)
             {
                 using ValueType = typename Target::ValueType;
+
+                pyClass.def_property_readonly("value_type", [] {
+                    return TypeName<ValueType>::value;
+                    //return typeid(ValueType);
+                });
+                pyClass.def("is_optional", [] { return Zivid::DataModel::IsOptional<Target>::value; });
 
                 if constexpr(std::is_enum_v<ValueType>)
                 {
