@@ -6,7 +6,7 @@ def test_to_internal_camera_state_to_camera_state_modified():
     from zivid import CameraState
     from zivid._camera_state_converter import to_camera_state, to_internal_camera_state
 
-    modified_camera_state = CameraState(model_name="hello")
+    modified_camera_state = CameraState(connected=True)
 
     converted_camera_state = to_camera_state(
         to_internal_camera_state(modified_camera_state)

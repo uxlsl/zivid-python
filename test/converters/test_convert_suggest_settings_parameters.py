@@ -9,7 +9,9 @@ def test_to_internal_suggest_settings_parameters_to_suggest_settings_parameters_
         to_internal_suggest_settings_parameters,
     )
 
-    modified_suggest_settings_parameters = SuggestSettingsParameters(model_name="hello")
+    modified_suggest_settings_parameters = SuggestSettingsParameters(
+        ambient_light_frequency=SuggestSettingsParameters.AmbientLightFrequency.hz50
+    )
 
     converted_suggest_settings_parameters = to_suggest_settings_parameters(
         to_internal_suggest_settings_parameters(modified_suggest_settings_parameters)

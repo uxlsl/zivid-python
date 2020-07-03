@@ -6,7 +6,7 @@ def test_to_internal_frame_info_to_frame_info_modified():
     from zivid import FrameInfo
     from zivid._frame_info_converter import to_frame_info, to_internal_frame_info
 
-    modified_frame_info = FrameInfo(time_stamp="hello")
+    modified_frame_info = FrameInfo(time_stamp=datetime.datetime(1337, 6, 6))
 
     converted_frame_info = to_frame_info(to_internal_frame_info(modified_frame_info))
     assert modified_frame_info == converted_frame_info
