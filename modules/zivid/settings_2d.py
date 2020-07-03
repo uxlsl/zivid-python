@@ -64,7 +64,7 @@ class Settings2D:
             return False
 
         def __str__(self):
-            return str(zivid._settings2_d_converter.to_internal_acquisition(self))
+            return str(zivid._settings_2d_converter.to_internal_acquisition(self))
 
     class Processing:
         class Color:
@@ -119,7 +119,7 @@ class Settings2D:
 
                 def __str__(self):
                     return str(
-                        zivid._settings2_d_converter.to_internal_processing_color_balance(
+                        zivid._settings_2d_converter.to_internal_processing_color_balance(
                             self
                         )
                     )
@@ -155,7 +155,7 @@ class Settings2D:
 
             def __str__(self):
                 return str(
-                    zivid._settings2_d_converter.to_internal_processing_color(self)
+                    zivid._settings_2d_converter.to_internal_processing_color(self)
                 )
 
         def __init__(
@@ -184,7 +184,7 @@ class Settings2D:
             return False
 
         def __str__(self):
-            return str(zivid._settings2_d_converter.to_internal_processing(self))
+            return str(zivid._settings_2d_converter.to_internal_processing(self))
 
     @property
     def processing(self):
@@ -197,7 +197,7 @@ class Settings2D:
         self._processing = value
 
     def __str__(self):
-        return str(zivid._settings2_d_converter.to_internal_settings2_d(self))
+        return str(zivid._settings_2d_converter.to_internal_settings_2d(self))
 
     def __init__(
         self, acquisitions=None, processing=None,
