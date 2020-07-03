@@ -697,3 +697,15 @@ def test_settings_processing_filters_smoothing_gaussian_enabled(
         value=True,
         expected_data_type=bool,
     )
+
+
+def test_print_acquisition(application):  # pylint: disable=unused-argument
+    import zivid
+
+    print(zivid.Settings.Acquisition())
+
+
+def test_print_processing(application):  # pylint: disable=unused-argument
+    import zivid
+
+    print(zivid.Settings.Processing())
