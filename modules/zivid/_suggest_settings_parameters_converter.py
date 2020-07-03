@@ -35,7 +35,7 @@ def to_suggest_settings_parameters(internal_suggest_settings_parameters):
         ) in (
             zivid.capture_assistant.SuggestSettingsParameters.AmbientLightFrequency._valid_values.items()
         ):
-            if value == internal_ambient_light_frequency:
+            if value == internal_ambient_light_frequency.value:
                 return key
         raise ValueError(
             "Unsupported value: {value}".format(value=internal_ambient_light_frequency)
