@@ -45,7 +45,7 @@ class SuggestSettingsParameters:
 
         def __str__(self):
             return str(
-                zivid._capture_assistant.suggest_settings_parameters_converter.to_internal_ambient_light_frequency(
+                zivid._suggest_settings_parameters_converter.to_internal_ambient_light_frequency(
                     self
                 )
             )
@@ -117,7 +117,7 @@ class SuggestSettingsParameters:
 
     def __str__(self):
         return str(
-            zivid._capture_assistant.suggest_settings_parameters_converter.to_internal_suggest_settings_parameters(
+            zivid._suggest_settings_parameters_converter.to_internal_suggest_settings_parameters(
                 self
             )
         )

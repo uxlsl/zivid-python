@@ -7,6 +7,7 @@
 #include <pybind11/stl.h>
 
 #include <Zivid/Settings2D.h>
+#include <Zivid/Settings.h>
 
 #include "ZividPython/Wrappers.h"
 
@@ -38,13 +39,55 @@ namespace ZividPython
         template<typename T>
         struct TypeName
         {
-            static constexpr const char *value{ "TODO, replace" };
+            static constexpr const char *value{ "(list, tuple, types.GeneratorType,)" };
+        };
+
+        template<>
+        struct TypeName<uint32_t>
+        {
+            static constexpr const char *value{ "(int,)" };
+        };
+
+        template<>
+        struct TypeName<uint64_t>
+        {
+            static constexpr const char *value{ "(int,)" };
         };
 
         template<>
         struct TypeName<int>
         {
-            static constexpr const char *value{ "int" };
+            static constexpr const char *value{ "(int,)" };
+        };
+
+        template<>
+        struct TypeName<bool>
+        {
+            static constexpr const char *value{ "(bool,)" };
+        };
+
+        template<>
+        struct TypeName<double>
+        {
+            static constexpr const char *value{ "(float, int,)" };
+        };
+
+        template<>
+        struct TypeName<std::chrono::microseconds>
+        {
+            static constexpr const char *value{ "(datetime.timedelta,)" };
+        };
+
+        template<>
+        struct TypeName<std::chrono::system_clock::time_point>
+        {
+            static constexpr const char *value{ "(datetime.datetime,)" };
+        };
+
+        template<>
+        struct TypeName<std::string>
+        {
+            static constexpr const char *value{ "(str,)" };
         };
 
         template<typename T>
@@ -131,7 +174,7 @@ namespace ZividPython
             {
                 using ValueType = typename Target::ValueType;
 
-                pyClass.def_property_readonly("value_type", [] {
+                pyClass.def("value_type", [] {
                     return TypeName<ValueType>::value;
                     //return typeid(ValueType);
                 });
@@ -216,7 +259,11 @@ namespace ZividPython
             else if constexpr(Target::nodeType == Zivid::DataModel::NodeType::leafDataModelList)
             {
                 using ValueType = typename Target::ValueType::value_type;
-
+                pyClass.def("value_type", [] {
+                    return TypeName<ValueType>::value;
+                    //return typeid(ValueType);
+                });
+                pyClass.def("is_optional", [] { return Zivid::DataModel::IsOptional<Target>::value; });
                 //wrapDataModel<false>(pyClass, ValueType{});
 
                 pyClass.def_property_readonly("value", &Target::value)

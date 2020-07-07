@@ -1,4 +1,6 @@
 """Auto generated, do not edit"""
+import datetime
+import types
 import _zivid
 import zivid
 import zivid._frame_info_converter
@@ -10,7 +12,14 @@ class FrameInfo:
             self, core=_zivid.FrameInfo().SoftwareVersion().Core().value,
         ):
 
-            self._core = _zivid.FrameInfo.SoftwareVersion.Core(core)
+            if isinstance(core, (str,)) or core is None:
+                self._core = _zivid.FrameInfo.SoftwareVersion.Core(core)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (str,) or None, got {value_type}".format(
+                        value_type=type(core)
+                    )
+                )
 
         @property
         def core(self):
@@ -18,7 +27,14 @@ class FrameInfo:
 
         @core.setter
         def core(self, value):
-            self._core = _zivid.FrameInfo.SoftwareVersion.Core(value)
+            if isinstance(value, (str,)) or value is None:
+                self._core = _zivid.FrameInfo.SoftwareVersion.Core(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: str or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         def __eq__(self, other):
             if self._core == other._core:
@@ -32,7 +48,14 @@ class FrameInfo:
         self, time_stamp=_zivid.FrameInfo().TimeStamp().value, software_version=None,
     ):
 
-        self._time_stamp = _zivid.FrameInfo.TimeStamp(time_stamp)
+        if isinstance(time_stamp, (datetime.datetime,)) or time_stamp is None:
+            self._time_stamp = _zivid.FrameInfo.TimeStamp(time_stamp)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: (datetime.datetime,) or None, got {value_type}".format(
+                    value_type=type(time_stamp)
+                )
+            )
         if software_version is None:
             software_version = zivid.FrameInfo.SoftwareVersion()
         if not isinstance(software_version, zivid.FrameInfo.SoftwareVersion):
@@ -51,7 +74,14 @@ class FrameInfo:
 
     @time_stamp.setter
     def time_stamp(self, value):
-        self._time_stamp = _zivid.FrameInfo.TimeStamp(value)
+        if isinstance(value, (datetime.datetime,)) or value is None:
+            self._time_stamp = _zivid.FrameInfo.TimeStamp(value)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: datetime.datetime or None, got {value_type}".format(
+                    value_type=type(value)
+                )
+            )
 
     @software_version.setter
     def software_version(self, value):

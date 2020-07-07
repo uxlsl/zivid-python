@@ -1,6 +1,6 @@
 import inspect
 import tempfile
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from dataclasses import dataclass
 import inspect
 from collections import namedtuple
@@ -15,6 +15,14 @@ class MemberVariable:
     snake_case: str
     # variable_name: str
     default_value: str
+    underlying_type: str
+    is_optional: bool
+
+
+@dataclass
+class UnderlyingLeafValue:
+    is_optional: bool
+    value: str
 
 
 @dataclass
@@ -28,7 +36,8 @@ class NodeData:
     children: tuple
     member_variables: Tuple[MemberVariable]
     indentation_level: int
-    leaf_underlying_type: str
+    _zivid_class: str  # the current class
+    # leaf_underlying_type: Optional[UnderlyingLeafValue]
 
 
 def _inner_classes_list(cls) -> List:
@@ -43,6 +52,8 @@ def _imports(
     internal: bool, settings: bool, additional_imports: tuple = tuple()
 ) -> str:
     imports = "    '''Auto generated, do not edit'''\n"
+    imports += "    import datetime\n"
+    imports += "    import types\n"
     if internal:
         imports += "    import _zivid\n"
     if settings:
@@ -61,11 +72,15 @@ def _get_member_variables(node_data, settings_type: str):
             # camel_case = member_var
             # snake_case
             # variable_name = member_var.snake_case#inflection.underscore(member_var)
+            print("this is current class when getting member variables:")
+            print()
             member_variables.append(
                 MemberVariable(
                     camel_case=member_var.camel_case,
                     default_value=default_value,
                     snake_case=member_var.snake_case,
+                    underlying_type=member_var.underlying_type,
+                    is_optional=member_var.is_optional,
                 )
             )
     print(member_variables)
@@ -82,6 +97,8 @@ def _get_child_class_member_variables(node_data):
                     snake_case=inflection.underscore(child.name),
                     # default_value=f"{child.name}()",
                     default_value="None",
+                    underlying_type=None,
+                    is_optional=True,
                 )
             )
 
@@ -108,9 +125,21 @@ def _create_init_special_member_function(node_data, settings_type: str):
     member_variable_set = ""
     path = ".{path}".format(path=node_data.path,) if node_data.path else ""
     for member in member_variables:
+        # is_optional_str_start =
+        if member.is_optional:
+            # expected_types = member.underlying_type
+            is_none_check = f"or {member.snake_case} is None"
+            can_be_none_error_message_part = " or None"
+        else:
+            is_none_check = ""
+            can_be_none_error_message_part = ""
+            # expected_types = member.underlying_type
         signature_vars += f"{member.snake_case}={member.default_value},"
+        member_variable_set += f"\n        if isinstance({member.snake_case},{member.underlying_type}) {is_none_check}:"
         # member_variable_set += f"\n        if {member.snake_case} is not None:"
-        member_variable_set += f"\n        self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}({member.snake_case})"
+        member_variable_set += f"\n            self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}({member.snake_case})"
+        member_variable_set += f"\n        else:"
+        member_variable_set += f"\n            raise TypeError('Unsupported type, expected: {member.underlying_type}{can_be_none_error_message_part}, got {{value_type}}'.format(value_type=type({member.snake_case})))"
         # member_variable_set += f"\n        else:"
         # member_variable_set += f"\n            self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}()"
 
@@ -217,6 +246,21 @@ def _create_str_special_member_function(node_data, settings_type: str):
 ##         str_content=str_content
 ##     )
 ##
+##         if member.is_optional:
+##             #expected_types = member.underlying_type
+##             is_none_check = f"or {member.snake_case} is None"
+##             can_be_none_error_message_part = " or None"
+##         else:
+##             is_none_check = ""
+##             can_be_none_error_message_part=""
+##             #expected_types = member.underlying_type
+##         signature_vars += f"{member.snake_case}={member.default_value},"
+##         member_variable_set += f"\n        if isinstance({member.snake_case},{member.underlying_type}) {is_none_check}:"
+##         # member_variable_set += f"\n        if {member.snake_case} is not None:"
+##         member_variable_set += f"\n            self._{member.snake_case} = _zivid.{settings_type}{path}.{member.camel_case}({member.snake_case})"
+##         member_variable_set += f"\n        else:"
+##         member_variable_set += f"\n            raise TypeError('Unsupported type, expected: {member.underlying_type}{can_be_none_error_message_part}, got {{value_type}}'.format(value_type=type({member.snake_case})))"
+
 
 def _leaf_underlying_type():
     return "some_type"
@@ -229,15 +273,28 @@ def _create_properties(node_data, settings_type: str):
     get_member_property_template = (
         "    @property\n    def {member}(self):\n        return self._{member}.value\n"
     )
-    set_member_property_template = "    @{member}.setter\n    def {member}(self,value):\n        self._{member} = _zivid.{settings_type}{path}.{non_snake_member}(value)\n"
+    set_member_property_template = "    @{member}.setter\n    def {member}(self,value):\n        if isinstance(value,{expected_types}) {none_check}:\n            self._{member} = _zivid.{settings_type}{path}.{non_snake_member}(value)\n        else:\n            raise TypeError('Unsupported type, expected: {expected_types_str}, got {{value_type}}'.format(value_type=type(value)))\n"
     for member in node_data.member_variables:
         path = ".{path}".format(path=node_data.path,) if node_data.path else ""
         get_properties += get_member_property_template.format(member=member.snake_case)
+        if member.is_optional:
+            # expected_types = member.underlying_type
+            is_none_check = "or value is None"
+            can_be_none_error_message_part = " or None"
+        else:
+            is_none_check = ""
+            can_be_none_error_message_part = ""
+        expected_types_str = " or ".join(member.underlying_type[1:-2].split(","))
+        expected_types_str += can_be_none_error_message_part
         set_properties += set_member_property_template.format(
             member=member.snake_case,
             path=path,
             non_snake_member=member.camel_case,
             settings_type=settings_type,
+            expected_types=member.underlying_type,
+            none_check=is_none_check,
+            can_be_none_error_message_part=can_be_none_error_message_part,
+            expected_types_str=expected_types_str,
         )
     set_child_property_template = "    @{member}.setter\n    def {member}(self,value):\n        if not isinstance(value, zivid.{settings_type}{path}.{non_snake_member}):\n            raise TypeError('Unsupported type {{value}}'.format(value=type(value)))\n        self._{member} = value\n"
     get_child_property_template = (
@@ -303,14 +360,23 @@ class {class_name}:
     return "\n".join(indented_lines)
 
 
-def _recursion(current_class, indentation_level):
+def _recursion(current_class, indentation_level, parent_class=None):
     child_classes = list()
     if not (hasattr(current_class, "valid_values") and hasattr(current_class, "enum")):
         for my_cls in _inner_classes_list(current_class):
             child_classes.append(
-                _recursion(my_cls, indentation_level=indentation_level + 1)
+                _recursion(
+                    my_cls,
+                    indentation_level=indentation_level + 1,
+                    parent_class=current_class,
+                )
             )
         is_leaf = not bool(_inner_classes_list(current_class))
+    elif current_class._zivid_class.node_type in (
+        "NodeType.leaf_value",
+        "NodeType.leaf_data_model_list",
+    ):
+        is_leaf = True
     else:
         is_leaf = False
 
@@ -318,31 +384,63 @@ def _recursion(current_class, indentation_level):
     to_be_removed = list()
     for child in child_classes:
         if child.is_leaf:
+            # print(current_class.name)
+            # print(type(child.name))
+            # if is_leaf:
+            # print("This is leaf")
+            # try:
+            # print(dir(current_class))
+            path = current_class.path.replace("/", ".")
+            is_enum = True
+            # if current_class.is_optional():
+            #     is_optional = True
+            # else:
+            #     is_optional = False
+            # # except RuntimeError as ex:
+            # #     print(ex)
+            # #     is_optional = "Failed"
+            # #try:
             print(child.name)
-            print(type(child.name))
+            print(child._zivid_class.node_type)
+            print(dir(child))
+            print(dir(child._zivid_class))
+            # if child._zivid_class.node_type != "NodeType.leaf_data_model_list":
+            leaf_underlying_type = child._zivid_class.value_type()
+            print("found type!!!")
+            print(leaf_underlying_type)
+            # # except RuntimeError as ex:
+            # #     print(ex)
+            # #     leaf_underlying_type = "Failed to obtain type"
+            # leaf_underlying_value = UnderlyingLeafValue(is_optional=is_optional, value = leaf_underlying_type)
+            # # else:
+            # #     leaf_underlying_value = None
+            # print(f"this is leaf_underlying_type: {leaf_underlying_value}")
+
             member_variables.append(
                 MemberVariable(
                     camel_case=child.name,
                     snake_case=inflection.underscore(child.name),
                     default_value="None",
+                    # underlying_type=leaf_underlying_value
+                    underlying_type=leaf_underlying_type,
+                    is_optional=child._zivid_class.is_optional(),
                 )
             )
             to_be_removed.append(child)
     child_classes = [
         element for element in child_classes if element not in to_be_removed
     ]
-    print(current_class.name)
-    print(dir(current_class))
+    # print(current_class.name)
+    # print(dir(current_class))
 
     if hasattr(current_class, "valid_values") and hasattr(current_class, "enum"):
 
-        print("this is a enum thingy")
-        path = current_class.path.replace("/", ".")
-        is_enum = True
-        print("defaultvalue:")
-        print(current_class().value)
-        print(dir(current_class().value))
-        print(current_class().value.name)
+        # print("this is a enum thingy")
+
+        # print("defaultvalue:")
+        # print(current_class().value)
+        # print(dir(current_class().value))
+        # print(current_class().value.name)
         enum_default_value = current_class().value.name
         enum_vars = []
         members = [a for a in dir(current_class.enum)]
@@ -351,24 +449,21 @@ def _recursion(current_class, indentation_level):
                 continue
             if str(member) == "name":
                 continue
-            print("this is member: " + member)
-            print(getattr(current_class.enum, member).name)
+            # print("this is member: " + member)
+            # print(getattr(current_class.enum, member).name)
             enum_vars.append((member, getattr(current_class.enum, member).name))
 
     else:
         path = current_class.path.replace("/", ".")
         is_enum = False
-        print("this is not a enum thingy")
+        # print("this is not a enum thingy")
         enum_vars = []
         enum_default_value = None
 
-    print(enum_vars)
-    print(is_enum)
-    print("-----------------------\n-------------------------")
-    if is_leaf:
-        leaf_underlying_type = current_class.value_type
-    else:
-        leaf_underlying_type = None
+    # print(enum_vars)
+    # print(is_enum)
+
+    print("\n------------------------------------------------")
 
     my_class = NodeData(
         name=current_class.name,
@@ -380,7 +475,8 @@ def _recursion(current_class, indentation_level):
         children=child_classes,
         member_variables=member_variables,
         indentation_level=indentation_level,
-        leaf_underlying_type=leaf_underlying_type,
+        _zivid_class=current_class,
+        # leaf_underlying_type=leaf_underlying_value,
     )
     return my_class
 

@@ -111,3 +111,19 @@ def test_set_ambient_light_frequency():
     )
     assert suggested_settings.ambient_light_frequency == "none"
     assert isinstance(suggested_settings.ambient_light_frequency, str)
+
+
+def test_suggest_settings_str():
+    from zivid.capture_assistant import SuggestSettingsParameters
+
+    string = str(SuggestSettingsParameters())
+    assert string is not None
+    assert isinstance(string, str)
+
+
+def test_ambient_light_frequency_str():
+    from zivid.capture_assistant import SuggestSettingsParameters
+
+    string = str(SuggestSettingsParameters().ambient_light_frequency)
+    assert string is not None
+    assert isinstance(string, str)

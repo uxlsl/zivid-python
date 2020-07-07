@@ -25,7 +25,7 @@ import _zivid.generate_to_suggest_settings_parameters_converter
 
 def generate():
     pass
-    _zivid.generate_settings.start_traverse()
+    # _zivid.generate_settings.start_traverse()
     # _zivid.generate_to_internal_settings_converter.start_traverse()
     # _zivid.generate_to_settings_converter.start_traverse()
 
@@ -33,7 +33,7 @@ def generate():
     # _zivid.generate_to_camera_info_converter.start_traverse()
     # _zivid.generate_to_internal_camera_info_converter.start_traverse()
 
-    # _zivid.generate_frame_info.start_traverse()
+    _zivid.generate_frame_info.start_traverse()
     # _zivid.generate_to_frame_info_converter.start_traverse()
     # _zivid.generate_to_frame_internal_info_converter.start_traverse()
 

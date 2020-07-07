@@ -982,7 +982,9 @@ class Settings:
         if acquisitions is None:
             acquisitions = _zivid.Settings().Acquisitions().value
         if not isinstance(acquisitions, Iterable):
-            raise TypeError("Unsupported type: {value}".format(value=type(acquisitions)))
+            raise TypeError(
+                "Unsupported type: {value}".format(value=type(acquisitions))
+            )
         self._acquisitions = _convert_to_acquistions(acquisitions)
 
         if processing is None:
