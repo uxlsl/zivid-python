@@ -39,7 +39,7 @@ namespace ZividPython
         template<typename T>
         struct TypeName
         {
-            static constexpr const char *value{ "(list, tuple, types.GeneratorType,)" };
+            static constexpr const char *value{ "(collections.abc.Iterable,)" };
         };
 
         template<>

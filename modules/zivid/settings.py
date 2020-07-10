@@ -1,4 +1,7 @@
 """Auto generated, do not edit"""
+import datetime
+import types
+import collections.abc
 import _zivid
 import zivid
 import zivid._settings_converter
@@ -14,12 +17,43 @@ class Settings:
             gain=_zivid.Settings().Acquisition().Gain().value,
         ):
 
-            self._aperture = _zivid.Settings.Acquisition.Aperture(aperture)
-            self._brightness = _zivid.Settings.Acquisition.Brightness(brightness)
-            self._exposure_time = _zivid.Settings.Acquisition.ExposureTime(
-                exposure_time
-            )
-            self._gain = _zivid.Settings.Acquisition.Gain(gain)
+            if isinstance(aperture, (float, int,)) or aperture is None:
+                self._aperture = _zivid.Settings.Acquisition.Aperture(aperture)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                        value_type=type(aperture)
+                    )
+                )
+            if isinstance(brightness, (float, int,)) or brightness is None:
+                self._brightness = _zivid.Settings.Acquisition.Brightness(brightness)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                        value_type=type(brightness)
+                    )
+                )
+            if (
+                isinstance(exposure_time, (datetime.timedelta,))
+                or exposure_time is None
+            ):
+                self._exposure_time = _zivid.Settings.Acquisition.ExposureTime(
+                    exposure_time
+                )
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (datetime.timedelta,) or None, got {value_type}".format(
+                        value_type=type(exposure_time)
+                    )
+                )
+            if isinstance(gain, (float, int,)) or gain is None:
+                self._gain = _zivid.Settings.Acquisition.Gain(gain)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                        value_type=type(gain)
+                    )
+                )
 
         @property
         def aperture(self):
@@ -39,19 +73,47 @@ class Settings:
 
         @aperture.setter
         def aperture(self, value):
-            self._aperture = _zivid.Settings.Acquisition.Aperture(value)
+            if isinstance(value, (float, int,)) or value is None:
+                self._aperture = _zivid.Settings.Acquisition.Aperture(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @brightness.setter
         def brightness(self, value):
-            self._brightness = _zivid.Settings.Acquisition.Brightness(value)
+            if isinstance(value, (float, int,)) or value is None:
+                self._brightness = _zivid.Settings.Acquisition.Brightness(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @exposure_time.setter
         def exposure_time(self, value):
-            self._exposure_time = _zivid.Settings.Acquisition.ExposureTime(value)
+            if isinstance(value, (datetime.timedelta,)) or value is None:
+                self._exposure_time = _zivid.Settings.Acquisition.ExposureTime(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: datetime.timedelta or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @gain.setter
         def gain(self, value):
-            self._gain = _zivid.Settings.Acquisition.Gain(value)
+            if isinstance(value, (float, int,)) or value is None:
+                self._gain = _zivid.Settings.Acquisition.Gain(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         def __eq__(self, other):
             if (
@@ -64,7 +126,7 @@ class Settings:
             return False
 
         def __str__(self):
-            return str(zivid._settings_converter.to_internal_acquisition(self))
+            return str(zivid._settings_converter.to_internal_settings_acquisition(self))
 
     class Processing:
         class Color:
@@ -76,9 +138,32 @@ class Settings:
                     red=_zivid.Settings().Processing.Color.Balance().Red().value,
                 ):
 
-                    self._blue = _zivid.Settings.Processing.Color.Balance.Blue(blue)
-                    self._green = _zivid.Settings.Processing.Color.Balance.Green(green)
-                    self._red = _zivid.Settings.Processing.Color.Balance.Red(red)
+                    if isinstance(blue, (float, int,)) or blue is None:
+                        self._blue = _zivid.Settings.Processing.Color.Balance.Blue(blue)
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                value_type=type(blue)
+                            )
+                        )
+                    if isinstance(green, (float, int,)) or green is None:
+                        self._green = _zivid.Settings.Processing.Color.Balance.Green(
+                            green
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                value_type=type(green)
+                            )
+                        )
+                    if isinstance(red, (float, int,)) or red is None:
+                        self._red = _zivid.Settings.Processing.Color.Balance.Red(red)
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                value_type=type(red)
+                            )
+                        )
 
                 @property
                 def blue(self):
@@ -94,15 +179,40 @@ class Settings:
 
                 @blue.setter
                 def blue(self, value):
-                    self._blue = _zivid.Settings.Processing.Color.Balance.Blue(value)
+                    if isinstance(value, (float, int,)) or value is None:
+                        self._blue = _zivid.Settings.Processing.Color.Balance.Blue(
+                            value
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                value_type=type(value)
+                            )
+                        )
 
                 @green.setter
                 def green(self, value):
-                    self._green = _zivid.Settings.Processing.Color.Balance.Green(value)
+                    if isinstance(value, (float, int,)) or value is None:
+                        self._green = _zivid.Settings.Processing.Color.Balance.Green(
+                            value
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                value_type=type(value)
+                            )
+                        )
 
                 @red.setter
                 def red(self, value):
-                    self._red = _zivid.Settings.Processing.Color.Balance.Red(value)
+                    if isinstance(value, (float, int,)) or value is None:
+                        self._red = _zivid.Settings.Processing.Color.Balance.Red(value)
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                value_type=type(value)
+                            )
+                        )
 
                 def __eq__(self, other):
                     if (
@@ -115,7 +225,7 @@ class Settings:
 
                 def __str__(self):
                     return str(
-                        zivid._settings_converter.to_internal_processing_color_balance(
+                        zivid._settings_converter.to_internal_settings_processing_color_balance(
                             self
                         )
                     )
@@ -150,7 +260,11 @@ class Settings:
                 return False
 
             def __str__(self):
-                return str(zivid._settings_converter.to_internal_processing_color(self))
+                return str(
+                    zivid._settings_converter.to_internal_settings_processing_color(
+                        self
+                    )
+                )
 
         class Filters:
             class Experimental:
@@ -168,12 +282,26 @@ class Settings:
                             .value,
                         ):
 
-                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Enabled(
-                                enabled
-                            )
-                            self._strength = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength(
-                                strength
-                            )
+                            if isinstance(enabled, (bool,)) or enabled is None:
+                                self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Enabled(
+                                    enabled
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                        value_type=type(enabled)
+                                    )
+                                )
+                            if isinstance(strength, (float, int,)) or strength is None:
+                                self._strength = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength(
+                                    strength
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                        value_type=type(strength)
+                                    )
+                                )
 
                         @property
                         def enabled(self):
@@ -185,15 +313,29 @@ class Settings:
 
                         @enabled.setter
                         def enabled(self, value):
-                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Enabled(
-                                value
-                            )
+                            if isinstance(value, (bool,)) or value is None:
+                                self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Enabled(
+                                    value
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: bool or None, got {value_type}".format(
+                                        value_type=type(value)
+                                    )
+                                )
 
                         @strength.setter
                         def strength(self, value):
-                            self._strength = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength(
-                                value
-                            )
+                            if isinstance(value, (float, int,)) or value is None:
+                                self._strength = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Correction.Strength(
+                                    value
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                        value_type=type(value)
+                                    )
+                                )
 
                         def __eq__(self, other):
                             if (
@@ -205,7 +347,7 @@ class Settings:
 
                         def __str__(self):
                             return str(
-                                zivid._settings_converter.to_internal_processing_filters_experimental_contrast_distortion_correction(
+                                zivid._settings_converter.to_internal_settings_processing_filters_experimental_contrast_distortion_correction(
                                     self
                                 )
                             )
@@ -223,12 +365,29 @@ class Settings:
                             .value,
                         ):
 
-                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Enabled(
-                                enabled
-                            )
-                            self._threshold = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold(
-                                threshold
-                            )
+                            if isinstance(enabled, (bool,)) or enabled is None:
+                                self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Enabled(
+                                    enabled
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                        value_type=type(enabled)
+                                    )
+                                )
+                            if (
+                                isinstance(threshold, (float, int,))
+                                or threshold is None
+                            ):
+                                self._threshold = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold(
+                                    threshold
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                        value_type=type(threshold)
+                                    )
+                                )
 
                         @property
                         def enabled(self):
@@ -240,15 +399,29 @@ class Settings:
 
                         @enabled.setter
                         def enabled(self, value):
-                            self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Enabled(
-                                value
-                            )
+                            if isinstance(value, (bool,)) or value is None:
+                                self._enabled = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Enabled(
+                                    value
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: bool or None, got {value_type}".format(
+                                        value_type=type(value)
+                                    )
+                                )
 
                         @threshold.setter
                         def threshold(self, value):
-                            self._threshold = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold(
-                                value
-                            )
+                            if isinstance(value, (float, int,)) or value is None:
+                                self._threshold = _zivid.Settings.Processing.Filters.Experimental.ContrastDistortion.Removal.Threshold(
+                                    value
+                                )
+                            else:
+                                raise TypeError(
+                                    "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                        value_type=type(value)
+                                    )
+                                )
 
                         def __eq__(self, other):
                             if (
@@ -260,7 +433,7 @@ class Settings:
 
                         def __str__(self):
                             return str(
-                                zivid._settings_converter.to_internal_processing_filters_experimental_contrast_distortion_removal(
+                                zivid._settings_converter.to_internal_settings_processing_filters_experimental_contrast_distortion_removal(
                                     self
                                 )
                             )
@@ -336,7 +509,7 @@ class Settings:
 
                     def __str__(self):
                         return str(
-                            zivid._settings_converter.to_internal_processing_filters_experimental_contrast_distortion(
+                            zivid._settings_converter.to_internal_settings_processing_filters_experimental_contrast_distortion(
                                 self
                             )
                         )
@@ -382,7 +555,7 @@ class Settings:
 
                 def __str__(self):
                     return str(
-                        zivid._settings_converter.to_internal_processing_filters_experimental(
+                        zivid._settings_converter.to_internal_settings_processing_filters_experimental(
                             self
                         )
                     )
@@ -401,12 +574,26 @@ class Settings:
                         .value,
                     ):
 
-                        self._enabled = _zivid.Settings.Processing.Filters.Noise.Removal.Enabled(
-                            enabled
-                        )
-                        self._threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
-                            threshold
-                        )
+                        if isinstance(enabled, (bool,)) or enabled is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Noise.Removal.Enabled(
+                                enabled
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                    value_type=type(enabled)
+                                )
+                            )
+                        if isinstance(threshold, (float, int,)) or threshold is None:
+                            self._threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
+                                threshold
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                    value_type=type(threshold)
+                                )
+                            )
 
                     @property
                     def enabled(self):
@@ -418,15 +605,29 @@ class Settings:
 
                     @enabled.setter
                     def enabled(self, value):
-                        self._enabled = _zivid.Settings.Processing.Filters.Noise.Removal.Enabled(
-                            value
-                        )
+                        if isinstance(value, (bool,)) or value is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Noise.Removal.Enabled(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: bool or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
 
                     @threshold.setter
                     def threshold(self, value):
-                        self._threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
-                            value
-                        )
+                        if isinstance(value, (float, int,)) or value is None:
+                            self._threshold = _zivid.Settings.Processing.Filters.Noise.Removal.Threshold(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
 
                     def __eq__(self, other):
                         if (
@@ -438,7 +639,7 @@ class Settings:
 
                     def __str__(self):
                         return str(
-                            zivid._settings_converter.to_internal_processing_filters_noise_removal(
+                            zivid._settings_converter.to_internal_settings_processing_filters_noise_removal(
                                 self
                             )
                         )
@@ -478,7 +679,7 @@ class Settings:
 
                 def __str__(self):
                     return str(
-                        zivid._settings_converter.to_internal_processing_filters_noise(
+                        zivid._settings_converter.to_internal_settings_processing_filters_noise(
                             self
                         )
                     )
@@ -497,12 +698,26 @@ class Settings:
                         .value,
                     ):
 
-                        self._enabled = _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled(
-                            enabled
-                        )
-                        self._threshold = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(
-                            threshold
-                        )
+                        if isinstance(enabled, (bool,)) or enabled is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled(
+                                enabled
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                    value_type=type(enabled)
+                                )
+                            )
+                        if isinstance(threshold, (float, int,)) or threshold is None:
+                            self._threshold = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(
+                                threshold
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                    value_type=type(threshold)
+                                )
+                            )
 
                     @property
                     def enabled(self):
@@ -514,15 +729,29 @@ class Settings:
 
                     @enabled.setter
                     def enabled(self, value):
-                        self._enabled = _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled(
-                            value
-                        )
+                        if isinstance(value, (bool,)) or value is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Outlier.Removal.Enabled(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: bool or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
 
                     @threshold.setter
                     def threshold(self, value):
-                        self._threshold = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(
-                            value
-                        )
+                        if isinstance(value, (float, int,)) or value is None:
+                            self._threshold = _zivid.Settings.Processing.Filters.Outlier.Removal.Threshold(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
 
                     def __eq__(self, other):
                         if (
@@ -534,7 +763,7 @@ class Settings:
 
                     def __str__(self):
                         return str(
-                            zivid._settings_converter.to_internal_processing_filters_outlier_removal(
+                            zivid._settings_converter.to_internal_settings_processing_filters_outlier_removal(
                                 self
                             )
                         )
@@ -574,7 +803,7 @@ class Settings:
 
                 def __str__(self):
                     return str(
-                        zivid._settings_converter.to_internal_processing_filters_outlier(
+                        zivid._settings_converter.to_internal_settings_processing_filters_outlier(
                             self
                         )
                     )
@@ -589,9 +818,16 @@ class Settings:
                         .value,
                     ):
 
-                        self._enabled = _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(
-                            enabled
-                        )
+                        if isinstance(enabled, (bool,)) or enabled is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(
+                                enabled
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                    value_type=type(enabled)
+                                )
+                            )
 
                     @property
                     def enabled(self):
@@ -599,9 +835,16 @@ class Settings:
 
                     @enabled.setter
                     def enabled(self, value):
-                        self._enabled = _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(
-                            value
-                        )
+                        if isinstance(value, (bool,)) or value is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Reflection.Removal.Enabled(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: bool or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
 
                     def __eq__(self, other):
                         if self._enabled == other._enabled:
@@ -610,7 +853,7 @@ class Settings:
 
                     def __str__(self):
                         return str(
-                            zivid._settings_converter.to_internal_processing_filters_reflection_removal(
+                            zivid._settings_converter.to_internal_settings_processing_filters_reflection_removal(
                                 self
                             )
                         )
@@ -650,7 +893,7 @@ class Settings:
 
                 def __str__(self):
                     return str(
-                        zivid._settings_converter.to_internal_processing_filters_reflection(
+                        zivid._settings_converter.to_internal_settings_processing_filters_reflection(
                             self
                         )
                     )
@@ -669,12 +912,26 @@ class Settings:
                         .value,
                     ):
 
-                        self._enabled = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled(
-                            enabled
-                        )
-                        self._sigma = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(
-                            sigma
-                        )
+                        if isinstance(enabled, (bool,)) or enabled is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled(
+                                enabled
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (bool,) or None, got {value_type}".format(
+                                    value_type=type(enabled)
+                                )
+                            )
+                        if isinstance(sigma, (float, int,)) or sigma is None:
+                            self._sigma = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(
+                                sigma
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                    value_type=type(sigma)
+                                )
+                            )
 
                     @property
                     def enabled(self):
@@ -686,15 +943,29 @@ class Settings:
 
                     @enabled.setter
                     def enabled(self, value):
-                        self._enabled = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled(
-                            value
-                        )
+                        if isinstance(value, (bool,)) or value is None:
+                            self._enabled = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Enabled(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: bool or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
 
                     @sigma.setter
                     def sigma(self, value):
-                        self._sigma = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(
-                            value
-                        )
+                        if isinstance(value, (float, int,)) or value is None:
+                            self._sigma = _zivid.Settings.Processing.Filters.Smoothing.Gaussian.Sigma(
+                                value
+                            )
+                        else:
+                            raise TypeError(
+                                "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                    value_type=type(value)
+                                )
+                            )
 
                     def __eq__(self, other):
                         if (
@@ -706,7 +977,7 @@ class Settings:
 
                     def __str__(self):
                         return str(
-                            zivid._settings_converter.to_internal_processing_filters_smoothing_gaussian(
+                            zivid._settings_converter.to_internal_settings_processing_filters_smoothing_gaussian(
                                 self
                             )
                         )
@@ -748,7 +1019,7 @@ class Settings:
 
                 def __str__(self):
                     return str(
-                        zivid._settings_converter.to_internal_processing_filters_smoothing(
+                        zivid._settings_converter.to_internal_settings_processing_filters_smoothing(
                             self
                         )
                     )
@@ -879,7 +1150,9 @@ class Settings:
 
             def __str__(self):
                 return str(
-                    zivid._settings_converter.to_internal_processing_filters(self)
+                    zivid._settings_converter.to_internal_settings_processing_filters(
+                        self
+                    )
                 )
 
         def __init__(
@@ -923,7 +1196,10 @@ class Settings:
             return False
 
         def __str__(self):
-            return str(zivid._settings_converter.to_internal_processing(self))
+            return str(zivid._settings_converter.to_internal_settings_processing(self))
+
+    def __str__(self):
+        return str(zivid._settings_converter.to_internal_settings_settings(self))
 
     @property
     def processing(self):
@@ -935,26 +1211,12 @@ class Settings:
             raise TypeError("Unsupported type {value}".format(value=type(value)))
         self._processing = value
 
-    def __eq__(self, other):
-        if (
-            self._acquisitions == other._acquisitions
-            and self._acquisition == other._acquisition
-            and self._processing == other._processing
-        ):
-            return True
-        return False
-
-    def __str__(self):
-        return str(zivid._settings_converter.to_internal_settings(self))
-
     def __init__(
         self, acquisitions=None, processing=None,
     ):
-        from collections.abc import Iterable
-
         if acquisitions is None:
             acquisitions = _zivid.Settings().Acquisitions().value
-        if not isinstance(acquisitions, Iterable):
+        if not isinstance(acquisitions, collections.abc.Iterable):
             raise TypeError(
                 "Unsupported type: {value}".format(value=type(acquisitions))
             )
@@ -973,25 +1235,6 @@ class Settings:
         ):
             return True
         return False
-
-    def __init__(
-        self, acquisitions=None, processing=None,
-    ):
-        from collections.abc import Iterable
-
-        if acquisitions is None:
-            acquisitions = _zivid.Settings().Acquisitions().value
-        if not isinstance(acquisitions, Iterable):
-            raise TypeError(
-                "Unsupported type: {value}".format(value=type(acquisitions))
-            )
-        self._acquisitions = _convert_to_acquistions(acquisitions)
-
-        if processing is None:
-            processing = zivid.Settings.Processing()
-        if not isinstance(processing, zivid.Settings.Processing):
-            raise TypeError("Unsupported type: {value}".format(value=type(processing)))
-        self._processing = processing
 
     @property
     def acquisitions(self):
@@ -999,24 +1242,12 @@ class Settings:
 
     @acquisitions.setter
     def acquisitions(self, value):
-        from collections.abc import Iterable
-
-        if not isinstance(value, Iterable):
+        if not isinstance(value, collections.abc.Iterable):
             raise TypeError("Unsupported type: {value}".format(value=type(value)))
         self._acquisitions = _convert_to_acquistions(value)
 
-    def __eq__(self, other):
-        if (
-            self._acquisitions == other._acquisitions
-            and self._processing == other._processing
-        ):
-            return True
-        return False
-
 
 def _convert_to_acquistions(inputs):
-    import zivid._settings_converter
-
     temp = []
     for acquisition_element in inputs:
         if isinstance(acquisition_element, Settings.Acquisition):

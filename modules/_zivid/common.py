@@ -54,6 +54,7 @@ def _imports(
     imports = "    '''Auto generated, do not edit'''\n"
     imports += "    import datetime\n"
     imports += "    import types\n"
+    imports += "    import collections.abc\n"
     if internal:
         imports += "    import _zivid\n"
     if settings:
@@ -203,8 +204,13 @@ def _create_str_special_member_function(node_data, settings_type: str):
         output = inflection.underscore(node_data.name)
     else:
         output = standard_path
-    to_internal_function = f"to_internal_{output}"  # _{node_data.name}"
-    str_content = f"str(zivid._{inflection.underscore(settings_type)}_converter.{to_internal_function}(self))"
+    to_internal_function = f"to_internal_"  # _{node_data.name}"
+    to_internal = (
+        f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.path).replace('.', '_')}"
+        if node_data.path
+        else f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.name)}"
+    )
+    str_content = f"str(zivid._{inflection.underscore(settings_type)}_converter.{to_internal_function}{to_internal}(self))"
     # str_content
 
     return """def __str__(self):
@@ -479,6 +485,10 @@ def _recursion(current_class, indentation_level, parent_class=None):
         # leaf_underlying_type=leaf_underlying_value,
     )
     return my_class
+    # temp_internal_name = "internal_{path}{name}".format(
+    #     name=inflection.underscore(node_data.name),
+    #     path=f"{node_data.path.replace('.', '_')}_" if node_data.path else ""
+    # )
 
 
 def create_to_not_internal_converter(node_data, settings_type: str):
@@ -503,46 +513,50 @@ def create_to_not_internal_converter(node_data, settings_type: str):
             temp_internal_name=temp_internal_name,
         )
 
-    global_functions = ""
+    # global_functions = ""
     child_convert_logic = ""
     for child in node_data.children:
-        child_convert_logic += "{child}=_to_{child}({temp_internal_name}.{child}),".format(
-            child=inflection.underscore(child.name),
+        child_convert_logic += "{child_name}=to_{child}({temp_internal_name}.{child_name}),".format(
+            child_name=inflection.underscore(child.name),
+            child=f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.path).replace('.', '_')}_{inflection.underscore(child.name)}"
+            if node_data.path
+            else f"{inflection.underscore(settings_type)}_{inflection.underscore(child.name)}",
             # child_not_snake_case=child.name.lower(),
             temp_internal_name=temp_internal_name,
         )
-        global_functions += "\n    global to{path}{child}".format(
-            path=f'_{inflection.underscore(node_data.path.replace(".", "_"))}_'.replace(
-                "__", "_"
-            ),
-            child=inflection.underscore(child.name),
-        )
-        global_functions += "\n    to{path}{child} = _to_{child}".format(
-            path=f'_{inflection.underscore(node_data.path.replace(".", "_"))}_'.replace(
-                "__", "_"
-            ),
-            child=inflection.underscore(child.name),
-        )
+        # global_functions += "\n    global to{path}{child}".format(
+        #     path=f'_{inflection.underscore(node_data.path.replace(".", "_"))}_'.replace(
+        #         "__", "_"
+        #     ),
+        #     child=inflection.underscore(child.name),
+        # )
+        # global_functions += "\n    to{path}{child} = _to_{child}".format(
+        #     path=f'_{inflection.underscore(node_data.path.replace(".", "_"))}_'.replace(
+        #         "__", "_"
+        #     ),
+        #     child=inflection.underscore(child.name),
+        # )
 
-    base_class = """
-def _to_{target_name}(internal_{target_name}):
-    {nested_converters}
-    {global_functions}
+    base_function = """
+def to_{path}(internal_{target_name}):
     return {return_class}({child_convert_logic} {member_convert_logic})
-    
     
 """.format(
         target_name=inflection.underscore(node_data.name),
-        nested_converters=nested_converters_string,
+        # nested_converters=nested_converters_string,
+        path=f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.path).replace('.', '_')}"
+        if node_data.path
+        else f"{inflection.underscore(settings_type)}",
         return_class=return_class,
         member_convert_logic=member_convert_logic,
         child_convert_logic=child_convert_logic,
-        global_functions=global_functions,
+        # global_functions=global_functions,
     )
     indented_lines = list()
-    for line in base_class.splitlines():
+    for line in base_function.split("\n"):
+        print(line)
         indented_lines.append("    " + line)
-    return "\n".join(indented_lines)
+    return nested_converters_string + "\n" + "\n".join(indented_lines)
 
 
 def create_to_internal_converter(node_data, settings_type: str):
@@ -560,7 +574,6 @@ def create_to_internal_converter(node_data, settings_type: str):
             # convert_member_logic += "\n    if {name}.{member} is not None:\n".format(
             #     name=inflection.underscore(node_data.name), member=member.snake_case,
             # )
-
             convert_member_logic += "\n    {temp_internal_name}.{member} = _zivid.{settings_type}{path}".format(
                 temp_internal_name=temp_internal_name,
                 member=member.snake_case,
@@ -591,52 +604,56 @@ def create_to_internal_converter(node_data, settings_type: str):
             # )
 
     convert_children_logic = ""
-    global_functions = ""
+    # global_functions = ""
     if node_data.children:
         for child in node_data.children:
-            convert_children_logic += "\n    {temp_internal_name}.{child} = _to_internal_{child}({name}.{child})".format(
+            convert_children_logic += "\n    {temp_internal_name}.{child_name} = to_internal_{child}({name}.{child_name})".format(
                 temp_internal_name=temp_internal_name,
-                child=inflection.underscore(child.name),
+                child_name=inflection.underscore(child.name),
+                child=f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.path).replace('.', '_')}_{inflection.underscore(child.name)}"
+                if node_data.path
+                else f"{inflection.underscore(settings_type)}_{inflection.underscore(child.name)}",
                 name=inflection.underscore(node_data.name),
             )
             # expose internal_function through global
-            global_functions += "\n    global to_internal{path}{child}".format(
-                path=f'_{inflection.underscore(node_data.path.replace(".", "_"))}_'.replace(
-                    "__", "_"
-                ),
-                child=inflection.underscore(child.name),
-            )
-            global_functions += "\n    to_internal{path}{child} = _to_internal_{child}".format(
-                path=f'_{inflection.underscore(node_data.path.replace(".", "_"))}_'.replace(
-                    "__", "_"
-                ),
-                child=inflection.underscore(child.name),
-            )
+            # global_functions += "\n    global to_internal{path}{child}".format(
+            #     path=f'_{inflection.underscore(node_data.path.replace(".", "_"))}_'.replace(
+            #         "__", "_"
+            #     ),
+            #     child=inflection.underscore(child.name),
+            # )
+            # global_functions += "\n    to_internal{path}{child} = _to_internal_{child}".format(
+            #     path=f'_{inflection.underscore(node_data.path.replace(".", "_"))}_'.replace(
+            #         "__", "_"
+            #     ),
+            #     child=inflection.underscore(child.name),
+            # )
     # else:
     #     convert_children_logic = "pass # no children"
 
     base_class = """
-def _to_internal_{target_name}({target_name}):
+def to_internal_{path2}({target_name}):
     {temp_internal_name} = _zivid.{settings_type}{path}
-    {nested_converters}
-    {global_functions}
     {convert_member_logic}
     {convert_children_logic}
     return {temp_internal_name}
 """.format(
         target_name=inflection.underscore(node_data.name),
-        nested_converters=nested_converters_string,
+        # nested_converters=nested_converters_string,
         convert_member_logic=convert_member_logic,
         convert_children_logic=convert_children_logic,
         path="." + node_data.path + "()" if node_data.path else "()",
+        path2=f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.path).replace('.', '_')}"
+        if node_data.path
+        else f"{inflection.underscore(settings_type)}",
         temp_internal_name=temp_internal_name,
-        global_functions=global_functions,
+        # global_functions=global_functions,
         settings_type=settings_type,
     )
     indented_lines = list()
     for line in base_class.splitlines():
         indented_lines.append("    " + line)
-    return "\n".join(indented_lines)
+    return nested_converters_string + "\n" + "\n".join(indented_lines)
 
 
 # import inspect
