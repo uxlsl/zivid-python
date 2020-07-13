@@ -56,7 +56,7 @@ def test_init_max_capture_time():
     from zivid.capture_assistant import SuggestSettingsParameters
 
     suggested_settings = SuggestSettingsParameters(
-        datetime.timedelta(milliseconds=1000)
+        max_capture_time=datetime.timedelta(milliseconds=1000)
     )
     max_capture_time = suggested_settings.max_capture_time
     assert max_capture_time is not None
@@ -68,7 +68,9 @@ def test_default_ambient_light_frequency():
     import datetime
     from zivid.capture_assistant import SuggestSettingsParameters
 
-    suggested_settings = SuggestSettingsParameters(datetime.timedelta(milliseconds=250))
+    suggested_settings = SuggestSettingsParameters(
+        max_capture_time=datetime.timedelta(milliseconds=250)
+    )
     ambient_light_frequency = suggested_settings.ambient_light_frequency
     assert ambient_light_frequency is not None
     assert isinstance(ambient_light_frequency, str)
