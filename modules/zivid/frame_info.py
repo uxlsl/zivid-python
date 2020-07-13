@@ -1,6 +1,5 @@
 """Auto generated, do not edit"""
 import datetime
-import types
 import _zivid
 import zivid
 import zivid._frame_info_converter
@@ -42,7 +41,11 @@ class FrameInfo:
             return False
 
         def __str__(self):
-            return str(zivid._frame_info_converter.to_internal_software_version(self))
+            return str(
+                zivid._frame_info_converter.to_internal_frame_info_software_version(
+                    self
+                )
+            )
 
     def __init__(
         self, time_stamp=_zivid.FrameInfo().TimeStamp().value, software_version=None,

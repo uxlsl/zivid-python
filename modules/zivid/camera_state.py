@@ -15,11 +15,46 @@ class CameraState:
             pcb=_zivid.CameraState().Temperature().PCB().value,
         ):
 
-            self._dmd = _zivid.CameraState.Temperature.DMD(dmd)
-            self._general = _zivid.CameraState.Temperature.General(general)
-            self._led = _zivid.CameraState.Temperature.LED(led)
-            self._lens = _zivid.CameraState.Temperature.Lens(lens)
-            self._pcb = _zivid.CameraState.Temperature.PCB(pcb)
+            if isinstance(dmd, (float, int,)):
+                self._dmd = _zivid.CameraState.Temperature.DMD(dmd)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(
+                        value_type=type(dmd)
+                    )
+                )
+            if isinstance(general, (float, int,)):
+                self._general = _zivid.CameraState.Temperature.General(general)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(
+                        value_type=type(general)
+                    )
+                )
+            if isinstance(led, (float, int,)):
+                self._led = _zivid.CameraState.Temperature.LED(led)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(
+                        value_type=type(led)
+                    )
+                )
+            if isinstance(lens, (float, int,)):
+                self._lens = _zivid.CameraState.Temperature.Lens(lens)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(
+                        value_type=type(lens)
+                    )
+                )
+            if isinstance(pcb, (float, int,)):
+                self._pcb = _zivid.CameraState.Temperature.PCB(pcb)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,), got {value_type}".format(
+                        value_type=type(pcb)
+                    )
+                )
 
         @property
         def dmd(self):
@@ -43,23 +78,58 @@ class CameraState:
 
         @dmd.setter
         def dmd(self, value):
-            self._dmd = _zivid.CameraState.Temperature.DMD(value)
+            if isinstance(value, (float, int,)):
+                self._dmd = _zivid.CameraState.Temperature.DMD(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @general.setter
         def general(self, value):
-            self._general = _zivid.CameraState.Temperature.General(value)
+            if isinstance(value, (float, int,)):
+                self._general = _zivid.CameraState.Temperature.General(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @led.setter
         def led(self, value):
-            self._led = _zivid.CameraState.Temperature.LED(value)
+            if isinstance(value, (float, int,)):
+                self._led = _zivid.CameraState.Temperature.LED(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @lens.setter
         def lens(self, value):
-            self._lens = _zivid.CameraState.Temperature.Lens(value)
+            if isinstance(value, (float, int,)):
+                self._lens = _zivid.CameraState.Temperature.Lens(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @pcb.setter
         def pcb(self, value):
-            self._pcb = _zivid.CameraState.Temperature.PCB(value)
+            if isinstance(value, (float, int,)):
+                self._pcb = _zivid.CameraState.Temperature.PCB(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         def __eq__(self, other):
             if (
@@ -73,7 +143,9 @@ class CameraState:
             return False
 
         def __str__(self):
-            return str(zivid._camera_state_converter.to_internal_temperature(self))
+            return str(
+                zivid._camera_state_converter.to_internal_camera_state_temperature(self)
+            )
 
     def __init__(
         self,
@@ -82,8 +154,22 @@ class CameraState:
         temperature=None,
     ):
 
-        self._available = _zivid.CameraState.Available(available)
-        self._connected = _zivid.CameraState.Connected(connected)
+        if isinstance(available, (bool,)):
+            self._available = _zivid.CameraState.Available(available)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: (bool,), got {value_type}".format(
+                    value_type=type(available)
+                )
+            )
+        if isinstance(connected, (bool,)):
+            self._connected = _zivid.CameraState.Connected(connected)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: (bool,), got {value_type}".format(
+                    value_type=type(connected)
+                )
+            )
         if temperature is None:
             temperature = zivid.CameraState.Temperature()
         if not isinstance(temperature, zivid.CameraState.Temperature):
@@ -104,11 +190,25 @@ class CameraState:
 
     @available.setter
     def available(self, value):
-        self._available = _zivid.CameraState.Available(value)
+        if isinstance(value, (bool,)):
+            self._available = _zivid.CameraState.Available(value)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: bool, got {value_type}".format(
+                    value_type=type(value)
+                )
+            )
 
     @connected.setter
     def connected(self, value):
-        self._connected = _zivid.CameraState.Connected(value)
+        if isinstance(value, (bool,)):
+            self._connected = _zivid.CameraState.Connected(value)
+        else:
+            raise TypeError(
+                "Unsupported type, expected: bool, got {value_type}".format(
+                    value_type=type(value)
+                )
+            )
 
     @temperature.setter
     def temperature(self, value):

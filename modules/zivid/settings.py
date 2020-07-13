@@ -1201,7 +1201,6 @@ class Settings:
     def __str__(self):
         return str(zivid._settings_converter.to_internal_settings(self))
 
-
     @property
     def processing(self):
         return self._processing

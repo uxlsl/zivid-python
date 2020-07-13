@@ -208,7 +208,7 @@ def _create_str_special_member_function(node_data, settings_type: str):
     to_internal = (
         f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.path).replace('.', '_')}"
         if node_data.path
-        else f"{inflection.underscore(settings_type)}" # {inflection.underscore(node_data.name)}
+        else f"{inflection.underscore(settings_type)}"  # {inflection.underscore(node_data.name)}
     )
     str_content = f"str(zivid._{inflection.underscore(settings_type)}_converter.{to_internal_function}{to_internal}(self))"
     # str_content
