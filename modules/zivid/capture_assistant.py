@@ -144,7 +144,7 @@ class SuggestSettingsParameters:
 
     def __str__(self):
         return str(
-            zivid._capture_assistant_suggest_settings_parameters_converter.to_internal_capture_assistant.suggest_settings_parameters(
+            zivid._capture_assistant_suggest_settings_parameters_converter.to_internal_capture_assistant_suggest_settings_parameters(
                 self
             )
         )
