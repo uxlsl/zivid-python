@@ -4,7 +4,7 @@ from zivid.frame_2d import Frame2D
 import zivid
 from zivid.settings_2d import Settings2D
 import zivid._settings_converter as _settings_converter
-import zivid._settings_2d_converter as _settings_2d_converter
+import zivid._settings2_d_converter as _settings_2d_converter
 import zivid._camera_state_converter as _camera_state_converter
 import zivid._camera_info_converter as _camera_info_converter
 import _zivid

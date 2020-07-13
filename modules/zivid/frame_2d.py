@@ -1,7 +1,7 @@
 """Contains the Frame class."""
 import _zivid
 
-import zivid._settings_2d_converter as _settings_converter
+import zivid._settings2_d_converter as _settings_converter
 import zivid._camera_state_converter as _camera_state_converter
 import zivid._frame_info_converter as _frame_info_converter
 from zivid.image import Image

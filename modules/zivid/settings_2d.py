@@ -1,7 +1,10 @@
 """Auto generated, do not edit"""
+import datetime
+import types
+import collections.abc
 import _zivid
 import zivid
-import zivid._settings_2d_converter
+import zivid._settings2_d_converter
 
 
 class Settings2D:
@@ -14,12 +17,43 @@ class Settings2D:
             gain=_zivid.Settings2D().Acquisition().Gain().value,
         ):
 
-            self._aperture = _zivid.Settings2D.Acquisition.Aperture(aperture)
-            self._brightness = _zivid.Settings2D.Acquisition.Brightness(brightness)
-            self._exposure_time = _zivid.Settings2D.Acquisition.ExposureTime(
-                exposure_time
-            )
-            self._gain = _zivid.Settings2D.Acquisition.Gain(gain)
+            if isinstance(aperture, (float, int,)) or aperture is None:
+                self._aperture = _zivid.Settings2D.Acquisition.Aperture(aperture)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                        value_type=type(aperture)
+                    )
+                )
+            if isinstance(brightness, (float, int,)) or brightness is None:
+                self._brightness = _zivid.Settings2D.Acquisition.Brightness(brightness)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                        value_type=type(brightness)
+                    )
+                )
+            if (
+                isinstance(exposure_time, (datetime.timedelta,))
+                or exposure_time is None
+            ):
+                self._exposure_time = _zivid.Settings2D.Acquisition.ExposureTime(
+                    exposure_time
+                )
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (datetime.timedelta,) or None, got {value_type}".format(
+                        value_type=type(exposure_time)
+                    )
+                )
+            if isinstance(gain, (float, int,)) or gain is None:
+                self._gain = _zivid.Settings2D.Acquisition.Gain(gain)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                        value_type=type(gain)
+                    )
+                )
 
         @property
         def aperture(self):
@@ -39,19 +73,47 @@ class Settings2D:
 
         @aperture.setter
         def aperture(self, value):
-            self._aperture = _zivid.Settings2D.Acquisition.Aperture(value)
+            if isinstance(value, (float, int,)) or value is None:
+                self._aperture = _zivid.Settings2D.Acquisition.Aperture(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @brightness.setter
         def brightness(self, value):
-            self._brightness = _zivid.Settings2D.Acquisition.Brightness(value)
+            if isinstance(value, (float, int,)) or value is None:
+                self._brightness = _zivid.Settings2D.Acquisition.Brightness(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @exposure_time.setter
         def exposure_time(self, value):
-            self._exposure_time = _zivid.Settings2D.Acquisition.ExposureTime(value)
+            if isinstance(value, (datetime.timedelta,)) or value is None:
+                self._exposure_time = _zivid.Settings2D.Acquisition.ExposureTime(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: datetime.timedelta or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         @gain.setter
         def gain(self, value):
-            self._gain = _zivid.Settings2D.Acquisition.Gain(value)
+            if isinstance(value, (float, int,)) or value is None:
+                self._gain = _zivid.Settings2D.Acquisition.Gain(value)
+            else:
+                raise TypeError(
+                    "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                        value_type=type(value)
+                    )
+                )
 
         def __eq__(self, other):
             if (
@@ -64,7 +126,9 @@ class Settings2D:
             return False
 
         def __str__(self):
-            return str(zivid._settings_2d_converter.to_internal_acquisition(self))
+            return str(
+                zivid._settings2_d_converter.to_internal_settings2_d_acquisition(self)
+            )
 
     class Processing:
         class Color:
@@ -76,11 +140,34 @@ class Settings2D:
                     red=_zivid.Settings2D().Processing.Color.Balance().Red().value,
                 ):
 
-                    self._blue = _zivid.Settings2D.Processing.Color.Balance.Blue(blue)
-                    self._green = _zivid.Settings2D.Processing.Color.Balance.Green(
-                        green
-                    )
-                    self._red = _zivid.Settings2D.Processing.Color.Balance.Red(red)
+                    if isinstance(blue, (float, int,)) or blue is None:
+                        self._blue = _zivid.Settings2D.Processing.Color.Balance.Blue(
+                            blue
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                value_type=type(blue)
+                            )
+                        )
+                    if isinstance(green, (float, int,)) or green is None:
+                        self._green = _zivid.Settings2D.Processing.Color.Balance.Green(
+                            green
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                value_type=type(green)
+                            )
+                        )
+                    if isinstance(red, (float, int,)) or red is None:
+                        self._red = _zivid.Settings2D.Processing.Color.Balance.Red(red)
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: (float, int,) or None, got {value_type}".format(
+                                value_type=type(red)
+                            )
+                        )
 
                 @property
                 def blue(self):
@@ -96,17 +183,42 @@ class Settings2D:
 
                 @blue.setter
                 def blue(self, value):
-                    self._blue = _zivid.Settings2D.Processing.Color.Balance.Blue(value)
+                    if isinstance(value, (float, int,)) or value is None:
+                        self._blue = _zivid.Settings2D.Processing.Color.Balance.Blue(
+                            value
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                value_type=type(value)
+                            )
+                        )
 
                 @green.setter
                 def green(self, value):
-                    self._green = _zivid.Settings2D.Processing.Color.Balance.Green(
-                        value
-                    )
+                    if isinstance(value, (float, int,)) or value is None:
+                        self._green = _zivid.Settings2D.Processing.Color.Balance.Green(
+                            value
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                value_type=type(value)
+                            )
+                        )
 
                 @red.setter
                 def red(self, value):
-                    self._red = _zivid.Settings2D.Processing.Color.Balance.Red(value)
+                    if isinstance(value, (float, int,)) or value is None:
+                        self._red = _zivid.Settings2D.Processing.Color.Balance.Red(
+                            value
+                        )
+                    else:
+                        raise TypeError(
+                            "Unsupported type, expected: float or  int or None, got {value_type}".format(
+                                value_type=type(value)
+                            )
+                        )
 
                 def __eq__(self, other):
                     if (
@@ -119,7 +231,7 @@ class Settings2D:
 
                 def __str__(self):
                     return str(
-                        zivid._settings_2d_converter.to_internal_processing_color_balance(
+                        zivid._settings2_d_converter.to_internal_settings2_d_processing_color_balance(
                             self
                         )
                     )
@@ -155,7 +267,9 @@ class Settings2D:
 
             def __str__(self):
                 return str(
-                    zivid._settings_2d_converter.to_internal_processing_color(self)
+                    zivid._settings2_d_converter.to_internal_settings2_d_processing_color(
+                        self
+                    )
                 )
 
         def __init__(
@@ -184,11 +298,23 @@ class Settings2D:
             return False
 
         def __str__(self):
-            return str(zivid._settings_2d_converter.to_internal_processing(self))
+            return str(
+                zivid._settings2_d_converter.to_internal_settings2_d_processing(self)
+            )
 
     @property
     def processing(self):
         return self._processing
+
+    @property
+    def acquisitions(self):
+        return self._acquisitions
+
+    @acquisitions.setter
+    def acquisitions(self, value):
+        if not isinstance(value, collections.abc.Iterable):
+            raise TypeError("Unsupported type: {value}".format(value=type(value)))
+        self._acquisitions = _convert_to_acquistions(value)
 
     @processing.setter
     def processing(self, value):
@@ -197,38 +323,24 @@ class Settings2D:
         self._processing = value
 
     def __str__(self):
-        return str(zivid._settings_2d_converter.to_internal_settings_2d(self))
+        return str(zivid._settings2_d_converter.to_internal_settings2_d(self))
 
     def __init__(
         self, acquisitions=None, processing=None,
     ):
-        from collections.abc import Iterable
-
         if acquisitions is None:
             acquisitions = _zivid.Settings().Acquisitions().value
-        if not isinstance(acquisitions, Iterable):
+        if not isinstance(acquisitions, collections.abc.Iterable):
             raise TypeError(
                 "Unsupported type: {value}".format(value=type(acquisitions))
             )
         self._acquisitions = _convert_to_acquistions(acquisitions)
 
         if processing is None:
-            processing = zivid.Settings2D.Processing()
-        if not isinstance(processing, zivid.Settings2D.Processing):
+            processing = zivid.Settings.Processing()
+        if not isinstance(processing, zivid.Settings.Processing):
             raise TypeError("Unsupported type: {value}".format(value=type(processing)))
         self._processing = processing
-
-    @property
-    def acquisitions(self):
-        return self._acquisitions
-
-    @acquisitions.setter
-    def acquisitions(self, value):
-        from collections.abc import Iterable
-
-        if not isinstance(value, Iterable):
-            raise TypeError("Unsupported type: {value}".format(value=type(value)))
-        self._acquisitions = _convert_to_acquistions(value)
 
     def __eq__(self, other):
         if (
@@ -240,8 +352,6 @@ class Settings2D:
 
 
 def _convert_to_acquistions(inputs):
-    import zivid._settings_converter
-
     temp = []
     for acquisition_element in inputs:
         if isinstance(acquisition_element, Settings2D.Acquisition):

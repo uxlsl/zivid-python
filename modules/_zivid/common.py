@@ -210,7 +210,7 @@ def _create_str_special_member_function(node_data, settings_type: str):
         if node_data.path
         else f"{inflection.underscore(settings_type)}"  # {inflection.underscore(node_data.name)}
     )
-    str_content = f"str(zivid._{inflection.underscore(settings_type)}_converter.{to_internal_function}{to_internal}(self))"
+    str_content = f"str(zivid._{inflection.underscore(settings_type).replace('.', '_')}_converter.{to_internal_function}{to_internal}(self))"
     # str_content
 
     return """def __str__(self):
@@ -368,6 +368,8 @@ class {class_name}:
 
 def _recursion(current_class, indentation_level, parent_class=None):
     child_classes = list()
+    print(f"this is class: {current_class.name}")
+    print(dir(current_class))
     if not (hasattr(current_class, "valid_values") and hasattr(current_class, "enum")):
         for my_cls in _inner_classes_list(current_class):
             child_classes.append(
@@ -378,6 +380,8 @@ def _recursion(current_class, indentation_level, parent_class=None):
                 )
             )
         is_leaf = not bool(_inner_classes_list(current_class))
+    elif not hasattr(current_class, "_zivid_class"):
+        is_leaf = True
     elif current_class._zivid_class.node_type in (
         "NodeType.leaf_value",
         "NodeType.leaf_data_model_list",
@@ -447,6 +451,8 @@ def _recursion(current_class, indentation_level, parent_class=None):
         # print(current_class().value)
         # print(dir(current_class().value))
         # print(current_class().value.name)
+        is_enum_class = True
+        path = current_class.path.replace("/", ".")
         enum_default_value = current_class().value.name
         enum_vars = []
         members = [a for a in dir(current_class.enum)]
@@ -461,7 +467,7 @@ def _recursion(current_class, indentation_level, parent_class=None):
 
     else:
         path = current_class.path.replace("/", ".")
-        is_enum = False
+        is_enum_class = False
         # print("this is not a enum thingy")
         enum_vars = []
         enum_default_value = None
@@ -474,7 +480,7 @@ def _recursion(current_class, indentation_level, parent_class=None):
     my_class = NodeData(
         name=current_class.name,
         is_leaf=is_leaf,
-        is_enum=is_enum,
+        is_enum=is_enum_class,
         enum_vars=enum_vars,
         enum_default_value=enum_default_value,
         path=path,
@@ -544,9 +550,9 @@ def to_{path}(internal_{target_name}):
 """.format(
         target_name=inflection.underscore(node_data.name),
         # nested_converters=nested_converters_string,
-        path=f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.path).replace('.', '_')}"
+        path=f"{inflection.underscore(settings_type).replace('.', '_')}_{inflection.underscore(node_data.path).replace('.', '_')}"
         if node_data.path
-        else f"{inflection.underscore(settings_type)}",
+        else f"{inflection.underscore(settings_type).replace('.', '_')}",
         return_class=return_class,
         member_convert_logic=member_convert_logic,
         child_convert_logic=child_convert_logic,
@@ -610,9 +616,9 @@ def create_to_internal_converter(node_data, settings_type: str):
             convert_children_logic += "\n    {temp_internal_name}.{child_name} = to_internal_{child}({name}.{child_name})".format(
                 temp_internal_name=temp_internal_name,
                 child_name=inflection.underscore(child.name),
-                child=f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.path).replace('.', '_')}_{inflection.underscore(child.name)}"
+                child=f"{inflection.underscore(settings_type).replace('.', '_')}_{inflection.underscore(node_data.path).replace('.', '_')}_{inflection.underscore(child.name)}"
                 if node_data.path
-                else f"{inflection.underscore(settings_type)}_{inflection.underscore(child.name)}",
+                else f"{inflection.underscore(settings_type).replace('.', '_')}_{inflection.underscore(child.name)}",
                 name=inflection.underscore(node_data.name),
             )
             # expose internal_function through global
@@ -643,9 +649,9 @@ def to_internal_{path2}({target_name}):
         convert_member_logic=convert_member_logic,
         convert_children_logic=convert_children_logic,
         path="." + node_data.path + "()" if node_data.path else "()",
-        path2=f"{inflection.underscore(settings_type)}_{inflection.underscore(node_data.path).replace('.', '_')}"
+        path2=f"{inflection.underscore(settings_type).replace('.', '_')}_{inflection.underscore(node_data.path).replace('.', '_')}"
         if node_data.path
-        else f"{inflection.underscore(settings_type)}",
+        else f"{inflection.underscore(settings_type).replace('.', '_')}",
         temp_internal_name=temp_internal_name,
         # global_functions=global_functions,
         settings_type=settings_type,
