@@ -20,7 +20,6 @@ def test_software_version(frame_info):
 
 
 def test_set_time_stamp(frame_info):
-    import zivid
     import datetime
 
     assert isinstance(frame_info.time_stamp, datetime.datetime)

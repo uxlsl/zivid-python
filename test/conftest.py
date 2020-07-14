@@ -1,4 +1,5 @@
 import tempfile
+import numbers
 import os
 import subprocess
 from pathlib import Path
@@ -96,8 +97,6 @@ def frame_info_fixture(frame):
 
 @pytest.helpers.register
 def set_attribute_tester(settings_instance, member, value, expected_data_type):
-    import numbers
-
     if not hasattr(settings_instance, member):
         raise RuntimeError(
             "Settings instance {settings_instance} does not have the member: {member}".format(
@@ -109,7 +108,7 @@ def set_attribute_tester(settings_instance, member, value, expected_data_type):
     assert isinstance(getattr(settings_instance, member), expected_data_type)
 
     class DummyClass:
-        pass
+        pass  # pylint: disable=too-few-public-methods
 
     with pytest.raises(TypeError):
         setattr(settings_instance, member, DummyClass())
@@ -134,6 +133,7 @@ def equality_tester(settings_type, value_collection_1, value_collection_2):
     assert instance_1 != instance_3
     assert instance_3 != instance_2
 
+
 class Cd:
     def __init__(self, new_path):
         self.new_path = new_path
@@ -145,6 +145,7 @@ class Cd:
 
     def __exit__(self, etype, value, traceback):
         os.chdir(str(self.saved_path))
+
 
 @pytest.helpers.register
 def run_sample(name, working_directory=None):

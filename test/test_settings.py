@@ -102,7 +102,7 @@ def test_set_acquisition_generator():
     settings = Settings()
 
     def _generator():
-        for i in range(3):
+        for _ in range(3):
             yield Settings.Acquisition()
 
     settings.acquisitions = _generator()

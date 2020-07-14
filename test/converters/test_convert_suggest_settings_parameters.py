@@ -2,7 +2,6 @@
 
 
 def test_to_internal_suggest_settings_parameters_to_suggest_settings_parameters_modified():
-    import datetime
     from zivid.capture_assistant import SuggestSettingsParameters
     from zivid._capture_assistant_suggest_settings_parameters_converter import (
         to_capture_assistant_suggest_settings_parameters,

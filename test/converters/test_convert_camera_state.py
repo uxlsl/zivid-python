@@ -2,7 +2,6 @@
 
 
 def test_to_internal_camera_state_to_camera_state_modified():
-    import datetime
     from zivid import CameraState
     from zivid._camera_state_converter import to_camera_state, to_internal_camera_state
 

@@ -35,18 +35,17 @@ def test_suggest_settings_parameters():
 
 def test_suggest_settings_throws_if_budget_outside_range():
     import datetime
-    import zivid
     from zivid.capture_assistant import SuggestSettingsParameters
 
     # too small
     with pytest.raises(IndexError):
-        suggest_settings_parameters = SuggestSettingsParameters(
+        SuggestSettingsParameters(
             max_capture_time=datetime.timedelta(milliseconds=100),
             ambient_light_frequency=SuggestSettingsParameters.AmbientLightFrequency.hz50,
         )
     # too big
     with pytest.raises(IndexError):
-        suggest_settings_parameters = SuggestSettingsParameters(
+        SuggestSettingsParameters(
             max_capture_time=datetime.timedelta(milliseconds=60000)
         )
 

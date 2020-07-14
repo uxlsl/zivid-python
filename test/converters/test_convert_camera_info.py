@@ -2,7 +2,6 @@
 
 
 def test_to_internal_camera_info_to_camera_info_modified():
-    import datetime
     from zivid import CameraInfo
     from zivid._camera_info_converter import to_camera_info, to_internal_camera_info
 
