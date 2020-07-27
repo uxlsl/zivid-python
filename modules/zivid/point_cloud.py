@@ -25,7 +25,7 @@ class PointCloud:
             )
         self.__impl = internal_point_cloud
 
-    def to_array(self):
+    def copy_data(self, data_format):
         """Convert point cloud to numpy array.
 
         Returns:
@@ -33,7 +33,11 @@ class PointCloud:
 
         """
         self.__impl.assert_not_released()
-        return numpy.array(self.__impl)
+        if data_format == "xyzrgba":
+            return numpy.array(self.__impl)
+        raise ValueError(
+            "Unsupported data format: {data_format}".format(data_format=data_format)
+        )
 
     @property
     def height(self):

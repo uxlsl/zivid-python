@@ -4,7 +4,7 @@
 def test_point_cloud_to_array(point_cloud):
     import numpy as np
 
-    np_array = point_cloud.to_array()
+    np_array = point_cloud.copy_data(data_format="xyzrgba")
     assert np_array is not None
     assert isinstance(np_array, np.ndarray)
 
@@ -12,7 +12,7 @@ def test_point_cloud_to_array(point_cloud):
 def test_to_rgb_image(point_cloud):
     import numpy as np
 
-    np_array = point_cloud.to_array()
+    np_array = point_cloud.copy_data(data_format="xyzrgba")
     image = np_array[["r", "g", "b"]]
     image = np.asarray([np_array["r"], np_array["g"], np_array["b"]])
     image = np.moveaxis(image, [0, 1, 2], [2, 0, 1])
@@ -55,9 +55,13 @@ def test_to_array_context_manager(frame):
     import pytest
 
     with frame.point_cloud() as point_cloud:
-        point_cloud.to_array()
-    with pytest.raises(RuntimeError):
-        point_cloud.to_array()
+        point_cloud.copy_data(data_format="xyzrgba")
+    with pytest.raises(ValueError):
+        point_cloud.copy_data(data_format="a")
+    with pytest.raises(TypeError):
+        point_cloud.copy_data(data_format=123)
+    with pytest.raises(ValueError):
+        point_cloud.copy_data()
 
 
 def test_illegal_init(application):  # pylint: disable=unused-argument
