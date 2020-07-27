@@ -15,7 +15,7 @@ namespace
     struct DataType
     {
         float x, y, z;
-        uint8_t b, g, r, a;
+        uint8_t r, g, b, a;
     };
 #pragma pack(pop)
 
@@ -53,7 +53,7 @@ namespace ZividPython
 {
     void wrapClass(pybind11::class_<ReleasablePointCloud> pyClass)
     {
-        PYBIND11_NUMPY_DTYPE(DataType, x, y, z, b, g, r, a);
+        PYBIND11_NUMPY_DTYPE(DataType, x, y, z, r, g, b, a);
 
         pyClass.def(py::init<>())
             .def_buffer(makeBufferInfo)
