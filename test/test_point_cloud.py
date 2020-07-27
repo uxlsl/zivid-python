@@ -1,7 +1,7 @@
 # pylint: disable=import-outside-toplevel
 
 
-def test_point_cloud_to_array(point_cloud):
+def test_point_cloud_copy_data(point_cloud):
     import numpy as np
 
     np_array = point_cloud.copy_data(data_format="xyzrgba")
@@ -51,16 +51,16 @@ def test_width_context_manager(frame):
         point_cloud.width  # pylint: disable=pointless-statement
 
 
-def test_to_array_context_manager(frame):
+def test_copy_data_context_manager(frame):
     import pytest
 
     with frame.point_cloud() as point_cloud:
         point_cloud.copy_data(data_format="xyzrgba")
-    with pytest.raises(ValueError):
+    with pytest.raises(RuntimeError):
         point_cloud.copy_data(data_format="a")
-    with pytest.raises(TypeError):
+    with pytest.raises(RuntimeError):
         point_cloud.copy_data(data_format=123)
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         point_cloud.copy_data()
 
 
