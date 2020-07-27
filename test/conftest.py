@@ -107,8 +107,8 @@ def set_attribute_tester(settings_instance, member, value, expected_data_type):
     assert getattr(settings_instance, member) == value
     assert isinstance(getattr(settings_instance, member), expected_data_type)
 
-    class DummyClass:
-        pass  # pylint: disable=too-few-public-methods
+    class DummyClass:  # pylint: disable=too-few-public-methods
+        pass
 
     with pytest.raises(TypeError):
         setattr(settings_instance, member, DummyClass())
