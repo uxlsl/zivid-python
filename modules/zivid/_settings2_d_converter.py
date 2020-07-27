@@ -110,12 +110,12 @@ def to_internal_settings2_d(settings2_d):
         settings2_d.processing
     )
 
-    if settings2_d.acquisitions is None:
-        internal_settings2_d.acquisitions = _zivid.Settings().Acquisitions()  # TODO
-    else:
-        temp = _zivid.Settings2D().Acquisitions()
-        for acq in settings2_d.acquisitions:
-            temp.append(to_internal_settings2_d_acquisition(acq))
-        internal_settings2_d.acquisitions = temp
+    # if settings2_d.acquisitions is None:
+    #     internal_settings2_d.acquisitions = _zivid.Settings2D().Acquisitions()
+    # else:
+    temp = _zivid.Settings2D().Acquisitions()
+    for acq in settings2_d.acquisitions:
+        temp.append(to_internal_settings2_d_acquisition(acq))
+    internal_settings2_d.acquisitions = temp
 
     return internal_settings2_d
