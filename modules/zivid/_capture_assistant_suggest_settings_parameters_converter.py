@@ -24,7 +24,7 @@ def to_capture_assistant_suggest_settings_parameters(
 ):
     return zivid.capture_assistant.SuggestSettingsParameters(
         ambient_light_frequency=to_capture_assistant_suggest_settings_parameters_ambient_light_frequency(
-            internal_suggest_settings_parameters.ambient_light_frequency.value
+            internal_suggest_settings_parameters.ambient_light_frequency
         ),
         max_capture_time=internal_suggest_settings_parameters.max_capture_time.value,
     )

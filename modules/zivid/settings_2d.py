@@ -337,7 +337,7 @@ class Settings2D:
         self._acquisitions = _convert_to_acquistions(acquisitions)
 
         if processing is None:
-            processing = zivid.Settings.Processing()
+            processing = zivid.Settings2D.Processing()
         if not isinstance(processing, zivid.Settings2D.Processing):
             raise TypeError("Unsupported type: {value}".format(value=type(processing)))
         self._processing = processing
