@@ -54,7 +54,7 @@ class Camera:
         elif isinstance(settings, Settings2D):
             return Frame2D(
                 self.__impl.capture(
-                    _settings_2d_converter.to_internal_settings_2d(settings)
+                    _settings_2d_converter.to_internal_settings2_d(settings)
                 )
             )
         else:
