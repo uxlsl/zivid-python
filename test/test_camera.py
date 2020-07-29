@@ -41,7 +41,7 @@ def test_capture_settings_2d(file_camera):
         zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
     )
     assert frame_2d
-    assert isinstance(frame_2d, zivid.frame.Frame2D)
+    assert isinstance(frame_2d, zivid.frame_2d.Frame2D)
     frame_2d.release()
 
 
