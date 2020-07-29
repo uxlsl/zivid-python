@@ -52,6 +52,12 @@ class FrameInfo:
     ):
 
         if isinstance(time_stamp, (datetime.datetime,)):
+            if time_stamp < datetime.datetime(1970, 1, 1):
+                raise ValueError(
+                    "Unsupported time stamp: '{time_stamp}', time stamp can only be set to a time point after January 1st, 1970".format(
+                        time_stamp=time_stamp
+                    )
+                )
             self._time_stamp = _zivid.FrameInfo.TimeStamp(time_stamp)
         else:
             raise TypeError(
@@ -78,6 +84,12 @@ class FrameInfo:
     @time_stamp.setter
     def time_stamp(self, value):
         if isinstance(value, (datetime.datetime,)):
+            if value < datetime.datetime(1970, 1, 1):
+                raise ValueError(
+                    "Unsupported time stamp: '{value}', time stamp can only be set to a time point after January 1st, 1970".format(
+                        value=value
+                    )
+                )
             self._time_stamp = _zivid.FrameInfo.TimeStamp(value)
         else:
             raise TypeError(
