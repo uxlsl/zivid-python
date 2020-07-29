@@ -47,7 +47,6 @@ def test_str_as_path_init(
     assert isinstance(frame, zivid.frame.Frame)
 
 
-@pytest.mark.skip(reason="https://github.com/zivid/zivid-python/issues/54")
 def test_save(frame):
     import tempfile
     from pathlib import Path

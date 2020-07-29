@@ -58,14 +58,14 @@ def frame_fixture(application, sample_point_cloud):  # pylint: disable=unused-ar
 
 @pytest.fixture(name="physical_camera_frame_2d")
 def physical_camera_frame_2d_fixture(physical_camera):
-    settings_2d = zivid.Settings2D()
-    with physical_camera.capture_2d(settings_2d) as frame_2d:
+    settings_2d = zivid.Settings2D(acquisitions=[zivid.Settings2D.Acquisition()])
+    with physical_camera.capture(settings_2d) as frame_2d:
         yield frame_2d
 
 
 @pytest.fixture(name="physical_camera_image_2d")
 def physical_camera_image_2d_fixture(physical_camera_frame_2d):
-    with physical_camera_frame_2d.image() as image_2d:
+    with physical_camera_frame_2d.image_rgba() as image_2d:
         yield image_2d
 
 
@@ -151,9 +151,7 @@ class Cd:
 def run_sample(name, working_directory=None):
     current_working_directory = Path(os.getcwd()).resolve()
     sample = (
-        current_working_directory
-        / ".."
-        / ".."
+        Path(__file__).parent.parent
         / "samples"
         / "sample_{name}.py".format(name=name)
     ).resolve()

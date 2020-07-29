@@ -52,7 +52,7 @@ class Frame2D:
             a settings 2d instance
 
         """
-        return _settings_converter.to_settings_2d(  # pylint: disable=protected-access
+        return _settings_converter.to_settings2_d(  # pylint: disable=protected-access
             self.__impl.settings
         )
 

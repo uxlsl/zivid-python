@@ -40,7 +40,7 @@ def test_connect_camera_serial_number(application):
     import zivid
 
     with application.connect_camera() as cam:
-        serial_number = cam.serial_number
+        serial_number = cam.info.serial_number
 
     with application.connect_camera(serial_number) as cam:
         assert cam
