@@ -5,7 +5,11 @@ import _zivid
 
 
 class PointCloud:
-    """A point cloud."""
+    """Point cloud with x, y, z, RGB and color laid out on a 2D grid.
+    
+    An instance of this class is a handle to a point cloud stored on the compute device memory.
+    This class provides several methods to copy point cloud data from the compute device
+    memory to host (CPU) system memory (RAM)."""
 
     def __init__(self, internal_point_cloud):
         """Create a point cloud from an internal point cloud.
@@ -41,7 +45,7 @@ class PointCloud:
 
     @property
     def height(self):
-        """Return height (number of rows) of point cloud.
+        """Get the height of the point cloud (number of rows).
 
         Returns:
             a positive integer
@@ -51,7 +55,7 @@ class PointCloud:
 
     @property
     def width(self):
-        """Return width (number of columns) of point cloud.
+        """Get the width of the point cloud (number of columns).
 
         Returns:
             a positive integer

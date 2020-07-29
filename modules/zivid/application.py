@@ -8,7 +8,7 @@ class Application:
     """Manager class for Zivid.
 
     When the first instance of this class is created it will initialize Zivid
-    resources like camera management and GPU managment.
+    resources like camera management and GPU management.
 
     The resources will exist until release() is called, they will not be
     garbage collected even if the Application instance is. Subsequent instances
@@ -35,7 +35,6 @@ class Application:
 
         Args:
             frame_file: Data file in ZDF format containing Zivid data
-            settings: Settings for the camera
 
         Returns:
             Zivid virtual camera instance
@@ -44,7 +43,7 @@ class Application:
         return Camera(self.__impl.create_file_camera(str(frame_file)))
 
     def connect_camera(self, serial_number=None):
-        """Connect to the next available Zivid Camera.
+        """Connect to the next available Zivid camera.
 
         Args:
             serial_number: Connect to the camera with this serial number

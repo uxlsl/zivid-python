@@ -504,12 +504,11 @@ def _convert_to_internal(ambient_light_frequency):
 def suggest_settings(camera, suggest_settings_parameters):
     """Find settings for the current scene based on the suggest_settings_parameters.
 
-    The suggested settings returned from this function should be passed into hdr.capture to perform the actual capture.
+    The suggested settings returned from this function should be passed into \ref Camera::capture to perform the actual capture.
 
     Args:
         camera: an instance of zivid.Camera
-        suggest_settings_parameters: an instance of zivid.capture_assistant.SuggestSettingsParameters which provides
-                                     parameters (e.g., max capture time constraint) to the suggest_settings algorithm.
+        suggest_settings_parameters: Provides parameters (e.g., max capture time constraint) to the suggestSettings algorithm.
 
     Returns:
         Settings instance

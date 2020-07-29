@@ -36,7 +36,7 @@ class Frame2D:
         return str(self.__impl)
 
     def image_rgba(self):
-        """Return the underlying 2D image.
+        """Get color (RGBA) image from the frame.
 
         Returns:
             an image instance
@@ -46,7 +46,7 @@ class Frame2D:
 
     @property
     def settings(self):
-        """Get the settings 2d for the API at the time of the 2d frame capture.
+        """Get the settings used to capture this frame.
 
         Returns:
             a settings 2d instance
@@ -70,7 +70,7 @@ class Frame2D:
 
     @property
     def info(self):
-        """Get information collected at the time of the frame capture.
+        """Get information collected at the time of the capture.
 
         Returns:
             a camera info instance

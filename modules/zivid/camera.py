@@ -38,7 +38,7 @@ class Camera:
         return self.__impl == other._Camera__impl  # pylint: disable=protected-access
 
     def capture(self, settings):
-        """Capture a single frame or a single 2d frame.
+        """Capture a single frame or a single 2D frame.
 
         Args:
             settings: settings to be used to capture. Can be either Settings or Settings2D instances
@@ -62,7 +62,7 @@ class Camera:
 
     @property
     def info(self):
-        """Get the current camera info.
+        """Get information about camera model, serial number etc.
 
         Returns:
             The current camera info
