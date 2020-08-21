@@ -137,6 +137,13 @@ namespace ZividPython
         #name,                                                                                                         \
         pybind11::buffer_protocol())
 
+#define ZIVID_PYTHON_WRAP_ARRAY2D_BUFFER_AS_RELEASABLE(dest, nativetype)                                               \
+    ZividPython::wrapClass<ZividPython::ReleasableArray2D<nativetype>, ZividPython::WrapType::releasable>(             \
+        dest,                                                                                                          \
+        static_cast<void (*)(pybind11::class_<ZividPython::ReleasableArray2D<nativetype>>)>(ZividPython::wrapClass),   \
+        "Array2D" #nativetype,                                                                                         \
+        pybind11::buffer_protocol())
+
 #define ZIVID_PYTHON_WRAP_DATA_MODEL(dest, name) ZividPython::wrapDataModel(dest, name{})
 
 #define ZIVID_PYTHON_WRAP_NAMESPACE_AS_SUBMODULE(dest, name)                                                           \

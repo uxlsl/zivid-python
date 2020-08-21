@@ -10,6 +10,7 @@ set(SOURCES
     Calibration/MultiCamera.cpp
     CaptureAssistant.cpp
     NodeType.cpp
+    ReleasableArray2D.cpp
     ReleasablePointCloud.cpp
     Calibration/Pose.cpp
     ReleasableCamera.cpp

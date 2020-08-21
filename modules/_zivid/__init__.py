@@ -5,6 +5,12 @@ try:
     from _zivid._zivid import (  # pylint: disable=import-error,no-name-in-module
         __version__,
         Application,
+        Array2DColorRGBA,
+        Array2DPointXYZ,
+        Array2DPointXYZColorRGBA,
+        Array2DPointXYZW,
+        Array2DPointZ,
+        Array2DSNR,
         Camera,
         CameraState,
         firmware,
