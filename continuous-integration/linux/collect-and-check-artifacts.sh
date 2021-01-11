@@ -5,15 +5,16 @@ CI_DIR=$(realpath "$SCRIPT_DIR/..")
 ROOT_DIR=$(realpath "$SCRIPT_DIR/../..")
 
 # Simple setup
-apt-get update && apt-get install --yes python3 python3-pip || exit $?
+apt-get update || exit $?
+apt-get install --yes python3 python3-pip || exit $?
 pip3 install twine || exit $?
 
 # Move artifacts into a common directory
-mkdir $ROOT_DIR/dist || exit $?
-cp $ROOT_DIR/artifacts/*/* $ROOT_DIR/dist || exit $?
+mkdir "$ROOT_DIR/dist" || exit $?
+cp "$ROOT_DIR/artifacts"/*/* "$ROOT_DIR/dist" || exit $?
 
 # Check against artifact list
-python3 $CI_DIR/deployment/check_expected_artifacts.py || exit $?
+python3 "$CI_DIR/deployment/check_expected_artifacts.py" || exit $?
 
 # Check contents of artifacts
-twine check $ROOT_DIR/dist/* || exit $?
+twine check "$ROOT_DIR/dist"/* || exit $?

@@ -7,7 +7,7 @@ on:
     - cron:  '0 22 * * *'
 
 jobs:
-  Lint:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -23,7 +23,7 @@ jobs:
               archlinux/base \
               bash -c "./setup.sh && ./build.sh && ./lint.sh"
 
-  Create-source-dist:
+  create-source-distribution:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -37,7 +37,7 @@ jobs:
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
               ubuntu:20.04 \
-              bash -c "./setup.sh && ./create-sdist.sh"
+              bash -c "./setup.sh && ./create-source-distribution.sh"
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -45,7 +45,7 @@ jobs:
           path: dist/zivid*.tar.gz
           retention-days: 1
 
-  Create-windows-binary-dist:
+  create-windows-binary-distribution:
     runs-on: windows-2016
     strategy:
       matrix:
@@ -66,7 +66,7 @@ jobs:
           Zivid_DIR: 'C:\Program Files\Zivid\CMake\Zivid'
           CXX: 'cl.exe'
           CC: 'cl.exe'
-        run: python continuous-integration\windows\create_bdist.py
+        run: python continuous-integration\windows\create_binary_distribution.py
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -74,8 +74,8 @@ jobs:
           path: dist/zivid*.whl
           retention-days: 1
 
-  Test-linux-source-dist:
-    needs: Create-source-dist
+  test-linux-source-distribution:
+    needs: create-source-distribution
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -97,10 +97,10 @@ jobs:
               --workdir /host/continuous-integration/linux \
               --env "PYTHONDONTWRITEBYTECODE=1" \
               ${{matrix.os}} \
-              bash -c "./setup.sh && ./install-sdist.sh && ./test.sh"
+              bash -c "./setup.sh && ./build-and-install-source-distribution.sh && ./test.sh"
 
-  Test-windows-binary-dist:
-    needs: Create-windows-binary-dist
+  test-windows-binary-distribution:
+    needs: create-windows-binary-distribution
     runs-on: windows-2016
     strategy:
       matrix:
@@ -122,12 +122,12 @@ jobs:
       - name: Setup 
         run: python continuous-integration\windows\setup.py
       - name: Install from binary dist
-        run: python continuous-integration\windows\install_bdist.py
+        run: python continuous-integration\windows\install_binary_distribution.py
       - name: Test
         run: python continuous-integration\windows\test.py
 
-  Deploy:
-    needs: [Lint, Test-linux-source-dist, Test-windows-binary-dist]
+  deploy:
+    needs: [lint, test-linux-source-distribution, test-windows-binary-distribution]
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -149,5 +149,5 @@ jobs:
       - name: Upload all as single artifact
         uses: actions/upload-artifact@v2
         with:
-          name: dist_all
+          name: distributions_all
           path: dist/
